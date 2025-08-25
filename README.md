@@ -1,11 +1,11 @@
-# Mancing Mania Mantap!
+# BOZea
 
-❤️Aplikasi ini akan memudahkan transaksi jual beli dan sewa peralatan perikanan. Kami sudah bersertifikasi internasional IEEE !
+Peralatan kapal susah dicari? Cari yang pas dengan budget? Temukan semua perlengkapan laut di satu tempat denga harga terbaik. Selamat datang di BOZea!
 
 ## Anggota Kelompok
 
-- Ketua Kelompok : Olivia Nefri👑
+- Ketua Kelompok : Olivia Nefri
 - Anggota 1 : Bernards Widiyazulfathirrochim
 - Anggota 2 : Zaidan Harith
 
-### 🔥🔥BERSAMA KAMI, MANCINGMU MAKIN GACOR🔥🔥
+### 🔥🔥Sail more, Spend less🔥🔥
