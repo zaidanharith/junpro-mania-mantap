@@ -5,7 +5,7 @@
 🌊 Semua perlengkapan maritim kini ada di **satu tempat** dengan harga terbaik.  
 Selamat datang di **BOZea**! ⚓✨
 
-## 👥 Tim Pengembang
+## 👥 Developer
 
 - 👩‍✈️ **Ketua Kelompok** : Olivia Nefri👑
 - 🧑‍💻 **Anggota 1** : Bernards Widiyazulfathirrochim
@@ -25,7 +25,7 @@ BOZea adalah **platform digital khusus maritim** yang mempertemukan **nelayan, p
 
 ## 🛠️ Solusi & Fitur Utama
 
-✨ **Pencarian Pintar** – filter jenis barang, merk, kondisi, harga.  
+✨ **Smart Search** – filter jenis barang, merk, kondisi, harga.  
 👤 **Profil Penjual & Pembeli** – riwayat transaksi, rating, ulasan.  
 📸 **Upload Produk** – foto, deskripsi, harga, lokasi barang.  
 💬 **Chat Langsung** – komunikasi tanpa aplikasi tambahan.  
