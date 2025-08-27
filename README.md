@@ -6,6 +6,6 @@ Peralatan kapal susah dicari? Cari yang pas dengan budget? Temukan semua perleng
 
 - 👑Ketua Kelompok :
 - 🤵Anggota 1 :
-- 👲Anggota 2 : Zaidan Harith
+- 👲Anggota 2 : Zaidan Harith - 23/512629/TK/56334
 
 ### 🔥🔥Sail more, Spend less🔥🔥
