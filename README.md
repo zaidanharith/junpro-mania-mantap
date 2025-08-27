@@ -5,7 +5,7 @@ Peralatan kapal susah dicari? Cari yang pas dengan budget? Temukan semua perleng
 ## Anggota Kelompok
 
 - 👑Ketua Kelompok :
-- 🤵Anggota 1 : Bernards Widiyazulfathirrochim-23/512647/TK/56341
+- 🤵Anggota 1 : Bernards Widiyazulfathirrochim - 23/512647/TK/56341
 - 👲Anggota 2 :
 
 ### 🔥🔥Sail more, Spend less🔥🔥
