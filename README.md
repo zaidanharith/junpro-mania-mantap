@@ -1,4 +1,4 @@
-# BOZea: Sail Less, Spend More!
+# BOZea: Sail More, Spend Less!
 
 Peralatan kapal susah dicari? Cari yang pas dengan budget? Temukan semua perlengkapan laut di satu tempat denga harga terbaik. Selamat datang di BOZea!
 
@@ -15,26 +15,26 @@ BOZea adalah **platform digital khusus maritim** yang mempertemukan **nelayan, p
 
 ## 🚩 Mengapa BOZea Hadir?
 
-1. ⚓ **Akses sulit** – peralatan maritim bekas tertentu susah ditemukan di pasar.
-2. 💰 **Hemat biaya** – beli/sewa barang bekas lebih efisien dibanding beli baru.
-3. 🤝 **Kepercayaan transaksi** – deskripsi + kontak jelas meningkatkan rasa aman.
-4. 🌐 **Minim pasar khusus** – belum ada platform yang fokus di bidang maritim.
+1. ⚓ **Akses sulit** – Peralatan maritim bekas tertentu susah ditemukan di pasar.
+2. 💰 **Hemat biaya** – Beli/sewa barang bekas lebih efisien dibanding beli baru.
+3. 🤝 **Kepercayaan transaksi** – Deskripsi & kontak jelas meningkatkan rasa aman.
+4. 🌐 **Minim pasar khusus** – Belum ada platform yang fokus di bidang maritim.
 
 ## 🛠️ Solusi & Fitur Utama
 
-✨ **Pencarian Pintar** – filter jenis barang, merk, kondisi, harga.  
-👤 **Profil Penjual & Pembeli** – riwayat transaksi, rating, ulasan.  
-📸 **Upload Produk** – foto, deskripsi, harga, lokasi barang.  
-💬 **Chat Langsung** – komunikasi tanpa aplikasi tambahan.  
-🤝 **Bargain Mode** – tawar-menawar harga langsung di platform.  
-🔔 **Notifikasi Real-time** – update pesan, tawaran, dan produk baru.
+✨ **Pencarian Pintar** – Filter jenis barang, merk, kondisi, harga.  
+👤 **Profil Penjual & Pembeli** – Riwayat transaksi, rating, ulasan.  
+📸 **Upload Produk** – Foto, deskripsi, harga, lokasi barang.  
+💬 **Chat Langsung** – Komunikasi tanpa aplikasi tambahan.  
+🤝 **Bargain Mode** – Tawar-menawar harga langsung di platform.  
+🔔 **Notifikasi Real-time** – Update pesan, tawaran, dan produk baru.
 
 > ⚠️ **Catatan:** Fitur akan berkembang sesuai dengan kemampuan tim 🚀
 
 ## 🔍 Dibandingkan Aplikasi Lain
 
 Terinspirasi dari **Tokopedia, Shopee, dan TikTok Shop**,  
-namun **BOZea fokus hanya pada pasar maritim** – lebih spesifik, lebih relevan ⚓🌊
+namun **BOZea fokus hanya pada pasar maritim** – Lebih spesifik, lebih relevan ⚓🌊
 
 ## 🎯 Visi BOZea
 
