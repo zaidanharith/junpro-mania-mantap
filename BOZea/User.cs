@@ -2,7 +2,7 @@ namespace BOZea
 {
     public class User
     {
-        public string userID { get; set; }
+        public string ID { get; set; }
         public string name { get; set; }
         public string email { get; set; }
         public string username { get; set; }
@@ -10,9 +10,9 @@ namespace BOZea
         public string address { get; set; }
         public bool hasShop { get; set; }
 
-        public User(string userID, string name, string email, string username, string password, string address)
+        public User(string ID, string name, string email, string username, string password, string address)
         {
-            this.userID = userID;
+            this.ID = ID;
             this.name = name;
             this.email = email;
             this.username = username;
@@ -29,9 +29,9 @@ namespace BOZea
             this.address = address;
         }
 
-        public void createShop(string shopID, string name, string description, float rating)
+        public void createShop(string ID, string name, string description, float rating)
         {
-            Shop newShop = new Shop(shopID, name, description, rating);
+            Shop newShop = new Shop(ID, name, description, rating);
             this.hasShop = true;
         }
     }
