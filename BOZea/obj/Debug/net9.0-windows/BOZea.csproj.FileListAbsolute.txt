@@ -1,0 +1,42 @@
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.exe
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.deps.json
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.runtimeconfig.json
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.dll
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.pdb
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\MainWindow.g.cs
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\App.g.cs
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea_MarkupCompile.cache
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea_MarkupCompile.lref
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\MainWindow.baml
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.g.resources
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.GeneratedMSBuildEditorConfig.editorconfig
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.AssemblyInfoInputs.cache
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.AssemblyInfo.cs
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.csproj.CoreCompileInputs.cache
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.sourcelink.json
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.dll
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\refint\BOZea.dll
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.pdb
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.genruntimeconfig.cache
+D:\CODING\C#\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\ref\BOZea.dll
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.exe
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.deps.json
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.runtimeconfig.json
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.dll
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\bin\Debug\net9.0-windows\BOZea.pdb
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\MainWindow.g.cs
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\App.g.cs
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea_MarkupCompile.cache
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea_MarkupCompile.lref
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\MainWindow.baml
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.g.resources
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.AssemblyInfoInputs.cache
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.AssemblyInfo.cs
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.csproj.CoreCompileInputs.cache
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.sourcelink.json
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.dll
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\refint\BOZea.dll
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.pdb
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\BOZea.genruntimeconfig.cache
+C:\Users\Zaidan Harith\Documents\JUNIOR PROJECT\junpro-mania-mantap\BOZea\obj\Debug\net9.0-windows\ref\BOZea.dll
