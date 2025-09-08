@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BOZea")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fccadba23770bc7a471834ac019b14764e88350b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+115bf2b2cc4c5c661ac8df9d9751c0cf266ef51d")]
 [assembly: System.Reflection.AssemblyProductAttribute("BOZea")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BOZea")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

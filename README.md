@@ -26,12 +26,12 @@ BOZea adalah **platform digital khusus maritim** yang mempertemukan **nelayan, p
 👤 **Profil Penjual & Pembeli** – Riwayat transaksi, rating, ulasan.  
 📸 **Upload Produk** – Foto, deskripsi, harga, lokasi barang.  
 💬 **Chat Langsung** – Komunikasi tanpa aplikasi tambahan.  
-🤝 **Bargain Mode** – Tawar-menawar harga langsung di platform.  
+🤝 **Bargain Mode** – Tawar-menawar harga langsung di platform (via chat)  
 🔔 **Notifikasi Real-time** – Update pesan, tawaran, dan produk baru.
 
 > ⚠️ **Catatan:** Fitur akan berkembang sesuai dengan kemampuan tim 🚀
 
-## 🔍 Dibandingkan Aplikasi Lain
+## 🔍 Referensi Aplikasi
 
 Terinspirasi dari **Tokopedia, Shopee, dan TikTok Shop**,  
 namun **BOZea fokus hanya pada pasar maritim** – Lebih spesifik, lebih relevan ⚓🌊
@@ -40,3 +40,8 @@ namun **BOZea fokus hanya pada pasar maritim** – Lebih spesifik, lebih relevan
 
 Membuat perdagangan maritim **lebih mudah, aman, dan hemat**,  
 sehingga nelayan dan pelaku industri bisa **berlayar lebih jauh tanpa takut biaya tinggi**. 🚢✨
+
+## 🤫 Class Diagram
+
+Ikan hiu makan tomat, ini _class diagram_ nya sobat!!
+![Class Diagram](classdiagram.png)

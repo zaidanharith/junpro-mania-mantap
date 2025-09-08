@@ -1,9 +1,16 @@
 {
   "Version": 1,
+<<<<<<< HEAD
   "WorkspaceRootPath": "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\",
   "Documents": [
     {
       "AbsoluteMoniker": "D:0:0:{B553D20E-4A50-23DE-ED48-7B14FDC91590}|BOZea\\BOZea.csproj|d:\\coding\\c#\\junior project\\junpro-mania-mantap\\bozea\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+=======
+  "WorkspaceRootPath": "C:\\Users\\Zaidan Harith\\Documents\\JUNIOR PROJECT\\junpro-mania-mantap\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B553D20E-4A50-23DE-ED48-7B14FDC91590}|BOZea\\BOZea.csproj|c:\\users\\zaidan harith\\documents\\junior project\\junpro-mania-mantap\\bozea\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+>>>>>>> 54be1b5e94555b3b0ee99040b3c146be5ecd172c
       "RelativeMoniker": "D:0:0:{B553D20E-4A50-23DE-ED48-7B14FDC91590}|BOZea\\BOZea.csproj|solutionrelative:bozea\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     }
   ],
@@ -14,6 +21,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
+<<<<<<< HEAD
           "SelectedChildIndex": 1,
           "Children": [
             {
@@ -30,6 +38,20 @@
               "RelativeToolTip": "BOZea\\MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-09-07T13:00:26.781Z",
+=======
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Zaidan Harith\\Documents\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "BOZea\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\Zaidan Harith\\Documents\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\MainWindow.xaml",
+              "RelativeToolTip": "BOZea\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-08T06:05:34.105Z",
+>>>>>>> 54be1b5e94555b3b0ee99040b3c146be5ecd172c
               "EditorCaption": ""
             }
           ]
