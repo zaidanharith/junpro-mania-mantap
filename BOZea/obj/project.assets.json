@@ -8,23 +8,23 @@
     "net9.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Zaidan Harith\\.nuget\\packages\\": {},
+    "C:\\Users\\myhar\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Zaidan Harith\\Documents\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\BOZea.csproj",
+      "projectUniqueName": "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\BOZea.csproj",
       "projectName": "BOZea",
-      "projectPath": "C:\\Users\\Zaidan Harith\\Documents\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\BOZea.csproj",
-      "packagesPath": "C:\\Users\\Zaidan Harith\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Zaidan Harith\\Documents\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\obj\\",
+      "projectPath": "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\BOZea.csproj",
+      "packagesPath": "C:\\Users\\myhar\\.nuget\\packages\\",
+      "outputPath": "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\BOZea\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Zaidan Harith\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\myhar\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
