@@ -1,18 +1,18 @@
 namespace BOZea
 {
-     public enum Condition
-        {
-            New = 1,
-            Good = 2,
-            Fair = 3,
-            Poor = 4
-        }
-        public enum Status
-        {
-            Available = 1,
-            Sold = 2,
-            Rented = 3
-        }
+    public enum Condition
+    {
+        New = 1,
+        Good = 2,
+        Fair = 3,
+        Poor = 4
+    }
+    public enum Status
+    {
+        Available = 1,
+        Sold = 2,
+        Rented = 3
+    }
     public class Product
     {
         public int ID { get; set; }
@@ -25,8 +25,8 @@ namespace BOZea
 
         public Condition Condition { get; set; }
         public Status Status { get; set; }
-        
-        public Product(int ID,string Name, float Price)
+
+        public Product(int ID, string Name, float Price)
         {
             this.ID = ID;
             this.Name = Name;
