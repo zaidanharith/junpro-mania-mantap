@@ -4,39 +4,60 @@ namespace BOZea
 {
     public class Review
     {
-        // Attributes
-        public string ReviewID { get; private set; }
-        public int Rating { get; set; } // e.g., 1 to 5
-        public string Comment { get; set; }
-        public DateTime ReviewDate { get; set; }
-        public string UserID { get; private set; } // ID pengguna yang memberi review
-        public string ProductID { get; private set; } // ID produk yang direview
+        // Attributes sesuai class diagram
+        public string reviewID { get; private set; }
+        public int rating { get; private set; }
+        public string comment { get; set; }
+        public DateTime reviewDate { get; private set; }
+
+        // Referensi ke User dan Product
+        private User reviewer;
+        private Product reviewedProduct;
 
         // Constructor
-        public Review(string id, string userID, string productID, int rating, string comment)
+        public Review(string id, User user, Product product, int rating, string comment)
         {
-            ReviewID = id;
-            UserID = userID;
-            ProductID = productID;
-            Rating = rating;
-            Comment = comment;
-            ReviewDate = DateTime.Now;
+            if (rating < 1 || rating > 5)
+                throw new ArgumentException("Rating harus antara 1-5");
+
+            this.reviewID = id;
+            this.reviewer = user;
+            this.reviewedProduct = product;
+            this.rating = rating;
+            this.comment = comment;
+            this.reviewDate = DateTime.Now;
         }
 
         // Method
-        public bool SubmitReview()
+        public bool submitReview()
         {
-            // Logika untuk validasi dan menyimpan review
-            if (Rating >= 1 && Rating <= 5)
+            try
             {
-                Console.WriteLine("Review berhasil disubmit.");
+                // Validasi dasar
+                if (string.IsNullOrEmpty(comment))
+                    return false;
+
+                if (rating < 1 || rating > 5)
+                    return false;
+
+                // Update rating produk
+                reviewedProduct.AddReview(this);
+
+                // Update review history user
+                reviewer.AddReview(this);
+
+                Console.WriteLine($"Review untuk produk {reviewedProduct.ProductName} berhasil disubmit.");
                 return true;
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Gagal submit review: Rating tidak valid.");
+                Console.WriteLine($"Gagal submit review: {ex.Message}");
                 return false;
             }
         }
+
+        // Getter methods
+        public User GetReviewer() => reviewer;
+        public Product GetReviewedProduct() => reviewedProduct;
     }
 }

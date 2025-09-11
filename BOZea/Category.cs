@@ -6,24 +6,34 @@ namespace BOZea
 {
     public class Category
     {
-        // Attributes
-        public string CategoryID { get; private set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+        // Attributes sesuai class diagram
+        public string categoryID { get; private set; }
+        public string category { get; set; }
+        public string description { get; set; }
+
+        // Relasi ke produk
+        public List<Product> Products { get; private set; }
 
         // Constructor
-        public Category(string id, string name, string description)
+        public Category(string id, string category, string description)
         {
-            CategoryID = id;
-            Name = name;
-            Description = description;
+            this.categoryID = id;
+            this.category = category;
+            this.description = description;
+            this.Products = new List<Product>();
         }
 
-        // Method
-        public List<Product> GetProductByCategory(List<Product> allProducts)
+        // Method: menambah produk ke kategori
+        public void AddProduct(Product product)
         {
-            // Menggunakan LINQ untuk memfilter produk berdasarkan kategori
-            return allProducts.Where(p => p.CategoryName == this.Name).ToList();
+            if (product.Category == this.category)
+                Products.Add(product);
+        }
+
+        // Method: mengambil produk berdasarkan kategori
+        public List<Product> GetProductByCategory()
+        {
+            return Products;
         }
     }
 }
