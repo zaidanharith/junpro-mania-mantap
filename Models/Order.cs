@@ -1,18 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BOZea
+namespace junpro_mania_mantap.Models
 {
-    public enum OrderStatus
-    {
-        PendingPayment,
-        Processing,
-        Shipped,
-        Delivered,
-        Cancelled
-    }
-
     public class Order
     {
         // Attributes sesuai class diagram
@@ -66,76 +59,30 @@ namespace BOZea
                 Console.WriteLine($"Payment status: {payment.PaymentStatus}");
         }
 
-        public void confirmDelivery()
+        public void AddOrderItem(OrderItem item)
         {
-            if (status != OrderStatus.Shipped)
+            OrderItems.Add(item);
+            CalculatePrice();
+        }
+
+        private void CalculatePrice()
+        {
+            decimal total = 0;
+            foreach (var item in OrderItems)
             {
-                Console.WriteLine("Order must be shipped before confirming delivery");
-                return;
+                total += item.Price * item.Quantity;
             }
-
-            status = OrderStatus.Delivered;
-            Console.WriteLine($"Order {orderID} has been delivered successfully");
+            Price = total;
         }
 
-        // Additional methods
-        private void CalculateTotalAmount()
+        public void UpdateStatus(string newStatus)
         {
-            totalAmount = Items.Sum(i => i.CalculateSubtotal());
+            Status = newStatus;
         }
 
-        public bool ProcessPayment(Payment payment)
+        public void AssignPayment(string paymentId)
         {
-            if (status != OrderStatus.PendingPayment)
-                return false;
-
-            this.payment = payment;
-            if (payment.ProcessPayment())
-            {
-                status = OrderStatus.Processing;
-                return true;
-            }
-            return false;
-        }
-
-        public bool ShipOrder()
-        {
-            if (status != OrderStatus.Processing)
-                return false;
-
-            status = OrderStatus.Shipped;
-            return true;
-        }
-
-        public bool CancelOrder()
-        {
-            if (status == OrderStatus.Delivered)
-                return false;
-
-            status = OrderStatus.Cancelled;
-            return true;
-        }
-
-        // Getter methods
-        public User GetBuyer() => buyer;
-        public Payment GetPayment() => payment;
-        public OrderStatus GetStatus() => status;
-
-        // Method untuk mendapatkan ringkasan order
-        public string GetOrderSummary()
-        {
-            var summary = $"Order ID: {orderID}\n" +
-                         $"Date: {orderDate}\n" +
-                         $"Status: {status}\n" +
-                         $"Items:\n";
-
-            foreach (var item in Items)
-            {
-                summary += $"- {item.GetItemInfo()}\n";
-            }
-
-            summary += $"Total Amount: ${totalAmount:F2}";
-            return summary;
+            PaymentID = paymentId;
         }
     }
 }

@@ -1,30 +1,25 @@
-namespace BOZea
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace junpro_mania_mantap.Models
 {
-    public enum Condition
+    public enum TransactionType
     {
-        New = 1,
-        Good = 2,
-        Fair = 3,
-        Poor = 4
+        Sale,
+        Rent
     }
-    public enum Status
-    {
-        Available = 1,
-        Sold = 2,
-        Rented = 3
-    }
+
     public class Product
     {
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public Category Category { get; set; }
         public float Price { get; set; }
-        public float RentPRice { get; set; }
         public int Stock { get; set; }
-
-        public Condition Condition { get; set; }
-        public Status Status { get; set; }
+        public TransactionType TransactionType { get; set; }
 
         public Product(int ID, string Name, float Price)
         {
@@ -32,6 +27,7 @@ namespace BOZea
             this.Name = Name;
             this.Price = Price;
         }
+
 
         public void UpdateStatus(Status newStatus)
         {
