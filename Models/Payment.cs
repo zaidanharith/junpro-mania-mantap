@@ -9,7 +9,7 @@ namespace junpro_mania_mantap.Models
     public class Payment
     {
         [Key]
-        public string ID { get; private set; }
+        public int ID { get; private set; }
 
         public string Method { get; set; }
         public decimal Amount { get; set; }
@@ -18,7 +18,7 @@ namespace junpro_mania_mantap.Models
 
         public virtual Order Order { get; set; }
 
-        public Payment(string paymentId, string method, decimal amount)
+        public Payment(int paymentId, string method, decimal amount)
         {
             ID = paymentId;
             Method = method;

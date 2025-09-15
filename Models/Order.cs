@@ -9,23 +9,23 @@ namespace junpro_mania_mantap.Models
     public class Order
     {
         [Key]
-        public string ID { get; private set; }
+        public int ID { get; private set; }
 
         public DateTime Date { get; private set; }
         public string Status { get; set; }
         public decimal Price { get; private set; }
 
         [ForeignKey("User")]
-        public string UserID { get; set; }
+        public int UserID { get; set; }
         
         [ForeignKey("Payment")]
-        public string PaymentID { get; set; }
+        public int PaymentID { get; set; }
 
         public virtual User User { get; set; }
         public virtual Payment Payment { get; set; }
         public virtual ICollection<OrderItem> OrderItems { get; private set; }
 
-        public Order(string orderId, string userId)
+        public Order(int orderId, int userId)
         {
             ID = orderId;
             UserID = userId;
