@@ -1,141 +1,63 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BOZea
+namespace junpro_mania_mantap.Models
 {
-    public enum OrderStatus
-    {
-        PendingPayment,
-        Processing,
-        Shipped,
-        Delivered,
-        Cancelled
-    }
-
     public class Order
     {
-        // Attributes sesuai class diagram
-        public string orderID { get; private set; }
-        public DateTime orderDate { get; private set; }
-        public OrderStatus status { get; private set; }
+        [Key]
+        public string ID { get; private set; }
 
-        // Additional properties
-        public float totalAmount { get; private set; }
-        public List<OrderItem> Items { get; private set; }
+        public DateTime Date { get; private set; }
+        public string Status { get; set; }
+        public decimal Price { get; private set; }
+
+        [ForeignKey("User")]
+        public string UserID { get; set; }
         
-        // Relasi
-        private User buyer;
-        private Payment payment;
+        [ForeignKey("Payment")]
+        public string PaymentID { get; set; }
 
-        // Constructor
-        public Order(string id, Cart cart, User buyer)
+        public virtual User User { get; set; }
+        public virtual Payment Payment { get; set; }
+        public virtual ICollection<OrderItem> OrderItems { get; private set; }
+
+        public Order(string orderId, string userId)
         {
-            if (cart == null || !cart.Items.Any())
-                throw new ArgumentException("Cart cannot be empty");
+            ID = orderId;
+            UserID = userId;
+            Date = DateTime.Now;
+            Status = "Pending";
+            OrderItems = new List<OrderItem>();
+        }
 
-            this.orderID = id;
-            this.orderDate = DateTime.Now;
-            this.status = OrderStatus.PendingPayment;
-            this.buyer = buyer;
-            this.Items = new List<OrderItem>();
+        public void AddOrderItem(OrderItem item)
+        {
+            OrderItems.Add(item);
+            CalculatePrice();
+        }
 
-            // Copy items from cart to order
-            foreach (var cartItem in cart.Items)
+        private void CalculatePrice()
+        {
+            decimal total = 0;
+            foreach (var item in OrderItems)
             {
-                var orderItem = new OrderItem(
-                    Guid.NewGuid().ToString(), 
-                    cartItem.ItemProduct, 
-                    cartItem.Quantity,
-                    this
-                );
-                Items.Add(orderItem);
+                total += item.Price * item.Quantity;
             }
-            
-            CalculateTotalAmount();
+            Price = total;
         }
 
-        // Methods from class diagram
-        public void trackOrder()
+        public void UpdateStatus(string newStatus)
         {
-            Console.WriteLine($"Order {orderID} status: {status}");
-            Console.WriteLine($"Order date: {orderDate}");
-            Console.WriteLine($"Total amount: ${totalAmount:F2}");
-            
-            if (payment != null)
-                Console.WriteLine($"Payment status: {payment.PaymentStatus}");
+            Status = newStatus;
         }
 
-        public void confirmDelivery()
+        public void AssignPayment(string paymentId)
         {
-            if (status != OrderStatus.Shipped)
-            {
-                Console.WriteLine("Order must be shipped before confirming delivery");
-                return;
-            }
-
-            status = OrderStatus.Delivered;
-            Console.WriteLine($"Order {orderID} has been delivered successfully");
-        }
-
-        // Additional methods
-        private void CalculateTotalAmount()
-        {
-            totalAmount = Items.Sum(i => i.CalculateSubtotal());
-        }
-
-        public bool ProcessPayment(Payment payment)
-        {
-            if (status != OrderStatus.PendingPayment)
-                return false;
-
-            this.payment = payment;
-            if (payment.ProcessPayment())
-            {
-                status = OrderStatus.Processing;
-                return true;
-            }
-            return false;
-        }
-
-        public bool ShipOrder()
-        {
-            if (status != OrderStatus.Processing)
-                return false;
-
-            status = OrderStatus.Shipped;
-            return true;
-        }
-
-        public bool CancelOrder()
-        {
-            if (status == OrderStatus.Delivered)
-                return false;
-
-            status = OrderStatus.Cancelled;
-            return true;
-        }
-
-        // Getter methods
-        public User GetBuyer() => buyer;
-        public Payment GetPayment() => payment;
-        public OrderStatus GetStatus() => status;
-
-        // Method untuk mendapatkan ringkasan order
-        public string GetOrderSummary()
-        {
-            var summary = $"Order ID: {orderID}\n" +
-                         $"Date: {orderDate}\n" +
-                         $"Status: {status}\n" +
-                         $"Items:\n";
-
-            foreach (var item in Items)
-            {
-                summary += $"- {item.GetItemInfo()}\n";
-            }
-
-            summary += $"Total Amount: ${totalAmount:F2}";
-            return summary;
+            PaymentID = paymentId;
         }
     }
 }

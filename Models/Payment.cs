@@ -1,32 +1,65 @@
-namespace BOZea
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace junpro_mania_mantap.Models
 {
     public class Payment
     {
-        public string ID { get; set; }
-        public string paymentMethod { get; set; }
-        public float amount { get; set; }
-        public DateTime date { get; set; }
-        public string status { get; set; }
-        public Payment(string ID, string paymentMethod, float amount, DateTime date, string status)
+        [Key]
+        public string ID { get; private set; }
+
+        public string Method { get; set; }
+        public decimal Amount { get; set; }
+        public DateTime Date { get; private set; }
+        public string Status { get; set; }
+
+        public virtual Order Order { get; set; }
+
+        public Payment(string paymentId, string method, decimal amount)
         {
-            this.ID = ID;
-            this.paymentMethod = paymentMethod;
-            this.amount = amount;
-            this.date = DateTime.Now;
-            this.status = status;
+            ID = paymentId;
+            Method = method;
+            Amount = amount;
+            Date = DateTime.Now;
+            Status = "Pending";
         }
 
-        public void processPayment()
+        public bool ProcessPayment()
         {
-            // Logic to process payment
-            this.status = "Processed";
+            try
+            {
+                Status = "Success";
+                return true;
+            }
+            catch (Exception)
+            {
+                Status = "Failed";
+                return false;
+            }
         }
 
-        public void verifyPayment()
+        public void UpdateStatus(string newStatus)
         {
-            // Logic to verify payment
-            this.status = "Verified";
+            if (newStatus is "Pending" or "Success" or "Failed")
+            {
+                Status = newStatus;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid payment status");
+            }
         }
 
+        public string GetPaymentSummary()
+        {
+            return $"Payment ID: {ID}\n" +
+                   $"Method: {Method}\n" +
+                   $"Amount: ${Amount:F2}\n" +
+                   $"Date: {Date}\n" +
+                   $"Status: {Status}";
+        }
     }
 }
