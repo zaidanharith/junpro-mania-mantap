@@ -1,43 +1,52 @@
-namespace BOZea
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace junpro_mania_mantap.Models
 {
     public class Shop
     {
-        public int ID { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public float rating { get; set; }
-        public DateTime dateCreated { get; set; }
+        [Key]
+        public int ID { get; private set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public float Rating { get; private set; }
+        public DateTime DateCreated { get; set; }
 
-        public Shop(string ID, string name, string description, float rating)
+        [ForeignKey("User")]
+        private User owner;
+
+        public Shop(string ID, string Name, string Description, float Rating)
         {
             this.ID = ID;
-            this.name = name;
-            this.description = description;
-            this.rating = rating;
-            this.dateCreated = DateTime.Now;
+            this.Name = Name;
+            this.Description = Description;
+            this.Rating = Rating;
+            this.DateCreated = DateTime.Now;
         }
 
-        public void updateShopProfile(string name, string description, float rating)
+        public void updateShopProfile(string Name, string Description, float Rating)
         {
-            this.name = name;
-            this.description = description;
-            this.rating = rating;
+            this.Name = Name;
+            this.Description = Description;
+            this.Rating = Rating;
         }
 
-        public void createProduct(string productID, string name, string description, string category, float price, int stock, string condition, string status)
+        public void createProduct(string productID, string Name, string Description, string Category, float Price, int Stock, string Condition, string Status)
         {
-            Product newProduct = new Product(productID, name, description, category, price, stock, condition, status);
+            Product newProduct = new Product(productID, Name, Description, Category, Price, Stock, Condition, Status);
         }
 
-        public void updateProduct(Product product, string name, string description, string category, float price, int stock, string condition, string status)
+        public void updateProduct(Product product, string Name, string Description, string Category, float Price, int Stock, string Condition)
         {
-            product.name = name;
-            product.description = description;
-            product.category = category;
-            product.price = price;
-            product.stock = stock;
-            product.condition = condition;
-            product.status = status;
+            product.Name = Name;
+            product.Description = Description;
+            product.Category = Category;
+            product.Price = Price;
+            product.Stock = Stock;
+            product.Condition = Condition;
         }
 
         public void deleteProduct(Product product)

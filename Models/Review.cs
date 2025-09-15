@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BOZea
+namespace junpro_mania_mantap.Models
 {
     public class Review
     {
-        // Attributes sesuai class diagram
-        public string reviewID { get; private set; }
-        public int rating { get; private set; }
-        public string comment { get; set; }
-        public DateTime reviewDate { get; private set; }
+        [Key]
+        public int ID { get; private set; }
 
-        // Referensi ke User dan Product
+        public int Rating { get; set; }
+        public string Comment { get; set; }
+        public DateTime ReviewDate { get; set; }
+
+        [ForeignKey("User")]
         private User reviewer;
+
+        [ForeignKey("Product")]
         private Product reviewedProduct;
 
         // Constructor
