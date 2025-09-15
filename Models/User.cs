@@ -1,38 +1,44 @@
-namespace BOZea
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace junpro_mania_mantap.Models
 {
     public class User
     {
         public string ID { get; set; }
-        public string name { get; set; }
-        public string email { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string address { get; set; }
-        public bool hasShop { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Address { get; set; }
+        public bool HasShop { get; set; }
 
-        public User(string ID, string name, string email, string username, string password, string address)
+        public User(string ID, string Name, string Email, string Username, string Password, string Address)
         {
             this.ID = ID;
-            this.name = name;
-            this.email = email;
-            this.username = username;
-            this.password = password;
-            this.address = address;
-            this.hasShop = false;
+            this.Name = Name;
+            this.Email = Email;
+            this.Username = Username;
+            this.Password = Password;
+            this.Address = Address;
+            this.HasShop = false;
         }
-        public void updateProfile(string name, string email, string username, string password, string address)
+        public void updateProfile(string Name, string Email, string Username, string Password, string Address)
         {
-            this.name = name;
-            this.email = email;
-            this.username = username;
-            this.password = password;
-            this.address = address;
+            this.Name = Name;
+            this.Email = Email;
+            this.Username = Username;
+            this.Password = Password;
+            this.Address = Address;
         }
 
-        public void createShop(string ID, string name, string description, float rating)
+        public void createShop(string ID, string Name, string Description, float Rating)
         {
-            Shop newShop = new Shop(ID, name, description, rating);
-            this.hasShop = true;
+            Shop newShop = new Shop(ID, Name, Description, Rating);
+            this.HasShop = true;
         }
     }
 }

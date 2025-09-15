@@ -55,9 +55,9 @@ namespace junpro_mania_mantap.Models
             Status = newStatus;
         }
 
-        public void AssignPayment(string paymentId)
+        public void AssignPayment(int paymentID)
         {
-            PaymentID = paymentId;
+            PaymentID = paymentID;
         }
     }
 }
