@@ -23,7 +23,7 @@ namespace BOZea
         // Additional properties
         public float totalAmount { get; private set; }
         public List<OrderItem> Items { get; private set; }
-        
+
         // Relasi
         private User buyer;
         private Payment payment;
@@ -44,14 +44,14 @@ namespace BOZea
             foreach (var cartItem in cart.Items)
             {
                 var orderItem = new OrderItem(
-                    Guid.NewGuid().ToString(), 
-                    cartItem.ItemProduct, 
+                    Guid.NewGuid().ToString(),
+                    cartItem.ItemProduct,
                     cartItem.Quantity,
                     this
                 );
                 Items.Add(orderItem);
             }
-            
+
             CalculateTotalAmount();
         }
 
@@ -61,7 +61,7 @@ namespace BOZea
             Console.WriteLine($"Order {orderID} status: {status}");
             Console.WriteLine($"Order date: {orderDate}");
             Console.WriteLine($"Total amount: ${totalAmount:F2}");
-            
+
             if (payment != null)
                 Console.WriteLine($"Payment status: {payment.PaymentStatus}");
         }

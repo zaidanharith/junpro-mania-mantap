@@ -1,18 +1,28 @@
-namespace BOZea
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace junpro_mania_mantap.Models
 {
     public class CartItem
     {
-        public Product Product { get; }
+
+        [ForeignKey("Cart")]
+        public int CartID { get; set; }
+        public Cart Cart { get; set; }
+
+        [ForeignKey("Product")]
+        public int ProductID { get; set; }
+        public Product Product { get; set; }
         public int Quantity { get; set; }
 
-        public CartItem(Product product, int quantity)
+        public CartItem(int cartId, int productId, int quantity)
         {
-            Product = product;
+            CartID = cartId;
+            ProductID = productId;
             Quantity = quantity;
-        }
-        public float GetTotalPrice()
-        {
-            return Product.Price * Quantity;
         }
     }
 }
