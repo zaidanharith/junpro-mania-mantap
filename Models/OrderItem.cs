@@ -1,66 +1,48 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BOZea
+namespace junpro_mania_mantap.Models
 {
     public class OrderItem
     {
-        // Attributes sesuai class diagram
-        public string orderItemID { get; private set; }
-        public int quantity { get; private set; }
-        public float price { get; private set; }  // Total price (quantity * pricePerItem)
+        [ForeignKey("Order")]
+        public string OrderID { get; set; }
 
-        // Additional properties for functionality
-        private Product product;
-        private Order parentOrder;
-        public float pricePerItem { get; private set; }
+        [ForeignKey("Product")]
+        public string ProductID { get; set; }
 
-        // Constructor
-        public OrderItem(string id, Product product, int quantity, Order order)
+        public int Quantity { get; set; }
+        public decimal Price { get; set; }
+
+        public virtual Order Order { get; set; }
+        public virtual Product Product { get; set; }
+
+        public OrderItem(string orderId, string productId, int quantity, decimal price)
         {
-            if (product == null)
-                throw new ArgumentNullException(nameof(product));
-            
-            if (quantity <= 0)
+            OrderID = orderId;
+            ProductID = productId;
+            Quantity = quantity;
+            Price = price;
+        }
+
+        public decimal CalculateSubtotal()
+        {
+            return Price * Quantity;
+        }
+
+        public void UpdateQuantity(int newQuantity)
+        {
+            if (newQuantity > 0)
+            {
+                Quantity = newQuantity;
+            }
+            else
+            {
                 throw new ArgumentException("Quantity must be greater than 0");
-
-            this.orderItemID = id;
-            this.product = product;
-            this.quantity = quantity;
-            this.parentOrder = order;
-            this.pricePerItem = product.Price;
-            this.price = quantity * pricePerItem;
-        }
-
-        // Getter methods
-        public Product GetProduct() => product;
-        public Order GetParentOrder() => parentOrder;
-
-        // Additional methods
-        public float CalculateSubtotal()
-        {
-            return quantity * pricePerItem;
-        }
-
-        public bool UpdateQuantity(int newQuantity)
-        {
-            if (newQuantity <= 0)
-                return false;
-
-            if (newQuantity > product.Stock)
-                return false;
-
-            this.quantity = newQuantity;
-            this.price = CalculateSubtotal();
-            return true;
-        }
-
-        // Method untuk mendapatkan informasi item
-        public string GetItemInfo()
-        {
-            return $"Product: {product.ProductName}, " +
-                   $"Quantity: {quantity}, " +
-                   $"Price per item: ${pricePerItem:F2}, " +
-                   $"Total: ${price:F2}";
+            }
         }
     }
 }
