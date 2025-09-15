@@ -44,4 +44,4 @@ sehingga nelayan dan pelaku industri bisa **berlayar lebih jauh tanpa takut biay
 ## 🤫 Class Diagram
 
 Ikan hiu makan tomat, ini _class diagram_ nya sobat!!
-![Class Diagram](classdiagram.png)
+![Class Diagram](Docs/classdiagram.png)
