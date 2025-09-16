@@ -9,49 +9,55 @@ namespace junpro_mania_mantap.Models
     public class Shop
     {
         [Key]
-        public int ID { get; private set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public float Rating { get; private set; }
-        public DateTime DateCreated { get; set; }
+        public int ID { get; set; }
 
         [ForeignKey("User")]
-        private User owner;
+        public int UserID { get; set; }
+        public User User { get; set; }
 
-        public Shop(string ID, string Name, string Description, float Rating)
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public float Rating { get; set; }
+        public DateTime Date { get; set; }
+        public ICollection<Product> Products { get; set; }
+
+        public Shop(int id, string name, string description, float rating, User user)
         {
-            this.ID = ID;
-            this.Name = Name;
-            this.Description = Description;
-            this.Rating = Rating;
-            this.DateCreated = DateTime.Now;
+            ID = id;
+            Name = name;
+            Description = description;
+            Rating = rating;
+            Date = DateTime.Now;
+            User = user;
+            UserID = user.ID;
+            Products = new List<Product>();
         }
 
-        public void updateShopProfile(string Name, string Description, float Rating)
+        public void updateShopProfile(string name, string description, float rating)
         {
-            this.Name = Name;
-            this.Description = Description;
-            this.Rating = Rating;
+            Name = name;
+            Description = description;
+            Rating = rating;
         }
 
-        public void createProduct(string productID, string Name, string Description, string Category, float Price, int Stock, string Condition, string Status)
+        public void createProduct(int productID, string name, string description, decimal price, ProductTransactionType transactionType, int stock, string image)
         {
-            Product newProduct = new Product(productID, Name, Description, Category, Price, Stock, Condition, Status);
+            Product newProduct = new Product(productID, name, description, price, transactionType, stock, image, this);
+            Products.Add(newProduct);
         }
 
-        public void updateProduct(Product product, string Name, string Description, string Category, float Price, int Stock, string Condition)
+        public void updateProduct(Product product, string name, string description, decimal price, int stock)
         {
-            product.Name = Name;
-            product.Description = Description;
-            product.Category = Category;
-            product.Price = Price;
-            product.Stock = Stock;
-            product.Condition = Condition;
+            product.Name = name;
+            product.Description = description;
+            product.Price = price;
+            product.Stock = stock;
+
         }
 
         public void deleteProduct(Product product)
         {
-
+            Products.Remove(product);
         }
     }
 }

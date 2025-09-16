@@ -9,55 +9,50 @@ namespace junpro_mania_mantap.Models
     public class Order
     {
         [Key]
-        public int ID { get; private set; }
-
-        public DateTime Date { get; private set; }
-        public string Status { get; set; }
-        public decimal Price { get; private set; }
+        public int ID { get; set; }
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-        
+        public User User { get; set; }
+
         [ForeignKey("Payment")]
         public int PaymentID { get; set; }
+        public Payment Payment { get; set; }
 
-        public virtual User User { get; set; }
-        public virtual Payment Payment { get; set; }
-        public virtual ICollection<OrderItem> OrderItems { get; private set; }
+        public DateTime Date { get; set; }
+        public decimal Price { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
 
-        public Order(int orderId, int userId)
+        public Order(int id, User user, Payment payment)
         {
-            ID = orderId;
-            UserID = userId;
+            ID = id;
+            User = user;
+            UserID = user.ID;
+            Payment = payment;
+            PaymentID = payment.ID;
             Date = DateTime.Now;
-            Status = "Pending";
             OrderItems = new List<OrderItem>();
         }
 
         public void AddOrderItem(OrderItem item)
         {
+            if (OrderItems == null)
+            {
+                OrderItems = new List<OrderItem>();
+            }
             OrderItems.Add(item);
             CalculatePrice();
         }
 
-        private void CalculatePrice()
+        public void CalculatePrice()
         {
-            decimal total = 0;
-            foreach (var item in OrderItems)
-            {
-                total += item.Price * item.Quantity;
-            }
-            Price = total;
+            Price = OrderItems.Sum(item => item.Product.Price * item.Quantity);
         }
 
-        public void UpdateStatus(string newStatus)
+        public void AssignPayment(Payment payment)
         {
-            Status = newStatus;
-        }
-
-        public void AssignPayment(int paymentId)
-        {
-            PaymentID = paymentId;
+            Payment = payment;
+            PaymentID = payment.ID;
         }
     }
 }

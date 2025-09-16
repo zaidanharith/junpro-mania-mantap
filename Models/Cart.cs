@@ -15,34 +15,32 @@ namespace junpro_mania_mantap.Models
         public int UserID { get; set; }
         public User User { get; set; }
 
-        public List<CartItem> Items { get; set; }
+        public ICollection<CartItem> Items { get; set; }
 
-        public Cart()
+        public Cart(int id, User user)
         {
+            ID = id;
+            User = user;
+            UserID = user.ID;
             Items = new List<CartItem>();
         }
 
         public void AddItem(Product product, int quantity)
         {
-            var existingItem = Items.FirstOrDefault(i => i.ProductID == product.ID);
+            var existingItem = Items.FirstOrDefault(item => item.ProductID == product.ID);
             if (existingItem != null)
             {
                 existingItem.Quantity += quantity;
             }
             else
             {
-                Items.Add(new CartItem
-                {
-                    ProductID = product.ID,
-                    Product = product,
-                    Quantity = quantity
-                });
+                Items.Add(new CartItem(this, product, quantity));
             }
         }
 
         public void RemoveItem(int productId)
         {
-            var item = Items.FirstOrDefault(i => i.ProductID == product.ID);
+            var item = Items.FirstOrDefault(item => item.ProductID == productId);
             if (item != null)
             {
                 Items.Remove(item);
@@ -51,11 +49,11 @@ namespace junpro_mania_mantap.Models
 
         public void UpdateQuantity(int productId, int quantity)
         {
-            var item = Items.FirstOrDefault(i => i.ProductID == product.ID);
+            var item = Items.FirstOrDefault(item => item.ProductID == productId);
             if (item != null)
             {
                 if (quantity > 0)
-                    item.Quantity = quantity;
+                    item.UpdateQuantity(quantity);
                 else
                     RemoveItem(productId);
             }
@@ -63,7 +61,7 @@ namespace junpro_mania_mantap.Models
 
         public decimal GetTotalPrice()
         {
-            return Items.Sum(i => i.Product.Price * i.Quantity);
+            return Items.Sum(item => (decimal)item.GetTotalPrice());
         }
 
         public void ClearCart()
@@ -73,7 +71,7 @@ namespace junpro_mania_mantap.Models
 
         public int GetItemCount()
         {
-            return Items.Sum(i => i.Quantity);
+            return Items.Sum(item => item.Quantity);
         }
     }
 }

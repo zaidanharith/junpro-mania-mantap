@@ -9,51 +9,40 @@ namespace junpro_mania_mantap.Models
     public class Review
     {
         [Key]
-        public int ID { get; private set; }
+        public int ID { get; set; }
+
+        [ForeignKey("User")]
+        public int UserID { get; set; }
+        public User User { get; set; }
+
+        [ForeignKey("Product")]
+        public int ProductID { get; set; }
+        public Product Product { get; set; }
 
         public int Rating { get; set; }
         public string Comment { get; set; }
-        public DateTime ReviewDate { get; set; }
+        public DateTime Date { get; set; }
 
-        [ForeignKey("User")]
-        private User reviewer;
-
-        [ForeignKey("Product")]
-        private Product reviewedProduct;
-
-        // Constructor
-        public Review(string id, User user, Product product, int rating, string comment)
+        public Review(int id, User user, Product product, int rating, string comment)
         {
             if (rating < 1 || rating > 5)
                 throw new ArgumentException("Rating harus antara 1-5");
-
-            this.reviewID = id;
-            this.reviewer = user;
-            this.reviewedProduct = product;
-            this.rating = rating;
-            this.comment = comment;
-            this.reviewDate = DateTime.Now;
+            ID = id;
+            User = user;
+            UserID = user.ID;
+            Product = product;
+            ProductID = product.ID;
+            Rating = rating;
+            Comment = comment;
+            Date = DateTime.Now;
         }
 
-        // Method
-        public bool submitReview()
+        public bool SubmitReview()
         {
             try
             {
-                // Validasi dasar
-                if (string.IsNullOrEmpty(comment))
-                    return false;
-
-                if (rating < 1 || rating > 5)
-                    return false;
-
-                // Update rating produk
-                reviewedProduct.AddReview(this);
-
-                // Update review history user
-                reviewer.AddReview(this);
-
-                Console.WriteLine($"Review untuk produk {reviewedProduct.ProductName} berhasil disubmit.");
+                Product.Reviews.Add(this);
+                Product.Shop.Rating = (float)Product.Reviews.Average(r => r.Rating);
                 return true;
             }
             catch (Exception ex)
@@ -63,8 +52,7 @@ namespace junpro_mania_mantap.Models
             }
         }
 
-        // Getter methods
-        public User GetReviewer() => reviewer;
-        public Product GetReviewedProduct() => reviewedProduct;
+        public User GetReviewer() => User;
+        public Product GetReviewedProduct() => Product;
     }
 }

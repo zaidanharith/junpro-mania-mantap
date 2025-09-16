@@ -6,44 +6,48 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace junpro_mania_mantap.Models
 {
+    public enum PaymentStatus
+    {
+        Pending,
+        Success,
+        Failed
+    }
+
     public class Payment
     {
         [Key]
-        public int ID { get; private set; }
+        public int ID { get; set; }
 
         public string Method { get; set; }
         public decimal Amount { get; set; }
-        public DateTime Date { get; private set; }
-        public string Status { get; set; }
-
-        public virtual Order Order { get; set; }
-
-        public Payment(int paymentId, string method, decimal amount)
+        public DateTime Date { get; set; }
+        public PaymentStatus Status { get; set; }
+        public Payment(int id, string method, decimal amount)
         {
-            ID = paymentId;
+            ID = id;
             Method = method;
             Amount = amount;
             Date = DateTime.Now;
-            Status = "Pending";
+            Status = PaymentStatus.Pending;
         }
 
         public bool ProcessPayment()
         {
             try
             {
-                Status = "Success";
+                Status = PaymentStatus.Success;
                 return true;
             }
             catch (Exception)
             {
-                Status = "Failed";
+                Status = PaymentStatus.Failed;
                 return false;
             }
         }
 
-        public void UpdateStatus(string newStatus)
+        public void UpdateStatus(PaymentStatus newStatus)
         {
-            if (newStatus is "Pending" or "Success" or "Failed")
+            if (Enum.IsDefined(typeof(PaymentStatus), newStatus))
             {
                 Status = newStatus;
             }

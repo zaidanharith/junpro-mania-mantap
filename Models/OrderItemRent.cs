@@ -6,17 +6,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace junpro_mania_mantap.Models
 {
-    public class OrderRent : Order
+    public class OrderItemRent
     {
-        [Key]
-        public int ID { get; set; }
+        [Key, ForeignKey("OrderItem")]
+        public int OrderItemID { get; set; }
+        public OrderItem OrderItem { get; set; }
 
         public DateTime DueDate { get; set; }
-
         public bool IsReturned { get; set; }
 
-        public OrderRent(int durationInDays)
+        public OrderItemRent(OrderItem orderItem, int durationInDays)
         {
+            OrderItem = orderItem;
+            OrderItemID = orderItem.OrderID;
             DueDate = DateTime.Now.AddDays(durationInDays);
             IsReturned = false;
         }
@@ -26,4 +28,5 @@ namespace junpro_mania_mantap.Models
             IsReturned = true;
         }
     }
+
 }

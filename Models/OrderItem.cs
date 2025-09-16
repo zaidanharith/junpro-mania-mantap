@@ -10,28 +10,23 @@ namespace junpro_mania_mantap.Models
     {
         [ForeignKey("Order")]
         public int OrderID { get; set; }
+        public Order Order { get; set; }
 
         [ForeignKey("Product")]
         public int ProductID { get; set; }
+        public Product Product { get; set; }
 
         public int Quantity { get; set; }
-        public decimal Price { get; set; }
 
-        public virtual Order Order { get; set; }
-        public virtual Product Product { get; set; }
-
-        public OrderItem(int orderId, int productId, int quantity, decimal price)
+        public OrderItem(Order order, Product product, int quantity)
         {
-            OrderID = orderId;
-            ProductID = productId;
+            Order = order;
+            OrderID = order.ID;
+            Product = product;
+            ProductID = product.ID;
             Quantity = quantity;
-            Price = price;
         }
 
-        public decimal CalculateSubtotal()
-        {
-            return Price * Quantity;
-        }
 
         public void UpdateQuantity(int newQuantity)
         {
