@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("junpro-mania-mantap")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f30a9f70b3c4048b1988689c479b708dd87cce38")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+125436a63fde9070357c804820dbf42fe1c39e40")]
 [assembly: System.Reflection.AssemblyProductAttribute("junpro-mania-mantap")]
 [assembly: System.Reflection.AssemblyTitleAttribute("junpro-mania-mantap")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
