@@ -45,3 +45,4 @@ sehingga nelayan dan pelaku industri bisa **berlayar lebih jauh tanpa takut biay
 
 Ikan hiu makan tomat, ini _class diagram_ nya sobat!!
 ![Class Diagram](Docs/classdiagram.png)
+![Entity-Relationship Diagram](Docs/erdjunpro.png)
