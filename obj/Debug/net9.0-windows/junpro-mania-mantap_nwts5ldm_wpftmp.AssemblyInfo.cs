@@ -10,12 +10,12 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("BOZea")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("junpro-mania-mantap")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+72dd3f9531a6f670f5956248187f9a9ba2c09232")]
-[assembly: System.Reflection.AssemblyProductAttribute("BOZea")]
-[assembly: System.Reflection.AssemblyTitleAttribute("BOZea")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+12eae49ad16bc7a96fbdceaf072e2c1f59b9bcfa")]
+[assembly: System.Reflection.AssemblyProductAttribute("junpro-mania-mantap")]
+[assembly: System.Reflection.AssemblyTitleAttribute("junpro-mania-mantap")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
