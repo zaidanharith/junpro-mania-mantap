@@ -15,9 +15,9 @@ namespace junpro_mania_mantap.Models
 
         public string Description { get; set; }
 
-        public Category(int ID, string name, string description)
+        public Category(int id, string name, string description)
         {
-            this.ID = ID;
+            ID = id;
             Name = name;
             Description = description;
         }

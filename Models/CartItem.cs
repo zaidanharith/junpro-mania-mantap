@@ -18,11 +18,17 @@ namespace junpro_mania_mantap.Models
         public Product Product { get; set; }
         public int Quantity { get; set; }
 
-        public CartItem(int cartId, int productId, int quantity)
+        public CartItem(Cart cart, Product product, int quantity)
         {
-            CartID = cartId;
-            ProductID = productId;
+            Cart = cart;
+            CartID = cart.ID;
+            Product = product;
+            ProductID = product.ID;
             Quantity = quantity;
         }
+
+        public decimal GetTotalPrice() => Product.Price * Quantity;
+
+        public void UpdateQuantity(int newQuantity) => Quantity = newQuantity;
     }
 }
