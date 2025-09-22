@@ -118,6 +118,10 @@ ipch/
 *.VC.db
 *.VC.VC.opendb
 
+# Binary and object folders
+bin/
+obj/
+
 # Visual Studio profiler
 *.psess
 *.vsp
@@ -960,6 +964,10 @@ FodyWeavers.xsd
 # .NET Core build folders
 bin/
 obj/
+
+# Ensure bin and obj folders are ignored
+[Bb]in/
+[Oo]bj/
 
 # Common node modules locations
 /node_modules
