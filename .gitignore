@@ -129,6 +129,10 @@ ipch/
 *.VC.db
 *.VC.VC.opendb
 
+# Binary and object folders
+bin/
+obj/
+
 # Visual Studio profiler
 *.psess
 *.vsp
