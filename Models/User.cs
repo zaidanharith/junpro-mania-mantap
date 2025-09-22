@@ -24,6 +24,7 @@ namespace junpro_mania_mantap.Models
         public User() { }
 
         public User(int id, string name, string email, string phone, string username, string password, string address, string image)
+
         {
             ID = id;
             Name = name;

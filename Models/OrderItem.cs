@@ -19,7 +19,6 @@ namespace junpro_mania_mantap.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
         public int ID { get; set; }
 
         [ForeignKey("Order")]
@@ -35,7 +34,6 @@ namespace junpro_mania_mantap.Models
         public OrderItemStatus Status { get; set; }
 
         public OrderItem() { }
-
         public OrderItem(Order order, Product product, int quantity)
         {
             Order = order;
