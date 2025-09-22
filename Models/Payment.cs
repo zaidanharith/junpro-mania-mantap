@@ -16,12 +16,16 @@ namespace junpro_mania_mantap.Models
     public class Payment
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int ID { get; set; }
 
-        public string Method { get; set; }
+        public required string Method { get; set; }
         public decimal Amount { get; set; }
         public DateTime Date { get; set; }
         public PaymentStatus Status { get; set; }
+
+        public Payment() { }
         public Payment(int id, string method, decimal amount)
         {
             ID = id;

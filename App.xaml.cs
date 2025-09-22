@@ -8,17 +8,13 @@ namespace junpro_mania_mantap
 {
     public partial class App : Application
     {
-        // ✅ Static instance supaya bisa dipakai di MainWindow / repository
         public static AppDbContext? DbContext { get; private set; }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
-            // Load .env
             Env.Load();
 
-            // Build connection string dari .env
             string connString = $"Host={Environment.GetEnvironmentVariable("DATA_HOST")};" +
                                 $"Port={Environment.GetEnvironmentVariable("DATA_PORT")};" +
                                 $"Database={Environment.GetEnvironmentVariable("DATA_DB")};" +
@@ -27,14 +23,12 @@ namespace junpro_mania_mantap
                                 $"SSL Mode=Require;Trust Server Certificate=true;";
 
             var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseNpgsql(connString) // ← di sini
+            .UseNpgsql(connString)
             .Options;
 
             DbContext = new AppDbContext(options);
             DbContext.Database.EnsureCreated();
 
-
-            // Buka main window
             var mainWindow = new Views.MainWindow();
             mainWindow.Show();
         }

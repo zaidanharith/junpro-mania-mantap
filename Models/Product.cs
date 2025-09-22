@@ -15,20 +15,23 @@ namespace junpro_mania_mantap.Models
     public class Product
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
 
         [ForeignKey("Shop")]
         public int ShopID { get; set; }
-        public Shop Shop { get; set; }
+        public required Shop Shop { get; set; }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
         public decimal Price { get; set; }
         public int Stock { get; set; }
         public ProductTransactionType TransactionType { get; set; }
-        public string Image { get; set; }
+        public required string Image { get; set; }
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
+
+        public Product() { }
 
         public Product(int id, string name, string description, decimal price, ProductTransactionType transactionType, int stock, string image, Shop shop)
         {

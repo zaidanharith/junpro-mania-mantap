@@ -8,15 +8,16 @@ namespace junpro_mania_mantap.Models
 {
     public class CartItem
     {
-
         [ForeignKey("Cart")]
         public int CartID { get; set; }
-        public Cart Cart { get; set; }
+        public required Cart Cart { get; set; }
 
         [ForeignKey("Product")]
         public int ProductID { get; set; }
-        public Product Product { get; set; }
+        public required Product Product { get; set; }
         public int Quantity { get; set; }
+
+        public CartItem() { }
 
         public CartItem(Cart cart, Product product, int quantity)
         {

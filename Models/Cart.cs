@@ -9,13 +9,17 @@ namespace junpro_mania_mantap.Models
     public class Cart
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int ID { get; set; }
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-        public User User { get; set; }
+        public required User User { get; set; }
 
-        public ICollection<CartItem> Items { get; set; }
+        public required ICollection<CartItem> Items { get; set; }
+
+        public Cart() { }
 
         public Cart(int id, User user)
         {
@@ -34,7 +38,14 @@ namespace junpro_mania_mantap.Models
             }
             else
             {
-                Items.Add(new CartItem(this, product, quantity));
+                Items.Add(new CartItem
+                {
+                    Cart = this,
+                    CartID = this.ID,
+                    Product = product,
+                    ProductID = product.ID,
+                    Quantity = quantity
+                });
             }
         }
 

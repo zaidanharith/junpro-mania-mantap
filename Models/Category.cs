@@ -9,11 +9,15 @@ namespace junpro_mania_mantap.Models
     public class Category
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int ID { get; set; }
 
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        public string Description { get; set; }
+        public required string Description { get; set; }
+
+        public Category() { }
 
         public Category(int id, string name, string description)
         {

@@ -10,11 +10,13 @@ namespace junpro_mania_mantap.Models
     {
         [ForeignKey("Product")]
         public int ProductID { get; set; }
-        public Product Product { get; set; }
+        public required Product Product { get; set; }
 
         [ForeignKey("Category")]
         public int CategoryID { get; set; }
-        public Category Category { get; set; }
+        public required Category Category { get; set; }
+
+        public ProductCategory() { }
 
         public ProductCategory(Product product, Category category)
         {

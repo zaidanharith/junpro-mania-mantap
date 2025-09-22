@@ -6,17 +6,35 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace junpro_mania_mantap.Models
 {
+    public enum OrderItemStatus
+    {
+        Pending,
+        Confirmed,
+        Shipped,
+        Delivered,
+        Cancelled,
+        Returned
+    }
     public class OrderItem
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
+        public int ID { get; set; }
+
         [ForeignKey("Order")]
         public int OrderID { get; set; }
-        public Order Order { get; set; }
+        public required Order Order { get; set; }
 
         [ForeignKey("Product")]
         public int ProductID { get; set; }
-        public Product Product { get; set; }
+        public required Product Product { get; set; }
 
         public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public OrderItemStatus Status { get; set; }
+
+        public OrderItem() { }
 
         public OrderItem(Order order, Product product, int quantity)
         {
@@ -25,6 +43,8 @@ namespace junpro_mania_mantap.Models
             Product = product;
             ProductID = product.ID;
             Quantity = quantity;
+            Status = OrderItemStatus.Pending;
+            Price = product.Price;
         }
 
 
@@ -38,6 +58,11 @@ namespace junpro_mania_mantap.Models
             {
                 throw new ArgumentException("Quantity must be greater than 0");
             }
+        }
+
+        public void UpdateStatus(OrderItemStatus newStatus)
+        {
+            Status = newStatus;
         }
     }
 }

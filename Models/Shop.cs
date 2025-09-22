@@ -9,40 +9,69 @@ namespace junpro_mania_mantap.Models
     public class Shop
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-        public User User { get; set; }
+        public required User User { get; set; }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public float Rating { get; set; }
-        public DateTime Date { get; set; }
-        public ICollection<Product> Products { get; set; }
+        public required string Name { get; set; }
+        public required string Description { get; set; }
+        public required string Address { get; set; }
+        public DateTime CreateDate { get; set; }
+        public required ICollection<Product> Products { get; set; }
 
-        public Shop(int id, string name, string description, float rating, User user)
+        public Shop() { }
+        public Shop(int id, string name, string description, string address, User user)
         {
             ID = id;
             Name = name;
             Description = description;
-            Rating = rating;
-            Date = DateTime.Now;
+            Address = address;
+            CreateDate = DateTime.UtcNow;
             User = user;
             UserID = user.ID;
             Products = new List<Product>();
         }
 
-        public void updateShopProfile(string name, string description, float rating)
+        public void updateShopProfile(string name, string description, string address)
         {
             Name = name;
             Description = description;
-            Rating = rating;
+            Address = address;
+        }
+
+        // Computed property untuk mendapatkan average rating dari semua review produk
+        [NotMapped]
+        public float AverageRating
+        {
+            get
+            {
+                var allReviews = Products
+                    .Where(p => p.Reviews != null && p.Reviews.Any())
+                    .SelectMany(p => p.Reviews)
+                    .ToList();
+
+                return allReviews.Any() ? (float)allReviews.Average(r => r.Rating) : 0;
+            }
         }
 
         public void createProduct(int productID, string name, string description, decimal price, ProductTransactionType transactionType, int stock, string image)
         {
-            Product newProduct = new Product(productID, name, description, price, transactionType, stock, image, this);
+            Product newProduct = new Product
+            {
+                ID = productID,
+                Name = name,
+                Description = description,
+                Price = price,
+                TransactionType = transactionType,
+                Stock = stock,
+                Image = image,
+                Shop = this,
+                ShopID = this.ID,
+                Reviews = new List<Review>()
+            };
             Products.Add(newProduct);
         }
 

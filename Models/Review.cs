@@ -9,19 +9,22 @@ namespace junpro_mania_mantap.Models
     public class Review
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-        public User User { get; set; }
+        public required User User { get; set; }
 
         [ForeignKey("Product")]
         public int ProductID { get; set; }
-        public Product Product { get; set; }
+        public required Product Product { get; set; }
 
         public int Rating { get; set; }
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
         public DateTime Date { get; set; }
+
+        public Review() { }
 
         public Review(int id, User user, Product product, int rating, string comment)
         {
@@ -42,7 +45,7 @@ namespace junpro_mania_mantap.Models
             try
             {
                 Product.Reviews.Add(this);
-                Product.Shop.Rating = (float)Product.Reviews.Average(r => r.Rating);
+                // Rating shop akan otomatis dihitung dari AverageRating property
                 return true;
             }
             catch (Exception ex)

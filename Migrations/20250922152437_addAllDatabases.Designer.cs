@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using junpro_mania_mantap.Data;
@@ -11,9 +12,11 @@ using junpro_mania_mantap.Data;
 namespace junpro_mania_mantap.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250922152437_addAllDatabases")]
+    partial class addAllDatabases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,6 +45,12 @@ namespace junpro_mania_mantap.Migrations
 
             modelBuilder.Entity("junpro_mania_mantap.Models.CartItem", b =>
                 {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
+
                     b.Property<int>("CartID")
                         .HasColumnType("integer");
 
@@ -51,7 +60,9 @@ namespace junpro_mania_mantap.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("integer");
 
-                    b.HasKey("CartID", "ProductID");
+                    b.HasKey("ID");
+
+                    b.HasIndex("CartID");
 
                     b.HasIndex("ProductID");
 
@@ -226,15 +237,23 @@ namespace junpro_mania_mantap.Migrations
 
             modelBuilder.Entity("junpro_mania_mantap.Models.ProductCategory", b =>
                 {
-                    b.Property<int>("ProductID")
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ID"));
 
                     b.Property<int>("CategoryID")
                         .HasColumnType("integer");
 
-                    b.HasKey("ProductID", "CategoryID");
+                    b.Property<int>("ProductID")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ID");
 
                     b.HasIndex("CategoryID");
+
+                    b.HasIndex("ProductID");
 
                     b.ToTable("ProductCategories");
                 });

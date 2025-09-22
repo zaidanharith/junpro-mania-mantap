@@ -9,19 +9,31 @@ namespace junpro_mania_mantap.Models
     public class Order
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+
         public int ID { get; set; }
 
         [ForeignKey("User")]
         public int UserID { get; set; }
-        public User User { get; set; }
+        public required User User { get; set; }
 
         [ForeignKey("Payment")]
         public int PaymentID { get; set; }
-        public Payment Payment { get; set; }
+        public required Payment Payment { get; set; }
 
         public DateTime Date { get; set; }
-        public decimal Price { get; set; }
-        public ICollection<OrderItem> OrderItems { get; set; }
+        public required ICollection<OrderItem> OrderItems { get; set; }
+
+        public Order() { }
+
+        [NotMapped]
+        public decimal TotalPrice
+        {
+            get
+            {
+                return OrderItems?.Sum(item => item.Price * item.Quantity) ?? 0;
+            }
+        }
 
         public Order(int id, User user, Payment payment)
         {
@@ -41,12 +53,6 @@ namespace junpro_mania_mantap.Models
                 OrderItems = new List<OrderItem>();
             }
             OrderItems.Add(item);
-            CalculatePrice();
-        }
-
-        public void CalculatePrice()
-        {
-            Price = OrderItems.Sum(item => item.Product.Price * item.Quantity);
         }
 
         public void AssignPayment(Payment payment)
