@@ -961,6 +961,10 @@ FodyWeavers.xsd
 bin/
 obj/
 
+# Ensure bin and obj folders are ignored
+[Bb]in/
+[Oo]bj/
+
 # Common node modules locations
 /node_modules
 /wwwroot/node_modules
