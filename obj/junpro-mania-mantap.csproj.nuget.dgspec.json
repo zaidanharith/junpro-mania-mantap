@@ -1,31 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\junpro-mania-mantap.csproj": {}
+    "D:\\SMT 5\\JUNPRO\\junpro-mania-mantap\\junpro-mania-mantap.csproj": {}
   },
   "projects": {
-    "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\junpro-mania-mantap.csproj": {
+    "D:\\SMT 5\\JUNPRO\\junpro-mania-mantap\\junpro-mania-mantap.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\junpro-mania-mantap.csproj",
+        "projectUniqueName": "D:\\SMT 5\\JUNPRO\\junpro-mania-mantap\\junpro-mania-mantap.csproj",
         "projectName": "junpro-mania-mantap",
-        "projectPath": "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\junpro-mania-mantap.csproj",
-        "packagesPath": "C:\\Users\\myhar\\.nuget\\packages\\",
-        "outputPath": "D:\\CODING\\C#\\JUNIOR PROJECT\\junpro-mania-mantap\\obj\\",
+        "projectPath": "D:\\SMT 5\\JUNPRO\\junpro-mania-mantap\\junpro-mania-mantap.csproj",
+        "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
+        "outputPath": "D:\\SMT 5\\JUNPRO\\junpro-mania-mantap\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\myhar\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\LENOVO\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0-windows"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
