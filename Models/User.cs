@@ -19,6 +19,8 @@ namespace junpro_mania_mantap.Models
         public DateTime Date { get; set; }
         public bool HasShop { get; set; }
 
+        public User() { }
+
         public User(int id, string name, string email, string username, string password, string address, string image, DateTime date)
         {
             ID = id;
