@@ -12,34 +12,36 @@ namespace junpro_mania_mantap.Models
         public int ID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
+        public string Phone { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string Address { get; set; }
         public string Image { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime CreateDate { get; set; }
         public bool HasShop { get; set; }
 
-        public User(int id, string name, string email, string username, string password, string address, string image, DateTime date)
+        public User(int id, string name, string email, string phone, string username, string password, string address, string image, DateTime createDate)
         {
             ID = id;
             Name = name;
             Email = email;
+            Phone = phone;
             Username = username;
             Password = password;
             Address = address;
             Image = image;
-            Date = date;
+            CreateDate = createDate;
             HasShop = false;
         }
-        public void updateProfile(string name, string email, string username, string password, string address, string image, DateTime date)
+        public void updateProfile(string name, string email, string phone, string username, string password, string address, string image)
         {
             Name = name;
             Email = email;
+            Phone = phone;
             Username = username;
             Password = password;
             Address = address;
             Image = image;
-            Date = date;
         }
 
         public void createShop(int id, string name, string description, float rating)

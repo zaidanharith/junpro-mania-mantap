@@ -17,8 +17,9 @@ namespace junpro_mania_mantap.Models
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Address { get; set; }
         public float Rating { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime CreateDate { get; set; }
         public ICollection<Product> Products { get; set; }
 
         public Shop(int id, string name, string description, float rating, User user)

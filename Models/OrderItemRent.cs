@@ -12,14 +12,17 @@ namespace junpro_mania_mantap.Models
         public int OrderItemID { get; set; }
         public OrderItem OrderItem { get; set; }
 
+        public DateTime StartDate { get; set; }
         public DateTime DueDate { get; set; }
+        public int Duration { get; set; }
         public bool IsReturned { get; set; }
 
-        public OrderItemRent(OrderItem orderItem, int durationInDays)
+        public OrderItemRent(OrderItem orderItem, int duration)
         {
             OrderItem = orderItem;
             OrderItemID = orderItem.OrderID;
-            DueDate = DateTime.Now.AddDays(durationInDays);
+            StartDate = DateTime.Now;
+            DueDate = StartDate.AddDays(duration);
             IsReturned = false;
         }
 

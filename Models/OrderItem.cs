@@ -8,6 +8,9 @@ namespace junpro_mania_mantap.Models
 {
     public class OrderItem
     {
+        [Key]
+        public int ID { get; set; }
+
         [ForeignKey("Order")]
         public int OrderID { get; set; }
         public Order Order { get; set; }
@@ -17,6 +20,8 @@ namespace junpro_mania_mantap.Models
         public Product Product { get; set; }
 
         public int Quantity { get; set; }
+        public decimal Price { get; set; }
+        public Status Status { get; set; }
 
         public OrderItem(Order order, Product product, int quantity)
         {
@@ -25,6 +30,8 @@ namespace junpro_mania_mantap.Models
             Product = product;
             ProductID = product.ID;
             Quantity = quantity;
+            Status = Status.Pending;
+            Price = product.Price;
         }
 
 
