@@ -20,7 +20,13 @@ namespace junpro_mania_mantap.Models
         public DateTime CreateDate { get; set; }
         public bool HasShop { get; set; }
 
+<<<<<<< HEAD
         public User(int id, string name, string email, string phone, string username, string password, string address, string image, DateTime createDate)
+=======
+        public User() { }
+
+        public User(int id, string name, string email, string username, string password, string address, string image, DateTime date)
+>>>>>>> refs/remotes/origin/master
         {
             ID = id;
             Name = name;

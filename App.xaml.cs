@@ -24,17 +24,15 @@ namespace junpro_mania_mantap
                                 $"Database={Environment.GetEnvironmentVariable("DATA_DB")};" +
                                 $"Username={Environment.GetEnvironmentVariable("DATA_USER")};" +
                                 $"Password={Environment.GetEnvironmentVariable("DATA_PASS")};" +
-                                $"SSL Mode=Require;";
+                                $"SSL Mode=Require;Trust Server Certificate=true;";
 
-            // Buat DbContext instance
             var options = new DbContextOptionsBuilder<AppDbContext>()
-                .UseNpgsql(connString)
-                .Options;
+            .UseNpgsql(connString) // ← di sini
+            .Options;
 
             DbContext = new AppDbContext(options);
-
-            // ✅ Pastikan tabel dibuat
             DbContext.Database.EnsureCreated();
+
 
             // Buka main window
             var mainWindow = new Views.MainWindow();

@@ -2,6 +2,35 @@
 
 Peralatan kapal susah dicari? Cari yang pas dengan budget? Temukan semua perlengkapan laut di satu tempat denga harga terbaik. Selamat datang di BOZea!
 
+## Cara Menjalankan Program (Bismillah bisa!)
+
+```
+dotnet restore
+dotnet tool restore
+dotnet build
+dotnet run
+```
+
+```
+dotnet add package Microsoft.EntityFrameworkCore
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package DotNetEnv
+dotnet tool install --global dotnet-ef
+dotnet new tool-manifest
+dotnet tool install dotnet-ef
+dotnet build
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+dotnet run
+```
+
+```
+dotnet ef migrations add NamaMigrationBaru
+dotnet ef database update
+```
+
 ## 👥 Developer
 
 - 👑Ketua Kelompok : Olivia Nefri - 23/514860/TK/56532
@@ -47,5 +76,6 @@ Ikan hiu makan tomat, ini _class diagram_ nya sobat!!
 ![Class Diagram](Docs/classdiagram.png)
 
 ## 📋 Entity-Relationship Diagram
+
 Berikut ERD dari proyek BOZea ini!
 ![Entity-Relationship Diagram](Docs/erdjunpro.png)
