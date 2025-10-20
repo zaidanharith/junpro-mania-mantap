@@ -15,11 +15,11 @@ using junpro_mania_mantap.Helpers;
 namespace junpro_mania_mantap.Views;
 
 /// <summary>
-/// Interaction logic for MainWindow.xaml
+/// Interaction logic for MainView.xaml
 /// </summary>
-public partial class MainWindow : Window
+public partial class MainView : Window
 {
-    public MainWindow()
+    public MainView()
     {
         InitializeComponent();
     }

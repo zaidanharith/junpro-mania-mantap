@@ -7,6 +7,7 @@ Peralatan kapal susah dicari? Cari yang pas dengan budget? Temukan semua perleng
 ```
 dotnet restore
 dotnet tool restore
+dotnet clean
 dotnet build
 dotnet run
 ```

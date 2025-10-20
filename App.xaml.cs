@@ -3,6 +3,12 @@ using System.Windows;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using junpro_mania_mantap.Data;
+using junpro_mania_mantap.Views;
+using junpro_mania_mantap.Views.Auth;
+using junpro_mania_mantap.Services;
+using junpro_mania_mantap.Repositories;
+using junpro_mania_mantap.ViewModels.Auth;
+using junpro_mania_mantap.ViewModels.Base;
 
 namespace junpro_mania_mantap
 {
@@ -13,24 +19,28 @@ namespace junpro_mania_mantap
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+
             Env.Load();
 
-            string connString = $"Host={Environment.GetEnvironmentVariable("DATA_HOST")};" +
-                                $"Port={Environment.GetEnvironmentVariable("DATA_PORT")};" +
-                                $"Database={Environment.GetEnvironmentVariable("DATA_DB")};" +
-                                $"Username={Environment.GetEnvironmentVariable("DATA_USER")};" +
-                                $"Password={Environment.GetEnvironmentVariable("DATA_PASS")};" +
-                                $"SSL Mode=Require;Trust Server Certificate=true;";
+            var dbContext = new AppDbContextFactory().CreateDbContext(Array.Empty<string>());
+            DbContext = dbContext;
 
-            var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseNpgsql(connString)
-            .Options;
+            var userRepo = new UserRepository(dbContext);
+            var authService = new AuthService(userRepo);
 
-            DbContext = new AppDbContext(options);
-            DbContext.Database.EnsureCreated();
+            var navigation = new NavigationService();
 
-            var mainWindow = new Views.MainWindow();
-            mainWindow.Show();
+            var loginVM = new LoginViewModel(authService, navigation);
+
+            navigation.Register(loginVM);
+
+            var mainVM = new MainViewModel();
+
+            var mainView = new MainView { DataContext = mainVM };
+
+            navigation.NavigateTo<LoginViewModel>();
+
+            mainView.Show();
         }
     }
 }
