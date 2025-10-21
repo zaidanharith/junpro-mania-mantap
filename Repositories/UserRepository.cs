@@ -16,8 +16,10 @@ namespace junpro_mania_mantap.Repositories
         Task AddAsync(User user);
         void Update(User user);
         void Remove(User user);
-    }
 
+        // ← Tambahkan method untuk commit
+        Task SaveChangesAsync();
+    }
 
     public class UserRepository : IUserRepository
     {
@@ -32,7 +34,6 @@ namespace junpro_mania_mantap.Repositories
         {
             return await _context.Users.FindAsync(id);
         }
-
 
         public async Task<User?> GetByEmailAsync(string email)
         {
@@ -59,11 +60,15 @@ namespace junpro_mania_mantap.Repositories
             _context.Users.Update(user);
         }
 
-
-
         public void Remove(User user)
         {
             _context.Users.Remove(user);
+        }
+
+        // ← Implementasi SaveChangesAsync
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

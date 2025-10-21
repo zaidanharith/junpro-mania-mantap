@@ -3,9 +3,10 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using junpro_mania_mantap.Services;
-using junpro_mania_mantap.Models;
 using junpro_mania_mantap.ViewModels.Base;
 using junpro_mania_mantap.ViewModels.Dashboard;
+using junpro_mania_mantap.ViewModels.Auth;
+using junpro_mania_mantap.Helpers;
 
 namespace junpro_mania_mantap.ViewModels.Auth
 {
@@ -36,30 +37,50 @@ namespace junpro_mania_mantap.ViewModels.Auth
         }
 
         public ICommand LoginCommand { get; }
+        public ICommand NavigateRegisterCommand { get; }
 
-        // Constructor
         public LoginViewModel(AuthService authService, NavigationService navigation)
         {
             _authService = authService;
             _navigation = navigation;
-            LoginCommand = new RelayCommand(async _ => await LoginAsync());
+
+            LoginCommand = new RelayCommand(async _ =>
+            {
+                await LoginAsync();
+            });
+
+            NavigateRegisterCommand = new RelayCommand(_ => _navigation.NavigateTo<RegisterViewModel>());
         }
 
         public async Task<bool> LoginAsync()
         {
-            var user = await _authService.LoginAsync(Username, Password);
-            if (user != null)
+            try
             {
-                _navigation.NavigateTo<DashboardViewModel>();
-                return true;
+                if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+                {
+                    Message = "Username dan password wajib diisi.";
+                    return false;
+                }
+
+                var user = await _authService.GetByUsernameAsync(Username);
+
+                if (user != null && PasswordHelper.VerifyPassword(Password, user.Password))
+                {
+                    _navigation.NavigateTo<DashboardViewModel>();
+                    return true;
+                }
+                else
+                {
+                    Message = "Username atau Password salah.";
+                    return false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Message = "Username atau password salah.";
+                Message = $"Login error: {ex.Message}";
                 return false;
             }
         }
-
 
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string? name = null)

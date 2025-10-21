@@ -31,9 +31,11 @@ namespace junpro_mania_mantap.ViewModels.Base
 
             var loginVM = new LoginViewModel(authService, _navigation);
             var dashboardVM = new DashboardViewModel();
+            var registerVM = new RegisterViewModel(userRepo, _navigation);
 
             _navigation.Register(loginVM);
             _navigation.Register(dashboardVM);
+            _navigation.Register(registerVM);
 
             CurrentViewModel = loginVM;
         }

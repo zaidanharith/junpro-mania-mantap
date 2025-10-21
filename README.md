@@ -9,7 +9,7 @@ dotnet restore
 dotnet tool restore
 dotnet clean
 dotnet build
-dotnet run
+dotnet watch run
 ```
 
 ```
@@ -24,7 +24,7 @@ dotnet tool install dotnet-ef
 dotnet build
 dotnet ef migrations add InitialCreate
 dotnet ef database update
-dotnet run
+dotnet watch run
 ```
 
 ```
