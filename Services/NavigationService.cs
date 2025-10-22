@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace junpro_mania_mantap.Services
+namespace BOZea.Services
 {
     public class NavigationService
     {

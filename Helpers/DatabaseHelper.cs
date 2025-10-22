@@ -1,7 +1,7 @@
 using Npgsql;
 using System.Data;
 
-namespace junpro_mania_mantap.Helpers
+namespace BOZea.Helpers
 {
     public class DatabaseHelper
     {

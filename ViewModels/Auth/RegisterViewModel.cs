@@ -2,13 +2,13 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Threading.Tasks;
-using junpro_mania_mantap.Services;
-using junpro_mania_mantap.Models;
-using junpro_mania_mantap.Repositories;
-using junpro_mania_mantap.ViewModels.Base;
-using junpro_mania_mantap.Helpers;
+using BOZea.Services;
+using BOZea.Models;
+using BOZea.Repositories;
+using BOZea.ViewModels.Base;
+using BOZea.Helpers;
 
-namespace junpro_mania_mantap.ViewModels.Auth
+namespace BOZea.ViewModels.Auth
 {
     public class RegisterViewModel : INotifyPropertyChanged
     {

@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace junpro_mania_mantap.Views.Dashboard
+namespace BOZea.Views.Dashboard
 {
     public partial class DashboardView : UserControl
     {

@@ -1,12 +1,12 @@
-using junpro_mania_mantap.Data;
-using junpro_mania_mantap.Models;
+using BOZea.Data;
+using BOZea.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace junpro_mania_mantap.Repositories
+namespace BOZea.Repositories
 {
     public interface IOrderRepository
     {

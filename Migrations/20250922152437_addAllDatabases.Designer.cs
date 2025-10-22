@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using junpro_mania_mantap.Data;
+using BOZea.Data;
 
 #nullable disable
 
-namespace junpro_mania_mantap.Migrations
+namespace BOZea.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250922152437_addAllDatabases")]
@@ -25,7 +25,7 @@ namespace junpro_mania_mantap.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Cart", b =>
+            modelBuilder.Entity("BOZea.Models.Cart", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.CartItem", b =>
+            modelBuilder.Entity("BOZea.Models.CartItem", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("CartItems");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Category", b =>
+            modelBuilder.Entity("BOZea.Models.Category", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -90,7 +90,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Order", b =>
+            modelBuilder.Entity("BOZea.Models.Order", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -116,7 +116,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.OrderItem", b =>
+            modelBuilder.Entity("BOZea.Models.OrderItem", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -148,7 +148,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("OrderItems");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.OrderItemRent", b =>
+            modelBuilder.Entity("BOZea.Models.OrderItemRent", b =>
                 {
                     b.Property<int>("OrderItemID")
                         .HasColumnType("integer");
@@ -170,7 +170,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("OrderItemRents");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Payment", b =>
+            modelBuilder.Entity("BOZea.Models.Payment", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -196,7 +196,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Payments");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Product", b =>
+            modelBuilder.Entity("BOZea.Models.Product", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -235,7 +235,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.ProductCategory", b =>
+            modelBuilder.Entity("BOZea.Models.ProductCategory", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -258,7 +258,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("ProductCategories");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Review", b =>
+            modelBuilder.Entity("BOZea.Models.Review", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -290,7 +290,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Shop", b =>
+            modelBuilder.Entity("BOZea.Models.Shop", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -323,7 +323,7 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.User", b =>
+            modelBuilder.Entity("BOZea.Models.User", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -369,9 +369,9 @@ namespace junpro_mania_mantap.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Cart", b =>
+            modelBuilder.Entity("BOZea.Models.Cart", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.User", "User")
+                    b.HasOne("BOZea.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -380,15 +380,15 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.CartItem", b =>
+            modelBuilder.Entity("BOZea.Models.CartItem", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.Cart", "Cart")
+                    b.HasOne("BOZea.Models.Cart", "Cart")
                         .WithMany("Items")
                         .HasForeignKey("CartID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("junpro_mania_mantap.Models.Product", "Product")
+                    b.HasOne("BOZea.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -399,15 +399,15 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Order", b =>
+            modelBuilder.Entity("BOZea.Models.Order", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.Payment", "Payment")
+                    b.HasOne("BOZea.Models.Payment", "Payment")
                         .WithMany()
                         .HasForeignKey("PaymentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("junpro_mania_mantap.Models.User", "User")
+                    b.HasOne("BOZea.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -418,15 +418,15 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.OrderItem", b =>
+            modelBuilder.Entity("BOZea.Models.OrderItem", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.Order", "Order")
+                    b.HasOne("BOZea.Models.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("junpro_mania_mantap.Models.Product", "Product")
+                    b.HasOne("BOZea.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -437,9 +437,9 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.OrderItemRent", b =>
+            modelBuilder.Entity("BOZea.Models.OrderItemRent", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.OrderItem", "OrderItem")
+                    b.HasOne("BOZea.Models.OrderItem", "OrderItem")
                         .WithMany()
                         .HasForeignKey("OrderItemID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -448,9 +448,9 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("OrderItem");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Product", b =>
+            modelBuilder.Entity("BOZea.Models.Product", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.Shop", "Shop")
+                    b.HasOne("BOZea.Models.Shop", "Shop")
                         .WithMany("Products")
                         .HasForeignKey("ShopID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -459,15 +459,15 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("Shop");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.ProductCategory", b =>
+            modelBuilder.Entity("BOZea.Models.ProductCategory", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.Category", "Category")
+                    b.HasOne("BOZea.Models.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("junpro_mania_mantap.Models.Product", "Product")
+                    b.HasOne("BOZea.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -478,15 +478,15 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Review", b =>
+            modelBuilder.Entity("BOZea.Models.Review", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.Product", "Product")
+                    b.HasOne("BOZea.Models.Product", "Product")
                         .WithMany("Reviews")
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("junpro_mania_mantap.Models.User", "User")
+                    b.HasOne("BOZea.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -497,9 +497,9 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Shop", b =>
+            modelBuilder.Entity("BOZea.Models.Shop", b =>
                 {
-                    b.HasOne("junpro_mania_mantap.Models.User", "User")
+                    b.HasOne("BOZea.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -508,22 +508,22 @@ namespace junpro_mania_mantap.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Cart", b =>
+            modelBuilder.Entity("BOZea.Models.Cart", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Order", b =>
+            modelBuilder.Entity("BOZea.Models.Order", b =>
                 {
                     b.Navigation("OrderItems");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Product", b =>
+            modelBuilder.Entity("BOZea.Models.Product", b =>
                 {
                     b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.Shop", b =>
+            modelBuilder.Entity("BOZea.Models.Shop", b =>
                 {
                     b.Navigation("Products");
                 });

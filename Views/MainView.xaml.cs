@@ -9,10 +9,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
-using junpro_mania_mantap.Helpers;
+using BOZea.Helpers;
 
 
-namespace junpro_mania_mantap.Views;
+namespace BOZea.Views;
 
 /// <summary>
 /// Interaction logic for MainView.xaml

@@ -2,15 +2,15 @@
 using System.Windows;
 using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
-using junpro_mania_mantap.Data;
-using junpro_mania_mantap.Views;
-using junpro_mania_mantap.Views.Auth;
-using junpro_mania_mantap.Services;
-using junpro_mania_mantap.Repositories;
-using junpro_mania_mantap.ViewModels.Auth;
-using junpro_mania_mantap.ViewModels.Base;
+using BOZea.Data;
+using BOZea.Views;
+using BOZea.Views.Auth;
+using BOZea.Services;
+using BOZea.Repositories;
+using BOZea.ViewModels.Auth;
+using BOZea.ViewModels.Base;
 
-namespace junpro_mania_mantap
+namespace BOZea
 {
     public partial class App : Application
     {

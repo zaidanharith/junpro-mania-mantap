@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace junpro_mania_mantap.ViewModels.Base
+namespace BOZea.ViewModels.Base
 {
     public class RelayCommand : ICommand
     {

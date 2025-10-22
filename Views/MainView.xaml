@@ -1,7 +1,7 @@
-﻿<Window x:Class="junpro_mania_mantap.Views.MainView"
+﻿<Window x:Class="BOZea.Views.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:helpers="clr-namespace:junpro_mania_mantap.Helpers"
+        xmlns:helpers="clr-namespace:BOZea.Helpers"
         Title="BOZea Apps"
         Height="450"
         Width="800">

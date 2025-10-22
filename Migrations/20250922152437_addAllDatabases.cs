@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace junpro_mania_mantap.Migrations
+namespace BOZea.Migrations
 {
     /// <inheritdoc />
     public partial class addAllDatabases : Migration

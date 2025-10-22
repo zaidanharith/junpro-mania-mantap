@@ -1,7 +1,7 @@
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
-namespace junpro_mania_mantap.Services
+namespace BOZea.Services
 {
     public class CloudinaryService
     {

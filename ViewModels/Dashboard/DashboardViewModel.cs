@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace junpro_mania_mantap.ViewModels.Dashboard
+namespace BOZea.ViewModels.Dashboard
 {
     public class DashboardViewModel : INotifyPropertyChanged
     {

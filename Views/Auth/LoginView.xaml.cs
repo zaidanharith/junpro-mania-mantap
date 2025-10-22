@@ -1,8 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
-using junpro_mania_mantap.ViewModels.Auth;
+using BOZea.ViewModels.Auth;
 
-namespace junpro_mania_mantap.Views.Auth
+namespace BOZea.Views.Auth
 {
     public partial class LoginView : UserControl
     {

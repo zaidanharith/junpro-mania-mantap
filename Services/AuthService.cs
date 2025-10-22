@@ -1,8 +1,8 @@
-using junpro_mania_mantap.Models;
-using junpro_mania_mantap.Repositories;
-using junpro_mania_mantap.Helpers;
+using BOZea.Models;
+using BOZea.Repositories;
+using BOZea.Helpers;
 
-namespace junpro_mania_mantap.Services
+namespace BOZea.Services
 {
     public class AuthService
     {

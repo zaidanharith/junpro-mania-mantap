@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using junpro_mania_mantap.Models;
-using junpro_mania_mantap.Data;
+using BOZea.Models;
+using BOZea.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace junpro_mania_mantap.Repositories
+namespace BOZea.Repositories
 {
     public interface IUserRepository
     {

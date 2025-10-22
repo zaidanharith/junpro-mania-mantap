@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using junpro_mania_mantap.Data;
+using BOZea.Data;
 
 #nullable disable
 
-namespace junpro_mania_mantap.Migrations
+namespace BOZea.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20250922130251_InitialCreate")]
@@ -25,7 +25,7 @@ namespace junpro_mania_mantap.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("junpro_mania_mantap.Models.User", b =>
+            modelBuilder.Entity("BOZea.Models.User", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()

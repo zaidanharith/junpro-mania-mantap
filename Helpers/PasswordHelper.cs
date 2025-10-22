@@ -1,6 +1,6 @@
 using BCrypt.Net;
 
-namespace junpro_mania_mantap.Helpers
+namespace BOZea.Helpers
 {
     public static class PasswordHelper
     {

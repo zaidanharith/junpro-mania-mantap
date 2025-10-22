@@ -4,7 +4,7 @@ using System.Linq;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace junpro_mania_mantap.Models
+namespace BOZea.Models
 {
     public class User
     {

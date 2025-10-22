@@ -1,12 +1,12 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using junpro_mania_mantap.Services;
-using junpro_mania_mantap.ViewModels.Auth;
-using junpro_mania_mantap.ViewModels.Dashboard;
-using junpro_mania_mantap.Data;
-using junpro_mania_mantap.Repositories;
+using BOZea.Services;
+using BOZea.ViewModels.Auth;
+using BOZea.ViewModels.Dashboard;
+using BOZea.Data;
+using BOZea.Repositories;
 
-namespace junpro_mania_mantap.ViewModels.Base
+namespace BOZea.ViewModels.Base
 {
     public class MainViewModel : INotifyPropertyChanged
     {

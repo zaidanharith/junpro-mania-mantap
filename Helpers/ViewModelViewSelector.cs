@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace junpro_mania_mantap.Helpers
+namespace BOZea.Helpers
 {
     public class ViewModelViewSelector : DataTemplateSelector
     {

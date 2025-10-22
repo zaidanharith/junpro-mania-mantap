@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using junpro_mania_mantap.Models;
+using BOZea.Models;
 
-namespace junpro_mania_mantap.Data
+namespace BOZea.Data
 {
     public class AppDbContext : DbContext
     {
