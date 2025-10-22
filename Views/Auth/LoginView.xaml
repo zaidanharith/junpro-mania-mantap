@@ -5,9 +5,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch">
+             VerticalAlignment="Stretch"
+             FontFamily="Plus Jakarta Sans">
 
         <UserControl.Resources>
+                <FontFamily x:Key="PrimaryFont">Plus Jakarta Sans</FontFamily>
+                <FontFamily x:Key="TitleFont">Plus Jakarta Sans</FontFamily>
                 <SolidColorBrush x:Key="PrimaryBlueBrush"
                                  Color="#004A74"/>
                 <SolidColorBrush x:Key="LightBlueBrush"
@@ -84,7 +87,9 @@
                         <Setter Property="Padding"
                                 Value="20,0,20,0"/>
                         <Setter Property="FontSize"
-                                Value="14"/>
+                                Value="16"/>
+                        <Setter Property="FontFamily"
+                                Value="{StaticResource PrimaryFont}"/>
                         <Setter Property="Foreground"
                                 Value="#424242"/>
                         <Setter Property="CaretBrush"
@@ -102,7 +107,7 @@
                         <Setter Property="Padding"
                                 Value="20,0,50,0"/>
                         <Setter Property="FontSize"
-                                Value="14"/>
+                                Value="16"/>
                         <Setter Property="Foreground"
                                 Value="#424242"/>
                 </Style>
@@ -120,7 +125,9 @@
                         <Setter Property="IsHitTestVisible"
                                 Value="False"/>
                         <Setter Property="FontSize"
-                                Value="14"/>
+                                Value="16"/>
+                        <Setter Property="FontFamily"   
+                                Value="{StaticResource PrimaryFont}"/>
                 </Style>
 
                 <Style x:Key="InputFieldBorder"
@@ -147,10 +154,11 @@
                        VerticalAlignment="Stretch"/>
 
                 <Border Background="White"
-                        CornerRadius="60,0,0,60"
+                        CornerRadius="90, 90, 90, 90"
                         HorizontalAlignment="Right"
-                        Width="480"
-                        Margin="0,0,0,0">
+                        Width="500"
+                        Height="500"
+                        Margin="0,0,150,0">
                         <Border.Effect>
                                 <DropShadowEffect Color="Black"
                                                   Direction="180"
@@ -159,9 +167,9 @@
                                                   BlurRadius="30"/>
                         </Border.Effect>
 
-                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                        <ScrollViewer VerticalScrollBarVisibility="Disabled"
                                       HorizontalScrollBarVisibility="Disabled">
-                                <StackPanel Margin="60,40,60,40"
+                                <StackPanel Margin="60,20,60,20"
                                             VerticalAlignment="Center">
 
                                         <Image Source="/Views/Assets/logo.png"
@@ -170,11 +178,12 @@
                                                VerticalAlignment="Stretch"/>
 
                                         <TextBlock Text="Login"
-                                                   FontSize="24"
-                                                   FontWeight="Normal"
+                                                   FontSize="32"
+                                                   FontWeight="Bold"
+                                                   FontFamily="{StaticResource TitleFont}"
                                                    Foreground="{StaticResource PrimaryBlueBrush}"
                                                    HorizontalAlignment="Center"
-                                                   Margin="0,0,0,40"/>
+                                                   Margin="0,0,0,10"/>
 
                                         <Border Style="{StaticResource InputFieldBorder}">
                                                 <Grid>
@@ -254,29 +263,30 @@
                                         <Button Content="Login"
                                                 Command="{Binding LoginCommand}"
                                                 Style="{StaticResource PrimaryButton}"
-                                                Margin="0,30,0,20"/>
+                                                Margin="0,25,0,10"/>
 
                                         <TextBlock Text="{Binding Message}"
                                                    HorizontalAlignment="Center"
                                                    Foreground="#E53935"
-                                                   Margin="0,0,0,20"
-                                                   FontSize="12"
+                                                   Margin="0,0,0,0"
+                                                   FontSize="16"
                                                    TextWrapping="Wrap"/>
 
 
                                         <StackPanel Orientation="Horizontal"
                                                     HorizontalAlignment="Center"
-                                                    Margin="0,20,0,0">
+                                                    Margin="0,0,0,0">
                                                 <TextBlock Text="Don't have an account? "
                                                            Foreground="{StaticResource TextGrayBrush}"
-                                                           FontSize="14"/>
+                                                           FontSize="16"/>
                                                 <TextBlock>
-                            <Hyperlink Command="{Binding NavigateRegisterCommand}"
-                                                        Foreground="{StaticResource PrimaryBlueBrush}"
-                                                        FontWeight="SemiBold"
-                                                        TextDecorations="None">
-                                <Run Text="Register"/>
-                            </Hyperlink>
+                                                        <Hyperlink Command="{Binding NavigateRegisterCommand}"
+                                                                                        Foreground="{StaticResource PrimaryBlueBrush}"
+                                                                                        FontWeight="SemiBold"
+                                                                                        FontSize= "16"
+                                                                                        TextDecorations="None">
+                                                                <Run Text="Register"/>
+                                                        </Hyperlink>
                                                 </TextBlock>
                                         </StackPanel>
 
