@@ -1,0 +1,278 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <!-- Colour tokens used by your views -->
+    <SolidColorBrush x:Key="PrimaryBlueBrush"
+                     Color="#004A74"/>
+    <SolidColorBrush x:Key="LightBlueBrush"
+                     Color="#005F92"/>
+    <SolidColorBrush x:Key="BorderBlueBrush"
+                     Color="#004A74"/>
+    <SolidColorBrush x:Key="TextGrayBrush"
+                     Color="#6B7280"/>
+    <SolidColorBrush x:Key="WhiteBrush"
+                     Color="#FFFFFFFF"/>
+
+    <!-- Wrapper border style - HAPUS border, hanya untuk spacing -->
+    <Style x:Key="InputFieldBorder"
+           TargetType="Border">
+        <Setter Property="BorderThickness"
+                Value="0"/>
+        <Setter Property="Background"
+                Value="Transparent"/>
+        <Setter Property="Margin"
+                Value="0,10,0,10"/>
+    </Style>
+
+    <!-- Placeholder text style -->
+    <Style x:Key="PlaceholderText"
+           TargetType="TextBlock">
+        <Setter Property="Foreground"
+                Value="{StaticResource TextGrayBrush}"/>
+        <Setter Property="VerticalAlignment"
+                Value="Center"/>
+        <Setter Property="HorizontalAlignment"
+                Value="Left"/>
+        <!-- Sesuaikan margin agar sejajar dengan padding TextBox (12,8) + border (2) = 14px dari kiri -->
+        <Setter Property="Margin"
+                Value="14,0,0,0"/>
+        <Setter Property="IsHitTestVisible"
+                Value="False"/>
+        <Setter Property="FontSize"
+                Value="16"/>
+    </Style>
+
+    <!-- Custom TextBox style dengan border biru dan corner radius -->
+    <Style x:Key="CustomOutlinedTextBox"
+           TargetType="TextBox">
+        <Setter Property="md:TextFieldAssist.UnderlineBrush"
+                Value="{StaticResource BorderBlueBrush}"/>
+        <Setter Property="BorderBrush"
+                Value="{StaticResource BorderBlueBrush}"/>
+        <Setter Property="BorderThickness"
+                Value="2"/>
+        <Setter Property="Padding"
+                Value="20,8"/>
+        <Setter Property="Height"
+                Value="50"/>
+        <Setter Property="FontSize"
+                Value="16"/>
+        <Setter Property="VerticalContentAlignment"
+                Value="Center"/>
+        <Setter Property="md:TextFieldAssist.TextBoxViewMargin"
+                Value="0"/>
+        <Setter Property="md:TextFieldAssist.DecorationVisibility"
+                Value="Collapsed"/>
+        <!-- Rounded corners -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Grid>
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="25"
+                                SnapsToDevicePixels="True">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <!-- Hint text di dalam padding yang sama -->
+                                <TextBlock x:Name="Hint"
+                                           Text="{Binding Path=(md:HintAssist.Hint), RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="{StaticResource TextGrayBrush}"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           IsHitTestVisible="False"
+                                           Opacity="0.6"
+                                           Visibility="Collapsed"/>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Focusable="false"
+                                              HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Hidden"
+                                              VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <!-- Show hint ONLY when empty and not focused -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Text"
+                                           Value=""/>
+                                <Condition Property="IsFocused"
+                                           Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Hint"
+                                    Property="Visibility"
+                                    Value="Visible"/>
+                        </MultiTrigger>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="BorderBrush"
+                                    Value="{StaticResource LightBlueBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="BorderBrush"
+                                    Value="{StaticResource PrimaryBlueBrush}"/>
+                            <Setter TargetName="border"
+                                    Property="BorderThickness"
+                                    Value="2"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Custom PasswordBox style dengan border biru dan corner radius -->
+    <Style x:Key="CustomOutlinedPasswordBox"
+           TargetType="PasswordBox">
+        <Setter Property="md:TextFieldAssist.UnderlineBrush"
+                Value="{StaticResource BorderBlueBrush}"/>
+        <Setter Property="BorderBrush"
+                Value="{StaticResource BorderBlueBrush}"/>
+        <Setter Property="BorderThickness"
+                Value="2"/>
+        <Setter Property="Padding"
+                Value="20,8"/>
+        <Setter Property="Height"
+                Value="50"/>
+        <Setter Property="FontSize"
+                Value="16"/>
+        <Setter Property="VerticalContentAlignment"
+                Value="Center"/>
+        <Setter Property="md:TextFieldAssist.TextBoxViewMargin"
+                Value="0"/>
+        <Setter Property="md:TextFieldAssist.DecorationVisibility"
+                Value="Collapsed"/>
+        <!-- Rounded corners -->
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="PasswordBox">
+                    <Grid>
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="25"
+                                SnapsToDevicePixels="True">
+                            <Grid Margin="{TemplateBinding Padding}">
+                                <!-- Hint text di dalam padding yang sama -->
+                                <TextBlock x:Name="Hint"
+                                           Text="{Binding Path=(md:HintAssist.Hint), RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="{StaticResource TextGrayBrush}"
+                                           FontSize="16"
+                                           VerticalAlignment="Center"
+                                           HorizontalAlignment="Left"
+                                           IsHitTestVisible="False"
+                                           Opacity="0.6"/>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                              Focusable="false"
+                                              HorizontalScrollBarVisibility="Hidden"
+                                              VerticalScrollBarVisibility="Hidden"
+                                              VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="BorderBrush"
+                                    Value="{StaticResource LightBlueBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsFocused"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="BorderBrush"
+                                    Value="{StaticResource PrimaryBlueBrush}"/>
+                            <Setter TargetName="border"
+                                    Property="BorderThickness"
+                                    Value="2"/>
+                            <!-- Hide hint saat focus -->
+                            <Setter TargetName="Hint"
+                                    Property="Visibility"
+                                    Value="Collapsed"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Primary button style based on MaterialDesign -->
+    <Style x:Key="PrimaryButton"
+           TargetType="Button">
+        <Setter Property="Background"
+                Value="{StaticResource LightBlueBrush}"/>
+        <Setter Property="Foreground"
+                Value="White"/>
+        <Setter Property="FontWeight"
+                Value="SemiBold"/>
+        <Setter Property="FontSize"
+                Value="16"/>
+        <Setter Property="Height"
+                Value="50"/>
+        <Setter Property="Padding"
+                Value="24,0"/>
+        <Setter Property="BorderThickness"
+                Value="0"/>
+        <Setter Property="Cursor"
+                Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="25"
+                            SnapsToDevicePixels="True">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Focusable="False"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          Margin="{TemplateBinding Padding}"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <ContentPresenter.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground"
+                                            Value="White"/>
+                                </Style>
+                            </ContentPresenter.Resources>
+                        </ContentPresenter>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="Background"
+                                    Value="{StaticResource PrimaryBlueBrush}"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter TargetName="border"
+                                    Property="Background"
+                                    Value="{StaticResource PrimaryBlueBrush}"/>
+                            <Setter TargetName="border"
+                                    Property="Opacity"
+                                    Value="0.9"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                            <Setter TargetName="border"
+                                    Property="Background"
+                                    Value="#CCCCCC"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
