@@ -1,0 +1,36 @@
+﻿<UserControl x:Class="BOZea.Views.Shared.Footer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="Plus Jakarta Sans"
+             Height="140">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Views/Styles/MaterialOverrides.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource PrimaryBlueBrush}">
+        <Grid Margin="40,28,40,28">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="580"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.ColumnSpan="2" Margin="0,0,300,0">
+                <TextBlock Text="Sail More, Spend Less!" Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,4,0,5"/>
+                <TextBlock Text="Find Your Need in One Place." Foreground="White" FontSize="24" FontWeight="Bold" Margin="0,-6,0,0"/>
+                <TextBlock Text="Shop all maritime related to make your works easy." Foreground="#E6F0F7" Margin="0,4,0,0" TextWrapping="Wrap" FontSize="16"/>
+            </StackPanel>
+
+            <StackPanel Grid.Column="1" HorizontalAlignment="Left" Margin="516,0,0,0" Width="67">
+                <TextBlock Text="Products" Foreground="White" FontWeight="Bold" Margin="0,0,0,10" FontSize="16"/>
+                <TextBlock Text="All Products" Foreground="White" Margin="0,0,0,6"/>
+                <TextBlock Text="Boat" Foreground="White" Margin="0,0,0,6"/>
+                <TextBlock Text="Engines" Foreground="White" Margin="0,0,0,6"/>
+                <TextBlock Text="GPS" Foreground="White"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>
