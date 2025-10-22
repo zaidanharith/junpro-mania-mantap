@@ -22,11 +22,10 @@ public partial class MainView : Window
     public MainView()
     {
         InitializeComponent();
+
+        WindowState = WindowState.Maximized;
+        // WindowStyle = WindowStyle.None;
+        // ResizeMode = ResizeMode.NoResize;
     }
 
-    private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
-    {
-        Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri) { UseShellExecute = true });
-        e.Handled = true;
-    }
 }

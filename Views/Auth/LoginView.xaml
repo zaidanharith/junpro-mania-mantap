@@ -4,89 +4,284 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             Height="450"
-             Width="350">
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Stretch">
 
         <UserControl.Resources>
-                <SolidColorBrush x:Key="PrimaryColor"
-                                 Color="#3F51B5"/>
-                <Style TargetType="TextBlock">
+                <SolidColorBrush x:Key="PrimaryBlueBrush"
+                                 Color="#004A74"/>
+                <SolidColorBrush x:Key="LightBlueBrush"
+                                 Color="#005F92"/>
+                <SolidColorBrush x:Key="BorderBlueBrush"
+                                 Color="#004A74"/>
+                <SolidColorBrush x:Key="TextGrayBrush"
+                                 Color="#6B7280"/>
+                <SolidColorBrush x:Key="WhiteBrush"
+                                 Color="#FFFFFF"/>
+
+                <Style x:Key="PrimaryButton"
+                       TargetType="Button">
+                        <Setter Property="Background"
+                                Value="{StaticResource LightBlueBrush}"/>
                         <Setter Property="Foreground"
-                                Value="#333333"/>
+                                Value="{StaticResource WhiteBrush}"/>
                         <Setter Property="FontWeight"
                                 Value="SemiBold"/>
+                        <Setter Property="FontSize"
+                                Value="16"/>
+                        <Setter Property="Height"
+                                Value="50"/>
+                        <Setter Property="Cursor"
+                                Value="Hand"/>
+                        <Setter Property="ContentTemplate">
+                                <Setter.Value>
+                                        <DataTemplate>
+                                                <TextBlock Text="{Binding}"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"
+                                                           Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                           FontWeight="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontWeight}"
+                                                           FontSize="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontSize}"/>
+                                        </DataTemplate>
+                                </Setter.Value>
+                        </Setter>
+                        <Setter Property="Template">
+                                <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                                <Border x:Name="border"
+                                                        CornerRadius="25"
+                                                        Background="{TemplateBinding Background}">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                 Value="True">
+                                                                <Setter TargetName="border"
+                                                                        Property="Background"
+                                                                        Value="#004A74"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsPressed"
+                                                                 Value="True">
+                                                                <Setter TargetName="border"
+                                                                        Property="Background"
+                                                                        Value="#005F92"/>
+                                                        </Trigger>
+                                                </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                </Setter.Value>
+                        </Setter>
+                </Style>
+
+                <Style x:Key="InputTextBox"
+                       TargetType="TextBox">
+                        <Setter Property="Background"
+                                Value="Transparent"/>
+                        <Setter Property="BorderThickness"
+                                Value="0"/>
+                        <Setter Property="VerticalAlignment"
+                                Value="Center"/>
+                        <Setter Property="Padding"
+                                Value="20,0,20,0"/>
+                        <Setter Property="FontSize"
+                                Value="14"/>
+                        <Setter Property="Foreground"
+                                Value="#424242"/>
+                        <Setter Property="CaretBrush"
+                                Value="{StaticResource PrimaryBlueBrush}"/>
+                </Style>
+
+                <Style x:Key="InputPasswordBox"
+                       TargetType="PasswordBox">
+                        <Setter Property="Background"
+                                Value="Transparent"/>
+                        <Setter Property="BorderThickness"
+                                Value="0"/>
+                        <Setter Property="VerticalAlignment"
+                                Value="Center"/>
+                        <Setter Property="Padding"
+                                Value="20,0,50,0"/>
+                        <Setter Property="FontSize"
+                                Value="14"/>
+                        <Setter Property="Foreground"
+                                Value="#424242"/>
+                </Style>
+
+                <Style x:Key="PlaceholderText"
+                       TargetType="TextBlock">
+                        <Setter Property="Foreground"
+                                Value="{StaticResource TextGrayBrush}"/>
+                        <Setter Property="VerticalAlignment"
+                                Value="Center"/>
+                        <Setter Property="HorizontalAlignment"
+                                Value="Left"/>
                         <Setter Property="Margin"
-                                Value="0,10,0,5"/>
+                                Value="20,0,0,0"/>
+                        <Setter Property="IsHitTestVisible"
+                                Value="False"/>
+                        <Setter Property="FontSize"
+                                Value="14"/>
                 </Style>
-                <Style TargetType="TextBox">
-                        <Setter Property="Padding"
-                                Value="8"/>
+
+                <Style x:Key="InputFieldBorder"
+                       TargetType="Border">
                         <Setter Property="BorderBrush"
-                                Value="#CCCCCC"/>
+                                Value="{StaticResource BorderBlueBrush}"/>
                         <Setter Property="BorderThickness"
-                                Value="1"/>
-                        <Setter Property="VerticalContentAlignment"
-                                Value="Center"/>
-                </Style>
-                <Style TargetType="PasswordBox">
-                        <Setter Property="Padding"
-                                Value="8"/>
-                        <Setter Property="BorderBrush"
-                                Value="#CCCCCC"/>
-                        <Setter Property="BorderThickness"
-                                Value="1"/>
-                        <Setter Property="VerticalContentAlignment"
-                                Value="Center"/>
+                                Value="2"/>
+                        <Setter Property="CornerRadius"
+                                Value="25"/>
+                        <Setter Property="Height"
+                                Value="50"/>
+                        <Setter Property="Background"
+                                Value="White"/>
+                        <Setter Property="Margin"
+                                Value="0,10,0,10"/>
                 </Style>
         </UserControl.Resources>
 
-        <Border Background="White"
-                CornerRadius="10"
-                Margin="20"
-                Padding="20">
-                <StackPanel VerticalAlignment="Center">
+        <Grid>
+                <Image Source="/Views/Assets/background.png"
+                       Stretch="UniformToFill"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"/>
 
-                        <TextBlock Text="Masuk ke Akun Anda"
-                                   HorizontalAlignment="Center"
-                                   FontSize="20"
-                                   FontWeight="Bold"
-                                   Foreground="{StaticResource PrimaryColor}"
-                                   Margin="0,0,0,25"/>
+                <Border Background="White"
+                        CornerRadius="60,0,0,60"
+                        HorizontalAlignment="Right"
+                        Width="480"
+                        Margin="0,0,0,0">
+                        <Border.Effect>
+                                <DropShadowEffect Color="Black"
+                                                  Direction="180"
+                                                  ShadowDepth="15"
+                                                  Opacity="0.2"
+                                                  BlurRadius="30"/>
+                        </Border.Effect>
 
-                        <TextBlock Text="Nama Pengguna (Username)"/>
-                        <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
-                                 Margin="0,0,0,10"
-                                 BorderBrush="#BDBDBD"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+                                <StackPanel Margin="60,40,60,40"
+                                            VerticalAlignment="Center">
 
-                        <TextBlock Text="Kata Sandi (Password)"/>
-                        <PasswordBox x:Name="PasswordBox"
-                                     PasswordChanged="PasswordBox_PasswordChanged"
-                                     Margin="0,0,0,20"
-                                     BorderBrush="#BDBDBD"/>
+                                        <Image Source="/Views/Assets/logo.png"
+                                               Stretch="UniformToFill"
+                                               HorizontalAlignment="Stretch"
+                                               VerticalAlignment="Stretch"/>
 
-                        <Button Content="MASUK"
-                                Command="{Binding LoginCommand}"
-                                Background="{StaticResource PrimaryColor}"
-                                Foreground="White"
-                                FontSize="14"
-                                FontWeight="Bold"
-                                Padding="10"
-                                BorderThickness="0"/>
+                                        <TextBlock Text="Login"
+                                                   FontSize="24"
+                                                   FontWeight="Normal"
+                                                   Foreground="{StaticResource PrimaryBlueBrush}"
+                                                   HorizontalAlignment="Center"
+                                                   Margin="0,0,0,40"/>
 
-                        <TextBlock Text="{Binding Message}"
-                                   HorizontalAlignment="Center"
-                                   Foreground="#E53935"
-                                   Margin="0,15,0,0"
-                                   FontSize="12"
-                                   FontWeight="Normal"/>
+                                        <Border Style="{StaticResource InputFieldBorder}">
+                                                <Grid>
+                                                        <TextBlock x:Name="UsernamePlaceholder"
+                                                                   Text="Username"
+                                                                   Style="{StaticResource PlaceholderText}"/>
+                                                        <TextBox x:Name="UsernameTextBox"
+                                                                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Style="{StaticResource InputTextBox}"
+                                                                 TextChanged="TextBox_TextChanged"/>
+                                                </Grid>
+                                        </Border>
+                                        <Border Style="{StaticResource InputFieldBorder}"
+                                                ClipToBounds="False">
+                                                <Grid>
+                                                        <TextBlock x:Name="PasswordPlaceholder"
+                                                                   Text="Password"
+                                                                   Style="{StaticResource PlaceholderText}"/>
 
-                        <TextBlock HorizontalAlignment="Center"
-                                   Margin="0,20,0,0">
-                                <Run Text="Belum punya akun? "/>
-                                <Hyperlink Command="{Binding NavigateRegisterCommand}"
-                                           Foreground="{StaticResource PrimaryColor}">Daftar di sini</Hyperlink>
-                        </TextBlock>
+                                                        <PasswordBox x:Name="PasswordBox"
+                                                                     PasswordChanged="PasswordBox_PasswordChanged"
+                                                                     Style="{StaticResource InputPasswordBox}"
+                                                                     Visibility="Visible"/>
 
-                </StackPanel>
-        </Border>
+                                                        <TextBox x:Name="PasswordVisibleTextBox"
+                                                                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                                                                 Style="{StaticResource InputTextBox}"
+                                                                 Visibility="Collapsed"/>
+
+                                                        <Button x:Name="TogglePasswordButton"
+                                                                HorizontalAlignment="Right"
+                                                                VerticalAlignment="Center"
+                                                                Margin="0,0,10,5"
+                                                                Padding="0,0,0,0"
+                                                                Background="Transparent"
+                                                                BorderThickness="0"
+                                                                Cursor="Hand"
+                                                                Click="TogglePasswordVisibility">
+                                                                <Button.Style>
+                                                                        <Style TargetType="Button">
+                                                                                <Setter Property="Background"
+                                                                                        Value="Transparent"/>
+                                                                                <Setter Property="Template">
+                                                                                        <Setter.Value>
+                                                                                                <ControlTemplate TargetType="Button">
+                                                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                                                BorderThickness="0">
+                                                                                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                                                                                  VerticalAlignment="Center"/>
+                                                                                                        </Border>
+                                                                                                </ControlTemplate>
+                                                                                        </Setter.Value>
+                                                                                </Setter>
+                                                                                <Style.Triggers>
+                                                                                        <Trigger Property="IsMouseOver"
+                                                                                                 Value="True">
+                                                                                                <Setter Property="Background"
+                                                                                                        Value="Transparent"/>
+                                                                                        </Trigger>
+                                                                                        <Trigger Property="IsPressed"
+                                                                                                 Value="True">
+                                                                                                <Setter Property="Background"
+                                                                                                        Value="Transparent"/>
+                                                                                        </Trigger>
+                                                                                </Style.Triggers>
+                                                                        </Style>
+                                                                </Button.Style>
+                                                                <TextBlock Text="👁"
+                                                                           FontSize="18"
+                                                                           VerticalAlignment="Center"
+                                                                           HorizontalAlignment="Center"
+                                                                           Foreground="{StaticResource TextGrayBrush}"/>
+                                                        </Button>
+                                                </Grid>
+                                        </Border>
+
+                                        <Button Content="Login"
+                                                Command="{Binding LoginCommand}"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Margin="0,30,0,20"/>
+
+                                        <TextBlock Text="{Binding Message}"
+                                                   HorizontalAlignment="Center"
+                                                   Foreground="#E53935"
+                                                   Margin="0,0,0,20"
+                                                   FontSize="12"
+                                                   TextWrapping="Wrap"/>
+
+
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,20,0,0">
+                                                <TextBlock Text="Don't have an account? "
+                                                           Foreground="{StaticResource TextGrayBrush}"
+                                                           FontSize="14"/>
+                                                <TextBlock>
+                            <Hyperlink Command="{Binding NavigateRegisterCommand}"
+                                                        Foreground="{StaticResource PrimaryBlueBrush}"
+                                                        FontWeight="SemiBold"
+                                                        TextDecorations="None">
+                                <Run Text="Register"/>
+                            </Hyperlink>
+                                                </TextBlock>
+                                        </StackPanel>
+
+                                </StackPanel>
+                        </ScrollViewer>
+                </Border>
+        </Grid>
 </UserControl>

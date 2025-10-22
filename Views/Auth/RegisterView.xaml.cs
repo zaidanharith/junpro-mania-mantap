@@ -13,7 +13,7 @@ namespace BOZea.Views.Auth
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-           var textBox = sender as TextBox;
+            var textBox = sender as TextBox;
             if (textBox == UsernameTextBox)
             {
                 UsernamePlaceholder.Visibility = string.IsNullOrEmpty(textBox.Text) ? Visibility.Visible : Visibility.Hidden;
@@ -36,7 +36,7 @@ namespace BOZea.Views.Auth
 
         private void PasswordConfirmBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-             if (sender is PasswordBox passwordBox)
+            if (sender is PasswordBox passwordBox)
             {
                 ConfirmPasswordPlaceholder.Visibility = string.IsNullOrEmpty(passwordBox.Password) ? Visibility.Visible : Visibility.Hidden;
                 if (DataContext is RegisterViewModel vm && PasswordConfirmBox != null)
