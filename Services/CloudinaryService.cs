@@ -1,5 +1,7 @@
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using System;
+using System.Threading.Tasks;
 
 namespace BOZea.Services
 {
@@ -13,17 +15,45 @@ namespace BOZea.Services
             _cloudinary = new Cloudinary(account);
         }
 
-        // Upload dari file path lokal
-        public string UploadImage(string filePath, string folder = "images")
+        public async Task<string?> UploadImageAsync(string filePath, string folder = "BOzea/Users")
         {
-            var uploadParams = new ImageUploadParams
+            try
             {
-                File = new FileDescription(filePath),
-                Folder = folder
-            };
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(filePath),
+                    Folder = folder,
+                    Transformation = new Transformation().Width(500).Height(500).Crop("fill")
+                };
 
-            var result = _cloudinary.Upload(uploadParams);
-            return result.SecureUrl.ToString();
+                var result = await _cloudinary.UploadAsync(uploadParams);
+
+                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return result.SecureUrl.ToString();
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Cloudinary upload error: {ex.Message}");
+                return null;
+            }
+        }
+
+        public async Task<bool> DeleteImageAsync(string publicId)
+        {
+            try
+            {
+                var deleteParams = new DeletionParams(publicId);
+                var result = await _cloudinary.DestroyAsync(deleteParams);
+                return result.Result == "ok";
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

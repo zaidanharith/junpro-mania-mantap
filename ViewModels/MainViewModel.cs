@@ -37,7 +37,7 @@ namespace BOZea.ViewModels.Base
             _navigation.Register(dashboardVM);
             _navigation.Register(registerVM);
 
-            CurrentViewModel = registerVM;
+            CurrentViewModel = loginVM;
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

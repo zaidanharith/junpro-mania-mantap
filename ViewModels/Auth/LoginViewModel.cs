@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -21,19 +22,33 @@ namespace BOZea.ViewModels.Auth
         public string Username
         {
             get => _username;
-            set { _username = value; OnPropertyChanged(); }
+            set
+            {
+                _username = value;
+                OnPropertyChanged();
+                Message = ""; // Clear message saat user mengetik
+            }
         }
 
         public string Password
         {
             get => _password;
-            set { _password = value; OnPropertyChanged(); }
+            set
+            {
+                _password = value;
+                OnPropertyChanged();
+                Message = ""; // Clear message saat user mengetik
+            }
         }
 
         public string Message
         {
             get => _message;
-            set { _message = value; OnPropertyChanged(); }
+            set
+            {
+                _message = value;
+                OnPropertyChanged();
+            }
         }
 
         public ICommand LoginCommand { get; }
@@ -44,11 +59,7 @@ namespace BOZea.ViewModels.Auth
             _authService = authService;
             _navigation = navigation;
 
-            LoginCommand = new RelayCommand(async _ =>
-            {
-                await LoginAsync();
-            });
-
+            LoginCommand = new RelayCommand(async _ => await LoginAsync());
             NavigateRegisterCommand = new RelayCommand(_ => _navigation.NavigateTo<RegisterViewModel>());
         }
 
@@ -56,28 +67,42 @@ namespace BOZea.ViewModels.Auth
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+                if (string.IsNullOrWhiteSpace(Username))
                 {
-                    Message = "Username dan password wajib diisi.";
+                    Message = "Username wajib diisi.";
+                    return false;
+                }
+
+                if (string.IsNullOrWhiteSpace(Password))
+                {
+                    Message = "Password wajib diisi.";
                     return false;
                 }
 
                 var user = await _authService.GetByUsernameAsync(Username);
 
-                if (user != null && PasswordHelper.VerifyPassword(Password, user.Password))
+                if (user == null)
                 {
-                    _navigation.NavigateTo<DashboardViewModel>();
-                    return true;
-                }
-                else
-                {
-                    Message = "Username atau Password salah.";
+                    Message = "Username tidak ditemukan.";
                     return false;
                 }
+
+                if (!PasswordHelper.VerifyPassword(Password, user.Password))
+                {
+                    Message = "Password salah.";
+                    return false;
+                }
+
+                UserSession.SetUser(user);
+
+                _navigation.NavigateTo<DashboardViewModel>();
+
+                return true;
             }
             catch (Exception ex)
             {
-                Message = $"Login error: {ex.Message}";
+                Console.WriteLine($"LOGIN ERROR: {ex.Message}");
+                Message = $"Login gagal: {ex.Message}";
                 return false;
             }
         }

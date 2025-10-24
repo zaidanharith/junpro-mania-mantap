@@ -1,4 +1,5 @@
 using System.Windows.Controls;
+using BOZea.ViewModels.Dashboard;
 
 namespace BOZea.Views.Dashboard
 {
@@ -7,11 +8,27 @@ namespace BOZea.Views.Dashboard
         public DashboardView()
         {
             InitializeComponent();
+            DataContext = new DashboardViewModel();
         }
 
-        private void ProductListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void AllProductListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Handle selection
+        }
 
+        private void BoatListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle selection
+        }
+
+        private void EnginesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle selection
+        }
+
+        private void GPSListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Handle selection
         }
     }
 }

@@ -26,18 +26,6 @@
                                         Value="0,10,0,5"/>
                         </Style>
 
-                        <!-- HAPUS atau COMMENT style Button default ini -->
-                        <!--
-            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
-                <Setter Property="Background" Value="{StaticResource PrimaryColor}"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="FontWeight" Value="Bold"/>
-                <Setter Property="Padding" Value="10"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="md:ButtonAssist.CornerRadius" Value="4"/>
-            </Style>
-            -->
-
                         <Style TargetType="TextBox"
                                BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
                                 <Setter Property="Padding"
