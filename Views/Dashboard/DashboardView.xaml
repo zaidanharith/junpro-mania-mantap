@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Views/Styles/MaterialOverrides.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/BOZea;component/Views/Styles/MaterialOverrides.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Product card template (mirip contoh Window) -->
@@ -36,24 +36,28 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>   <!-- NavBar -->
-                <RowDefinition Height="300"/>    <!-- Hero -->
-                <RowDefinition Height="*"/>      <!-- Content -->
-                <RowDefinition Height="Auto"/>   <!-- Footer -->
+                <RowDefinition Height="Auto"/>
+                <!-- NavBar -->
+                <RowDefinition Height="400"/>
+                <!-- Hero -->
+                <RowDefinition Height="*"/>
+                <!-- Content -->
+                <RowDefinition Height="Auto"/>
+                <!-- Footer -->
             </Grid.RowDefinitions>
 
             <!-- NavBar (ambil dari Views/Shared) -->
             <shared:NavBar Grid.Row="0"/>
 
             <!-- Hero -->
-            <Grid Grid.Row="1" Height="300">
-                <Image Source="/Views/Assets/hero-image.jpg" Stretch="UniformToFill"/>
+            <Grid Grid.Row="1">
+                <Image Source="/Views/Assets/hero-image.png" Stretch="UniformToFill" VerticalAlignment="Center"/>
                 <Rectangle Fill="#000000" Opacity="0.4"/>
-                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Margin="40,0">
-                    <TextBlock Text="All maritime products." Foreground="White" FontSize="32" FontWeight="Bold"/>
+                <StackPanel VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="20,135,120,20">
+                    <TextBlock Text="All maritime products." Foreground="White" FontSize="32" FontWeight="Bold" Margin="0,10,0,0"/>
                     <TextBlock Text="One Place." Foreground="White" FontSize="32" FontWeight="Bold" Margin="0,0,0,10"/>
-                    <TextBlock Text="Buy and sell certified used boat, engines, navigation systems, spare parts."
-                               Foreground="White" FontSize="16" MaxWidth="480" TextWrapping="Wrap"/>
+                    <TextBlock Text="Buy and sell certified boat, engines, and navigation systems."
+                               Foreground="White" FontSize="16" MaxWidth="480" TextWrapping="Wrap" Margin="0,0,0,5"/>
                 </StackPanel>
             </Grid>
 
@@ -61,67 +65,243 @@
             <StackPanel Grid.Row="2" Margin="20">
                 <!-- All Products -->
                 <Grid Margin="0,10,0,5">
-                    <TextBlock Text="All Products" FontSize="20" FontWeight="Bold" Margin="0,5,0,5" VerticalAlignment="Center"/>
-                    <Button Content="See all >" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryBlueBrush}" Command="{Binding SeeAllCommand}" CommandParameter="AllProducts" VerticalAlignment="Center" Height="40"/>
+                    <TextBlock Text="All Products" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               Margin="0,5,0,5" 
+                               VerticalAlignment="Center"/>
+                    <Button Content="See all >" 
+                            HorizontalAlignment="Right" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Foreground="{StaticResource PrimaryBlueBrush}" 
+                            Command="{Binding SeeAllCommand}" 
+                            CommandParameter="AllProducts" 
+                            VerticalAlignment="Center" Height="40"/>
                 </Grid>
+                
+                <ListBox x:Name="AllProductListBox" 
+                         ItemsSource="{d:SampleData ItemCount=4}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="AllProductListBox_SelectionChanged">
 
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,10">
-                    <ItemsControl ItemsSource="{Binding AllProducts}" ItemTemplate="{StaticResource ProductCardTemplate}" Height="150">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,5"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </ScrollViewer>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0.5"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,15,10"
+                                    Width="200">
+                                <StackPanel>
+                                    <Border Height="140"
+                                            Background="#EEEEEE"
+                                            CornerRadius="4"
+                                            Margin="0,0,0,8"/>
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding ProductName}"
+                                                       FontWeight="Bold"
+                                                       FontSize="14"/>
+                                            <TextBlock Text="{Binding Category}"
+                                                       Foreground="Gray"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Price}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="14"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Top"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
                 <!-- Boat -->
                 <Grid VerticalAlignment="Center">
-                    <TextBlock Text="Boat" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Margin="0,5,0,5"/>
-                    <Button Content="See all >" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryBlueBrush}" Command="{Binding SeeAllCommand}" CommandParameter="Boat" Height="40"/>
+                    <TextBlock Text="Boat" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               VerticalAlignment="Center" 
+                               Margin="0,5,0,5"/>
+                    <Button Content="See all >" 
+                            HorizontalAlignment="Right" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Foreground="{StaticResource PrimaryBlueBrush}" 
+                            Command="{Binding SeeAllCommand}" 
+                            CommandParameter="Boat" 
+                            Height="40"/>
                 </Grid>
 
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,10">
-                    <ItemsControl ItemsSource="{Binding Boats}" ItemTemplate="{StaticResource ProductCardTemplate}" Height="150">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,5"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </ScrollViewer>
+                <ListBox x:Name="BoatListBox" 
+                         ItemsSource="{d:SampleData ItemCount=4}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="BoatListBox_SelectionChanged">
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0.5"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,15,10"
+                                    Width="200">
+                                <StackPanel>
+                                    <Border Height="140"
+                                            Background="#EEEEEE"
+                                            CornerRadius="4"
+                                            Margin="0,0,0,8"/>
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding ProductName}"
+                                                       FontWeight="Bold"
+                                                       FontSize="14"/>
+                                            <TextBlock Text="{Binding Category}"
+                                                       Foreground="Gray"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Price}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="14"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Top"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
                 <!-- Engines -->
                 <Grid VerticalAlignment="Center">
-                    <TextBlock Text="Engines" FontSize="20" FontWeight="Bold" Margin="0,5,0,5" VerticalAlignment="Center"/>
-                    <Button Content="See all >" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryBlueBrush}" Command="{Binding SeeAllCommand}" CommandParameter="Engines" Height="40"/>
+                    <TextBlock Text="Engines" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               Margin="0,5,0,5" 
+                               VerticalAlignment="Center"/>
+                    <Button Content="See all >" 
+                            HorizontalAlignment="Right" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Foreground="{StaticResource PrimaryBlueBrush}" 
+                            Command="{Binding SeeAllCommand}" 
+                            CommandParameter="Engines" 
+                            Height="40"/>
                 </Grid>
 
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,10">
-                    <ItemsControl ItemsSource="{Binding Engines}" ItemTemplate="{StaticResource ProductCardTemplate}" Height="150">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,5"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </ScrollViewer>
+                <ListBox x:Name="EnginesListBox" 
+                         ItemsSource="{d:SampleData ItemCount=4}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="EnginesListBox_SelectionChanged">
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0.5"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,15,10"
+                                    Width="200">
+                                <StackPanel>
+                                    <Border Height="140"
+                                            Background="#EEEEEE"
+                                            CornerRadius="4"
+                                            Margin="0,0,0,8"/>
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding ProductName}"
+                                                       FontWeight="Bold"
+                                                       FontSize="14"/>
+                                            <TextBlock Text="{Binding Category}"
+                                                       Foreground="Gray"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Price}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="14"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Top"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
 
                 <!-- GPS -->
                 <Grid VerticalAlignment="Center">
-                    <TextBlock Text="GPS" FontSize="20" FontWeight="Bold" Margin="0,5,0,5" VerticalAlignment="Center"/>
-                    <Button Content="See all >" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" Foreground="{StaticResource PrimaryBlueBrush}" Command="{Binding SeeAllCommand}" CommandParameter="GPS" Height="40" VerticalAlignment="Center"/>
+                    <TextBlock Text="GPS" 
+                               FontSize="20" 
+                               FontWeight="Bold" 
+                               Margin="0,5,0,5" 
+                               VerticalAlignment="Center"/>
+                    <Button Content="See all >" 
+                            HorizontalAlignment="Right" 
+                            Background="Transparent" 
+                            BorderThickness="0" Foreground="{StaticResource PrimaryBlueBrush}" Command="{Binding SeeAllCommand}" CommandParameter="GPS" Height="40" VerticalAlignment="Center"/>
                 </Grid>
 
-                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Margin="0,0,0,10">
-                    <ItemsControl ItemsSource="{Binding Gps}" ItemTemplate="{StaticResource ProductCardTemplate}" Height="150">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="0,5"/>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ItemsControl>
-                </ScrollViewer>
+                <ListBox x:Name="GPStListBox" 
+                         ItemsSource="{d:SampleData ItemCount=4}"
+                         BorderThickness="0"
+                         Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" SelectionChanged="GPSListBox_SelectionChanged">
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"
+                                        Margin="0.5"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,15,10"
+                                    Width="200">
+                                <StackPanel>
+                                    <Border Height="140"
+                                            Background="#EEEEEE"
+                                            CornerRadius="4"
+                                            Margin="0,0,0,8"/>
+                                    <Grid>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding ProductName}"
+                                                       FontWeight="Bold"
+                                                       FontSize="14"/>
+                                            <TextBlock Text="{Binding Category}"
+                                                       Foreground="Gray"
+                                                       FontSize="12"/>
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Price}"
+                                                   FontWeight="SemiBold"
+                                                   FontSize="14"
+                                                   HorizontalAlignment="Right"
+                                                   VerticalAlignment="Top"/>
+                                    </Grid>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </StackPanel>
 
             <!-- Footer (ambil dari Views/Shared) -->

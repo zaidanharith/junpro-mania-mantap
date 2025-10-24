@@ -8,5 +8,10 @@ namespace BOZea.Views.Dashboard
         {
             InitializeComponent();
         }
+
+        private void ProductListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
