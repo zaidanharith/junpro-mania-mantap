@@ -2,6 +2,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using BOZea.ViewModels.Auth;
+using BOZea.Repositories;
+using BOZea.Helpers;
+using BOZea.Services;
+using BOZea.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 
 namespace BOZea.Views.Auth
 {
@@ -61,6 +67,12 @@ namespace BOZea.Views.Auth
                     PasswordVisibleTextBox.Text = PasswordBox.Password;
                     PasswordVisibleTextBox.Visibility = Visibility.Visible;
                     PasswordBox.Visibility = Visibility.Collapsed;
+
+                    Dispatcher.BeginInvoke(new System.Action(() =>
+                    {
+                        PasswordVisibleTextBox.Focus();
+                        PasswordVisibleTextBox.CaretIndex = PasswordVisibleTextBox.Text.Length;
+                    }), System.Windows.Threading.DispatcherPriority.Input);
                 }
                 else
                 {
@@ -71,6 +83,7 @@ namespace BOZea.Views.Auth
                     // Update hint setelah toggle
                     Dispatcher.BeginInvoke(new System.Action(() =>
                     {
+                        PasswordBox.Focus();
                         UpdatePasswordHint();
                     }), System.Windows.Threading.DispatcherPriority.Input);
                 }
@@ -89,6 +102,12 @@ namespace BOZea.Views.Auth
                     PasswordConfirmVisibleTextBox.Text = PasswordConfirmBox.Password;
                     PasswordConfirmVisibleTextBox.Visibility = Visibility.Visible;
                     PasswordConfirmBox.Visibility = Visibility.Collapsed;
+
+                    Dispatcher.BeginInvoke(new System.Action(() =>
+                    {
+                        PasswordConfirmVisibleTextBox.Focus();
+                        PasswordConfirmVisibleTextBox.CaretIndex = PasswordConfirmVisibleTextBox.Text.Length;
+                    }), System.Windows.Threading.DispatcherPriority.Input);
                 }
                 else
                 {
@@ -99,8 +118,27 @@ namespace BOZea.Views.Auth
                     // Update hint setelah toggle
                     Dispatcher.BeginInvoke(new System.Action(() =>
                     {
+                        PasswordConfirmBox.Focus();
                         UpdateConfirmPasswordHint();
                     }), System.Windows.Threading.DispatcherPriority.Input);
+                }
+            }
+        }
+
+        private void BrowseImage_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp|All Files|*.*",
+                Title = "Select Profile Image"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                if (DataContext is RegisterViewModel vm)
+                {
+                    vm.ImageFilePath = openFileDialog.FileName;
+                    vm.ImageFileName = System.IO.Path.GetFileName(openFileDialog.FileName);
                 }
             }
         }

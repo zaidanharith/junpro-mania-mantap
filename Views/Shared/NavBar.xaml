@@ -6,7 +6,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              HorizontalAlignment="Stretch"
-             VerticalAlignment="Stretch"
+             VerticalAlignment="Top"
              FontFamily="Plus Jakarta Sans">
 
     <UserControl.Resources>
@@ -18,18 +18,25 @@
     </UserControl.Resources>
 
     <!-- Navbar wrapper: gradient dari PrimaryBlue ke LightBlue -->
-    <Border Height="72" RenderTransformOrigin="0.5,0.5" Width="800">
+    <Border Height="72"
+            HorizontalAlignment="Stretch">
         <Border.Background>
-            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                <GradientStop Color="#FF113F67" Offset="0"/>
-                <GradientStop Color="#FF227DCD" Offset="1"/>
+            <LinearGradientBrush EndPoint="0.5,1"
+                                 StartPoint="0.5,0">
+                <GradientStop Color="#FF113F67"
+                              Offset="0"/>
+                <GradientStop Color="#FF227DCD"
+                              Offset="1"/>
             </LinearGradientBrush>
         </Border.Background>
-        <Grid Margin="28,0">
+        <Grid Margin="60,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
+                <!-- Logo -->
                 <ColumnDefinition Width="*"/>
+                <!-- Search (tengah) -->
                 <ColumnDefinition Width="Auto"/>
+                <!-- Right menu -->
             </Grid.ColumnDefinitions>
 
             <!-- Logo / Home -->
@@ -40,66 +47,96 @@
                     Padding="0"
                     Cursor="Hand"
                     Command="{Binding NavigateHomeCommand}">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Image Source="/Views/Assets/logo_white.png"
-                           Stretch="Uniform"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center" IsEnabled="False"/>
-                </StackPanel>
+                <Image Source="/Views/Assets/logo_white.png"
+                       Height="40"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"/>
             </Button>
 
             <!-- Search (centered) -->
             <Grid Grid.Column="1"
                   HorizontalAlignment="Center"
-                  VerticalAlignment="Center">
-                <Border Background="{StaticResource WhiteBrush}"
-                        CornerRadius="20"
+                  VerticalAlignment="Center"
+                  Margin="40,0">
+                <Border Background="White"
+                        CornerRadius="22"
                         Height="44"
-                        Width="400"
-                        SnapsToDevicePixels="True">
+                        Width="450">
                     <Grid>
-                        <TextBox Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
-                                 materialDesign:HintAssist.Hint="Search for engines, GPS, spare parts..."
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Search TextBox -->
+                        <TextBox Grid.Column="0"
+                                 Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
                                  VerticalContentAlignment="Center"
-                                 HorizontalContentAlignment="Left"
-                                 Margin="16,0,50,0"
-                                 Foreground="#222222"
+                                 Margin="20,0,0,0"
+                                 Foreground="#333"
                                  Background="Transparent"
                                  BorderThickness="0"
-                                 FontSize="16" 
-                                 Padding="0,0,0,0" TextChanged="TextBox_TextChanged" VerticalAlignment="Center"/>
-                        <Button Width="35"
-                                Height="36"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Center"
-                                Margin="356,0,0,0"
-                                Background="{StaticResource LightBlueBrush}"
-                                BorderThickness="0"
-                                Command="{Binding ExecuteSearchCommand}">
-                            <Button.Resources>
-                                <Style TargetType="Button">
+                                 FontSize="14"
+                                 TextChanged="TextBox_TextChanged">
+                            <TextBox.Style>
+                                <Style TargetType="TextBox">
                                     <Setter Property="Template">
                                         <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        CornerRadius="20"
-                                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                                        BorderBrush="{TemplateBinding BorderBrush}">
-                                                    <ContentPresenter HorizontalAlignment="Center"
-                                                                      VerticalAlignment="Center"/>
-                                                </Border>
+                                            <ControlTemplate TargetType="TextBox">
+                                                <Grid>
+                                                    <TextBlock Text="Search for engines, GPS, spare parts..."
+                                                               Foreground="#999"
+                                                               FontSize="14"
+                                                               VerticalAlignment="Center"
+                                                               Margin="0"
+                                                               IsHitTestVisible="False">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Collapsed"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Text, RelativeSource={RelativeSource TemplatedParent}}"
+                                                                                 Value="">
+                                                                        <Setter Property="Visibility"
+                                                                                Value="Visible"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                    <ScrollViewer x:Name="PART_ContentHost"
+                                                                  VerticalAlignment="Center"/>
+                                                </Grid>
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
                                 </Style>
-                            </Button.Resources>
+                            </TextBox.Style>
+                        </TextBox>
+
+                        <!-- Search Button -->
+                        <Button Grid.Column="1"
+                                Width="36"
+                                Height="36"
+                                Margin="0,0,4,0"
+                                Background="{StaticResource LightBlueBrush}"
+                                BorderThickness="0"
+                                Cursor="Hand"
+                                Command="{Binding ExecuteSearchCommand}">
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}"
+                                            CornerRadius="18">
+                                        <ContentPresenter HorizontalAlignment="Center"
+                                                          VerticalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
                             <materialDesign:PackIcon Kind="Magnify"
                                                      Foreground="White"
-                                                     Width="18"
-                                                     Height="18" 
-                                                     RenderTransformOrigin="0.489,0.55" 
-                                                     HorizontalAlignment="Center" 
-                                                     VerticalAlignment="Center"/>
+                                                     Width="20"
+                                                     Height="20"/>
                         </Button>
                     </Grid>
                 </Border>
@@ -109,45 +146,101 @@
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Right">
+                        HorizontalAlignment="Right"
+                        Margin="0">
+
                 <!-- Category menu -->
                 <Menu Background="Transparent"
                       VerticalAlignment="Center"
                       BorderThickness="0"
-                      HorizontalAlignment="Center"
-                      Foreground="White">
+                      Foreground="White"
+                      Margin="0,0,20,0">
                     <MenuItem Header="Category"
-                              Foreground="{StaticResource WhiteBrush}"
+                              Foreground="White"
                               FontWeight="SemiBold"
-                              Cursor="Hand">
-                                <MenuItem.Resources>
-                                    <Style TargetType="MenuItem">
-                                        <Setter Property="Foreground" Value="{StaticResource WhiteBrush}"/>
-                                        <Setter Property="Background" Value="Transparent"/>
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Background" Value="{StaticResource LightBlueBrush}"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </MenuItem.Resources>
-                                <MenuItem Header="All Products" Command="{Binding NavigateCategoryCommand}" CommandParameter="All"/>
-                                <MenuItem Header="Boat" Command="{Binding NavigateCategoryCommand}" CommandParameter="Boat"/>
-                                <MenuItem Header="Engines" Command="{Binding NavigateCategoryCommand}" CommandParameter="Engines"/>
-                                <MenuItem Header="GPS" Command="{Binding NavigateCategoryCommand}" CommandParameter="GPS"/>
+                              FontSize="15"
+                              Cursor="Hand"
+                              Padding="10,0">
+                        <MenuItem Header="All Products"
+                                  Command="{Binding NavigateCategoryCommand}"
+                                  CommandParameter="All"
+                                  FontSize="14"/>
+                        <MenuItem Header="Boat"
+                                  Command="{Binding NavigateCategoryCommand}"
+                                  CommandParameter="Boat"
+                                  FontSize="14"/>
+                        <MenuItem Header="Engines"
+                                  Command="{Binding NavigateCategoryCommand}"
+                                  CommandParameter="Engines"
+                                  FontSize="14"/>
+                        <MenuItem Header="GPS"
+                                  Command="{Binding NavigateCategoryCommand}"
+                                  CommandParameter="GPS"
+                                  FontSize="14"/>
                     </MenuItem>
                 </Menu>
-
-                <!-- About -->
 
                 <!-- Account / Profile -->
                 <Button Background="Transparent"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Command="{Binding OpenProfileCommand}" Padding="0,0,0,0">
-                    <materialDesign:PackIcon Kind="AccountCircle"
-                                             Foreground="{StaticResource WhiteBrush}"
-                                             Width="30" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="32"/>
+                        Padding="0"
+                        Command="{Binding OpenProfileCommand}">
+                    <Border Width="40"
+                            Height="40"
+                            CornerRadius="20"
+                            BorderBrush="White"
+                            BorderThickness="2">
+                        <Border.Clip>
+                            <EllipseGeometry Center="20,20"
+                                             RadiusX="20"
+                                             RadiusY="20"/>
+                        </Border.Clip>
+
+                        <!-- Profile Image dari Cloudinary -->
+                        <Grid>
+                            <Image x:Name="ProfileImage"
+                                   Source="{Binding CurrentUser.Image, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                   Stretch="UniformToFill"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Width="40"
+                                   Height="40"
+                                   RenderTransformOrigin="0.5,0.5">
+                                <Image.RenderTransform>
+                                    <ScaleTransform ScaleX="1.12"
+                                                    ScaleY="1.12"/>
+                                </Image.RenderTransform>
+                            </Image>
+
+                            <!-- Fallback icon jika tidak ada gambar -->
+                            <materialDesign:PackIcon Kind="AccountCircle"
+                                                     Foreground="White"
+                                                     Width="40"
+                                                     Height="40"
+                                                     HorizontalAlignment="Center"
+                                                     VerticalAlignment="Center">
+                                <materialDesign:PackIcon.Style>
+                                    <Style TargetType="materialDesign:PackIcon">
+                                        <Setter Property="Visibility"
+                                                Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                         Value="{x:Null}">
+                                                <Setter Property="Visibility"
+                                                        Value="Visible"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                         Value="">
+                                                <Setter Property="Visibility"
+                                                        Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:PackIcon.Style>
+                            </materialDesign:PackIcon>
+                        </Grid>
+                    </Border>
                 </Button>
             </StackPanel>
         </Grid>
