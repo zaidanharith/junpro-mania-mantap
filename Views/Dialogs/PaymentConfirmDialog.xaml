@@ -1,0 +1,273 @@
+<Window x:Class="BOZea.Views.Dialogs.PaymentConfirmDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        Width="500"
+        Height="Auto"
+        ShowInTaskbar="False"
+        Topmost="True">
+
+    <!-- HANYA SATU <Window.Resources> -->
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/BOZea;component/Views/Styles/MaterialOverrides.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Storyboard Animation -->
+            <Storyboard x:Key="DialogEnterAnimation">
+                <DoubleAnimation Storyboard.TargetName="ScaleTransform"
+                                 Storyboard.TargetProperty="ScaleX"
+                                 From="0.8"
+                                 To="1.0"
+                                 Duration="0:0:0.4">
+                    <DoubleAnimation.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+
+                <DoubleAnimation Storyboard.TargetName="ScaleTransform"
+                                 Storyboard.TargetProperty="ScaleY"
+                                 From="0.8"
+                                 To="1.0"
+                                 Duration="0:0:0.4">
+                    <DoubleAnimation.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+
+                <DoubleAnimation Storyboard.TargetName="IconRotate"
+                                 Storyboard.TargetProperty="Angle"
+                                 From="0"
+                                 To="360"
+                                 Duration="0:0:0.6">
+                    <DoubleAnimation.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Backdrop -->
+        <Rectangle Fill="#000000"
+                   Opacity="0.5"
+                   MouseDown="Backdrop_MouseDown"/>
+
+        <!-- Dialog Content -->
+        <Border Background="White"
+                CornerRadius="20"
+                Padding="40"
+                Effect="{StaticResource ShadowEffect}"
+                VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                MaxWidth="500"
+                MinWidth="450">
+            <Border.RenderTransform>
+                <ScaleTransform x:Name="ScaleTransform"
+                                ScaleX="0.8"
+                                ScaleY="0.8"
+                                CenterX="250"
+                                CenterY="250"/>
+            </Border.RenderTransform>
+
+            <StackPanel>
+                <!-- Success Icon -->
+                <TextBlock Text="✓"
+                           FontSize="64"
+                           Foreground="{StaticResource PrimaryBlueBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20">
+                    <TextBlock.RenderTransform>
+                        <RotateTransform x:Name="IconRotate"
+                                         Angle="0"
+                                         CenterX="32"
+                                         CenterY="32"/>
+                    </TextBlock.RenderTransform>
+                </TextBlock>
+
+                <!-- Title -->
+                <TextBlock Text="Confirm Payment"
+                           FontSize="28"
+                           FontWeight="Bold"
+                           Foreground="#1A1A1A"
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,12"/>
+
+                <!-- Divider -->
+                <Rectangle Height="2"
+                           Fill="#F0F0F0"
+                           Margin="0,0,0,24"/>
+
+                <!-- Product Info -->
+                <StackPanel Margin="0,0,0,24">
+                    <Grid Margin="0,0,0,12">
+                        <TextBlock Text="Product"
+                                   Foreground="#666"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding ProductName}"
+                                   HorizontalAlignment="Right"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#333"
+                                   TextTrimming="CharacterEllipsis"
+                                   MaxWidth="250"
+                                   TextWrapping="NoWrap"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,12">
+                        <TextBlock Text="Quantity"
+                                   Foreground="#666"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding Quantity}"
+                                   HorizontalAlignment="Right"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#333"/>
+                    </Grid>
+
+                    <Grid Margin="0,0,0,12">
+                        <TextBlock Text="Payment Method"
+                                   Foreground="#666"
+                                   FontSize="14"/>
+                        <TextBlock Text="{Binding PaymentMethod}"
+                                   HorizontalAlignment="Right"
+                                   FontSize="14"
+                                   FontWeight="SemiBold"
+                                   Foreground="#333"/>
+                    </Grid>
+
+                    <!-- Divider -->
+                    <Rectangle Height="1"
+                               Fill="#E0E0E0"
+                               Margin="0,12"/>
+
+                    <!-- Total -->
+                    <Grid>
+                        <TextBlock Text="Total Amount"
+                                   Foreground="#333"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding TotalPrice}"
+                                   HorizontalAlignment="Right"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource PrimaryBlueBrush}"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Buttons -->
+                <StackPanel Orientation="Horizontal"
+                            Margin="0,24,0,0">
+                    <!-- Cancel Button -->
+                    <Button Content="Cancel"
+                            Background="#F5F5F5"
+                            Foreground="#333"
+                            BorderThickness="0"
+                            Height="48"
+                            Cursor="Hand"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Click="CancelButton_Click"
+                            Padding="20,0"
+                            Margin="0,0,12,0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="12"
+                                                    Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#E8E8E8"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <!-- Confirm Button -->
+                    <Button Content="✓ Confirm"
+                            Background="{StaticResource PrimaryBlueBrush}"
+                            Foreground="White"
+                            BorderThickness="0"
+                            Height="48"
+                            Cursor="Hand"
+                            FontSize="16"
+                            FontWeight="SemiBold"
+                            Click="ConfirmButton_Click"
+                            Padding="20,0">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background"
+                                        Value="{StaticResource PrimaryBlueBrush}"/>
+                                <Setter Property="Foreground"
+                                        Value="White"/>
+
+                                <!-- Tambahkan agar teks tetap mengikuti warna Foreground -->
+                                <Setter Property="ContentTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding}"
+                                                       Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                       FontWeight="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontWeight}"
+                                                       FontSize="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontSize}"
+                                                       HorizontalAlignment="Center"
+                                                       VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="12">
+                                                <Border.Effect>
+                                                    <DropShadowEffect Color="#0066FF"
+                                                                      Direction="270"
+                                                                      ShadowDepth="4"
+                                                                      BlurRadius="20"
+                                                                      Opacity="0.4"/>
+                                                </Border.Effect>
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                            Value="True">
+                                        <Setter Property="Background"
+                                                Value="#0056D2"/>
+                                    </Trigger>
+                                    <Trigger Property="IsPressed"
+                                            Value="True">
+                                        <Setter Property="Background"
+                                                Value="#004AB8"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

@@ -49,10 +49,57 @@ namespace BOZea.Services
             _onNavigate?.Invoke(viewModel);
         }
 
+        /// <summary>
+        /// Navigate by string view name
+        /// </summary>
+        public void Navigate(string viewName)
+        {
+            try
+            {
+                Console.WriteLine($"[NavigationService] Navigate(string) called with: {viewName}");
+
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow?.DataContext is not MainViewModel mainViewModel)
+                {
+                    Console.WriteLine("[NavigationService] ERROR: MainViewModel not found!");
+                    MessageBox.Show("MainViewModel not found!", "Navigation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                switch (viewName.ToLower())
+                {
+                    case "dashboard":
+                        Console.WriteLine("[NavigationService] Navigating to Dashboard");
+                        NavigateBack();
+                        break;
+
+                    case "productdetail":
+                        Console.WriteLine("[NavigationService] ProductDetail requires ViewModel parameter");
+                        break;
+
+                    case "categorydetail":
+                        Console.WriteLine("[NavigationService] CategoryDetail requires ViewModel parameter");
+                        break;
+
+                    default:
+                        Console.WriteLine($"[NavigationService] Unknown view: {viewName}");
+                        MessageBox.Show($"Unknown view: {viewName}", "Navigation Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[NavigationService] Error: {ex.Message}");
+                Console.WriteLine($"[NavigationService] StackTrace: {ex.StackTrace}");
+                MessageBox.Show($"Navigation error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         public void NavigateToProductDetail(ProductDetailViewModel viewModel)
         {
             try
             {
+                Console.WriteLine("[NavigationService] Navigating to ProductDetail");
                 var mainWindow = Application.Current.MainWindow;
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
@@ -60,11 +107,13 @@ namespace BOZea.Services
                 }
                 else
                 {
+                    Console.WriteLine("[NavigationService] ERROR: MainViewModel not found!");
                     MessageBox.Show("MainViewModel not found!");
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[NavigationService] NavigateToProductDetail Error: {ex.Message}");
                 MessageBox.Show($"Navigation error: {ex.Message}");
             }
         }
@@ -73,6 +122,7 @@ namespace BOZea.Services
         {
             try
             {
+                Console.WriteLine("[NavigationService] Navigating to CategoryDetail");
                 var mainWindow = Application.Current.MainWindow;
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
@@ -80,36 +130,52 @@ namespace BOZea.Services
                 }
                 else
                 {
+                    Console.WriteLine("[NavigationService] ERROR: MainViewModel not found!");
                     MessageBox.Show("MainViewModel not found!");
                 }
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[NavigationService] NavigateToCategoryDetail Error: {ex.Message}");
                 MessageBox.Show($"Navigation error: {ex.Message}");
             }
         }
 
+        /// <summary>
+        /// Navigate back to Dashboard
+        /// </summary>
         public void NavigateBack()
         {
             try
             {
+                Console.WriteLine("[NavigationService] NavigateBack() called");
+
                 var mainWindow = Application.Current.MainWindow;
-                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                if (mainWindow?.DataContext is not MainViewModel mainViewModel)
                 {
-                    // Selalu buat instance baru untuk refresh data
-                    var newDashboard = new DashboardViewModel();
-                    _dashboardInstance = newDashboard;
-                    mainViewModel.CurrentViewModel = newDashboard;
+                    Console.WriteLine("[NavigationService] ERROR: MainViewModel not found in NavigateBack!");
+                    return;
                 }
+
+                // Create fresh Dashboard instance untuk refresh data
+                Console.WriteLine("[NavigationService] Creating new DashboardViewModel instance");
+                var newDashboard = new DashboardViewModel();
+                _dashboardInstance = newDashboard;
+                mainViewModel.CurrentViewModel = newDashboard;
+
+                Console.WriteLine("[NavigationService] Successfully navigated to Dashboard");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Navigation back error: {ex.Message}");
+                Console.WriteLine($"[NavigationService] ERROR in NavigateBack: {ex.Message}");
+                Console.WriteLine($"[NavigationService] StackTrace: {ex.StackTrace}");
+                MessageBox.Show($"Navigation back error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         public void NavigateToDashboard()
         {
+            Console.WriteLine("[NavigationService] NavigateToDashboard() called");
             NavigateBack();
         }
 

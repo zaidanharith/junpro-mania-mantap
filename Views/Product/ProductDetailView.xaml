@@ -12,98 +12,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/BOZea;component/Views/Styles/MaterialOverrides.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <!-- Premium Buy Button Style -->
-            <Style x:Key="PremiumBuyButton" TargetType="Button">
-                <Setter Property="Background" Value="{StaticResource PrimaryBlueBrush}"/>
-                <Setter Property="Foreground" Value="White"/>
-                <Setter Property="BorderThickness" Value="0"/>
-                <Setter Property="FontSize" Value="18"/>
-                <Setter Property="FontWeight" Value="SemiBold"/>
-                <Setter Property="Cursor" Value="Hand"/>
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate TargetType="Button">
-                            <Border x:Name="border"
-                                    Background="{TemplateBinding Background}"
-                                    CornerRadius="12"
-                                    Padding="30,16">
-                                <Border.Effect>
-                                    <DropShadowEffect Color="#0066FF"
-                                                      Direction="270"
-                                                      ShadowDepth="6"
-                                                      BlurRadius="25"
-                                                      Opacity="0.5"/>
-                                </Border.Effect>
-                                <ContentPresenter HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"/>
-                            </Border>
-                            <ControlTemplate.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation Storyboard.TargetName="border"
-                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                To="#0056D2"
-                                                                Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetName="border"
-                                                                 Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.ShadowDepth)"
-                                                                 To="8"
-                                                                 Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <ColorAnimation Storyboard.TargetName="border"
-                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                                                                To="#0066FF"
-                                                                Duration="0:0:0.2"/>
-                                                <DoubleAnimation Storyboard.TargetName="border"
-                                                                 Storyboard.TargetProperty="(Border.Effect).(DropShadowEffect.ShadowDepth)"
-                                                                 To="6"
-                                                                 Duration="0:0:0.2"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                                <Trigger Property="IsPressed" Value="True">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="border"
-                                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleX)"
-                                                                 To="0.98"
-                                                                 Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetName="border"
-                                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                 To="0.98"
-                                                                 Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                    <Trigger.ExitActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetName="border"
-                                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleX)"
-                                                                 To="1"
-                                                                 Duration="0:0:0.1"/>
-                                                <DoubleAnimation Storyboard.TargetName="border"
-                                                                 Storyboard.TargetProperty="(Border.RenderTransform).(ScaleTransform.ScaleY)"
-                                                                 To="1"
-                                                                 Duration="0:0:0.1"/>
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.ExitActions>
-                                </Trigger>
-                            </ControlTemplate.Triggers>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -132,7 +40,8 @@
                 <!-- Product Header Button -->
                 <Grid Margin="80,40,80,0">
                     <Button Content="All Products"
-                            Width="120" Height="40"
+                            Width="120"
+                            Height="40"
                             Background="White"
                             BorderBrush="#999"
                             BorderThickness="1"
@@ -169,32 +78,19 @@
                                    FontWeight="Bold"
                                    Margin="0,0,0,10"
                                    TextWrapping="Wrap"/>
-                        
+
                         <!-- Category -->
                         <TextBlock Text="{Binding Product.Category}"
                                    FontSize="16"
                                    Foreground="#666"
                                    Margin="0,0,0,20"/>
 
-                        <!-- Price with special styling -->
-                        <Border Background="#F0F7FF"
-                                CornerRadius="8"
-                                Padding="20,12"
-                                Margin="0,0,0,25"
-                                HorizontalAlignment="Left">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Price: "
-                                           FontSize="16"
-                                           Foreground="#666"
-                                           VerticalAlignment="Center"
-                                           Margin="0,0,10,0"/>
-                                <TextBlock Text="{Binding Product.Price}"
-                                           FontSize="28"
-                                           FontWeight="ExtraBold"
-                                           Foreground="{StaticResource PrimaryBlueBrush}"
-                                           VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
+                        <!-- Price -->
+                        <TextBlock Text="{Binding Product.Price}"
+                                   FontSize="28"
+                                   FontWeight="ExtraBold"
+                                   Foreground="{StaticResource PrimaryBlueBrush}"
+                                   Margin="0,0,0,25"/>
 
                         <!-- Description -->
                         <TextBlock Text="{Binding Product.Description}"
@@ -207,52 +103,59 @@
                         <!-- Buy Now Button - PREMIUM STYLE -->
                         <Button Style="{StaticResource PremiumBuyButton}"
                                 Command="{Binding BuyNowCommand}"
+                                Height="50"
+                                Width="200"
+                                Margin="0,0,0,30"
                                 HorizontalAlignment="Left"
                                 RenderTransformOrigin="0.5,0.5">
                             <Button.RenderTransform>
-                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                <ScaleTransform ScaleX="1"
+                                                ScaleY="1"/>
                             </Button.RenderTransform>
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="🛒" 
-                                           FontSize="22"
-                                           Margin="0,0,12,0"
-                                           VerticalAlignment="Center"/>
-                                <TextBlock FontSize="18"
-                                           FontWeight="SemiBold"
-                                           VerticalAlignment="Center">
-                                    <Run Text="Buy Now"/>
-                                </TextBlock>
-                            </StackPanel>
+                            <TextBlock Text="🛒 Buy Now"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       Foreground="White"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"/>
                         </Button>
-
                         <!-- Additional Info -->
-                        <StackPanel Orientation="Horizontal" 
-                                    Margin="0,25,0,0">
+                        <StackPanel Orientation="Horizontal"
+                                    Margin="0,25,0,0"
+                                    VerticalAlignment="Center">
                             <Border Background="#E8F5E9"
                                     CornerRadius="6"
-                                    Padding="12,6"
-                                    Margin="0,0,10,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="✓" 
+                                    Padding="12,8"
+                                    Margin="0,0,10,0"
+                                    VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="✓"
                                                Foreground="#4CAF50"
                                                FontWeight="Bold"
-                                               Margin="0,0,5,0"/>
+                                               Margin="0,0,5,0"
+                                               VerticalAlignment="Center"/>
                                     <TextBlock Text="Secure Payment"
                                                Foreground="#2E7D32"
                                                FontSize="13"
-                                               FontWeight="Medium"/>
+                                               FontWeight="Medium"
+                                               VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
                             <Border Background="#FFF3E0"
                                     CornerRadius="6"
-                                    Padding="12,6">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="🚚" 
-                                               Margin="0,0,5,0"/>
+                                    Padding="12,8"
+                                    VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="🚚"
+                                               Margin="0,0,5,0"
+                                               VerticalAlignment="Center"/>
                                     <TextBlock Text="Fast Shipping"
                                                Foreground="#E65100"
                                                FontSize="13"
-                                               FontWeight="Medium"/>
+                                               FontWeight="Medium"
+                                               VerticalAlignment="Center"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
@@ -290,12 +193,13 @@
                                                 <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            
+
                                             <!-- Avatar Circle -->
-                                            <Ellipse Width="40" Height="40"
+                                            <Ellipse Width="40"
+                                                     Height="40"
                                                      Fill="#808080"
                                                      Margin="0,0,12,0"/>
-                                            
+
                                             <!-- Username -->
                                             <TextBlock Grid.Column="1"
                                                        Text="{Binding Username}"

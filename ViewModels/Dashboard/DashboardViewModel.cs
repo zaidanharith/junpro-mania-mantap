@@ -48,7 +48,7 @@ namespace BOZea.ViewModels.Dashboard
         public ICommand NavigateHomeCommand { get; }
         public ICommand NavigateCategoryCommand { get; }
         public ICommand OpenProfileCommand { get; }
-        public ICommand ProductSelectedCommand => _productSelectedCommand ??= 
+        public ICommand ProductSelectedCommand => _productSelectedCommand ??=
             new RelayCommand(ExecuteProductSelected);
 
         public DashboardViewModel()
@@ -161,8 +161,8 @@ namespace BOZea.ViewModels.Dashboard
         private void NavigateCategory(object? parameter)
         {
             var category = parameter as string;
-            System.Windows.MessageBox.Show($"Navigate to category: {category}");
-            // TODO: Implement navigation to category
+            if (string.IsNullOrWhiteSpace(category)) return;
+            NavigateToCategoryDetail(category);
         }
 
         private void OpenProfile()
@@ -174,14 +174,17 @@ namespace BOZea.ViewModels.Dashboard
         private void ExecuteSeeAll(object? parameter)
         {
             var category = parameter as string;
-            if (!string.IsNullOrEmpty(category))
+            if (string.IsNullOrWhiteSpace(category)) return;
+            NavigateToCategoryDetail(category);
+        }
+
+        private void NavigateToCategoryDetail(string category)
+        {
+            var categoryDetailVM = new BOZea.ViewModels.Category.CategoryDetailViewModel(category);
+            var mainWindow = System.Windows.Application.Current.MainWindow;
+            if (mainWindow?.DataContext is MainViewModel mainViewModel)
             {
-                var categoryDetailVM = new BOZea.ViewModels.Category.CategoryDetailViewModel(category);
-                var mainWindow = System.Windows.Application.Current.MainWindow;
-                if (mainWindow?.DataContext is MainViewModel mainViewModel)
-                {
-                    mainViewModel.CurrentViewModel = categoryDetailVM;
-                }
+                mainViewModel.CurrentViewModel = categoryDetailVM;
             }
         }
 

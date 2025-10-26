@@ -15,7 +15,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Background="#F8F9FA">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- NavBar -->
@@ -24,7 +24,8 @@
         </Grid.RowDefinitions>
 
         <!-- NavBar (Fixed) -->
-        <shared:NavBar SearchQuery="{Binding SearchQuery, Mode=TwoWay}"
+        <shared:NavBar Grid.Row="0"
+                       SearchQuery="{Binding SearchQuery, Mode=TwoWay}"
                        ExecuteSearchCommand="{Binding ExecuteSearchCommand}"
                        NavigateHomeCommand="{Binding NavigateHomeCommand}"
                        NavigateCategoryCommand="{Binding NavigateCategoryCommand}"
@@ -37,127 +38,125 @@
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled"
                       PanningMode="VerticalOnly">
-            
+
             <StackPanel>
-
-                <StackPanel Margin="0,0,0,20">
-                    <!-- Hero Section -->
-                    <Grid Height="400">
-                        <Image Source="/Views/Assets/hero-image.png"
-                            Stretch="UniformToFill"/>
-                        <Rectangle Fill="#000000"
-                                Opacity="0.4"/>
-                        <StackPanel VerticalAlignment="Center"
-                                    HorizontalAlignment="Left"
-                                    Margin="80,0,0,0"
-                                    MaxWidth="600">
-                            <TextBlock Text="All maritime products."
-                                    Foreground="White"
-                                    FontSize="48"
-                                    FontWeight="Bold"
-                                    Margin="0,0,0,5"/>
-                            <TextBlock Text="One Place."
-                                    Foreground="White"
-                                    FontSize="48"
-                                    FontWeight="Bold"
-                                    Margin="0,0,0,20"/>
-                            <TextBlock Text="Buy and sell certified boat, engines, and navigation systems."
-                                    Foreground="White"
-                                    FontSize="18"
-                                    TextWrapping="Wrap"
-                                    LineHeight="28"/>
-                        </StackPanel>
-                    </Grid>
-
-                    <!-- Main Content -->
-                    <StackPanel Margin="80,40,80,40">
-
-                        <!-- Categories with Products Section -->
-                        <ItemsControl ItemsSource="{Binding CategoriesWithProducts}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Margin="0,0,0,40">
-                                        <!-- Category Header -->
-                                        <Grid Margin="0,0,0,20"
-                                              Height="40">
-                                            <TextBlock Text="{Binding CategoryName}"
-                                                    FontSize="24"
-                                                    FontWeight="Bold"
-                                                    VerticalAlignment="Center"/>
-                                            <Button Content="See all ›"
-                                                    HorizontalAlignment="Right"
-                                                    Background="Transparent"
-                                                    BorderThickness="0"
-                                                    Foreground="{StaticResource PrimaryBlueBrush}"
-                                                    FontSize="16"
-                                                    Cursor="Hand"
-                                                    Command="{Binding DataContext.SeeAllCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                    CommandParameter="{Binding CategoryName}"
-                                                    Padding="1"/>
-                                        </Grid>
-
-                                        <!-- Products Horizontal List -->
-                                        <ItemsControl ItemsSource="{Binding Products}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal"/>
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border Margin="0,0,20,0"
-                                                            Width="220"
-                                                            Background="White"
-                                                            CornerRadius="8"
-                                                            Cursor="Hand">
-                                                        <Border.InputBindings>
-                                                            <MouseBinding MouseAction="LeftClick"
-                                                                        Command="{Binding DataContext.ProductSelectedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                                        CommandParameter="{Binding}"/>
-                                                        </Border.InputBindings>
-                                                        <Border.Effect>
-                                                            <DropShadowEffect ShadowDepth="2"
-                                                                            Color="#DDD"
-                                                                            BlurRadius="10"
-                                                                            Opacity="0.3"/>
-                                                        </Border.Effect>
-                                                        <StackPanel>
-                                                            <Border Height="160"
-                                                                    Background="#F5F5F5"
-                                                                    CornerRadius="8,8,0,0">
-                                                                <Image Source="{Binding ImageUrl}"
-                                                                    Stretch="UniformToFill"/>
-                                                            </Border>
-                                                            <StackPanel Margin="12">
-                                                                <TextBlock Text="{Binding ProductName}"
-                                                                        FontWeight="SemiBold"
-                                                                        FontSize="16"
-                                                                        Margin="0,0,0,5"
-                                                                        TextTrimming="CharacterEllipsis"/>
-                                                                <TextBlock Text="{Binding Category}"
-                                                                        Foreground="#999"
-                                                                        FontSize="13"
-                                                                        Margin="0,0,0,10"/>
-                                                                <TextBlock Text="{Binding Price}"
-                                                                        FontWeight="Bold"
-                                                                        FontSize="18"
-                                                                        Foreground="{StaticResource PrimaryBlueBrush}"/>
-                                                            </StackPanel>
-                                                        </StackPanel>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-
+                <!-- Hero Section -->
+                <Grid Height="400"
+                      Margin="0,0,0,20">
+                    <Image Source="/Views/Assets/hero-image.png"
+                           Stretch="UniformToFill"/>
+                    <Rectangle Fill="#000000"
+                               Opacity="0.4"/>
+                    <StackPanel VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Margin="80,0,0,0"
+                                MaxWidth="600">
+                        <TextBlock Text="All maritime products."
+                                   Foreground="White"
+                                   FontSize="48"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,5"/>
+                        <TextBlock Text="One Place."
+                                   Foreground="White"
+                                   FontSize="48"
+                                   FontWeight="Bold"
+                                   Margin="0,0,0,20"/>
+                        <TextBlock Text="Buy and sell certified boat, engines, and navigation systems."
+                                   Foreground="White"
+                                   FontSize="18"
+                                   TextWrapping="Wrap"
+                                   LineHeight="28"/>
                     </StackPanel>
+                </Grid>
+
+                <!-- Main Content -->
+                <StackPanel Margin="80,40,80,40">
+                    <!-- Categories with Products Section -->
+                    <ItemsControl ItemsSource="{Binding CategoriesWithProducts}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,40">
+                                    <!-- Category Header -->
+                                    <Grid Margin="0,0,0,20"
+                                          Height="40">
+                                        <TextBlock Text="{Binding CategoryName}"
+                                                   FontSize="24"
+                                                   FontWeight="Bold"
+                                                   VerticalAlignment="Center"/>
+                                        <Button Content="See all ›"
+                                                HorizontalAlignment="Right"
+                                                Background="Transparent"
+                                                BorderThickness="0"
+                                                Foreground="{StaticResource PrimaryBlueBrush}"
+                                                FontSize="16"
+                                                Cursor="Hand"
+                                                Command="{Binding DataContext.SeeAllCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding CategoryName}"
+                                                Padding="1"/>
+                                    </Grid>
+
+                                    <!-- Products Horizontal List -->
+                                    <ItemsControl ItemsSource="{Binding Products}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Margin="0,0,20,0"
+                                                        Width="220"
+                                                        Background="White"
+                                                        CornerRadius="8"
+                                                        Cursor="Hand">
+                                                    <Border.InputBindings>
+                                                        <MouseBinding MouseAction="LeftClick"
+                                                                      Command="{Binding DataContext.ProductSelectedCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                      CommandParameter="{Binding}"/>
+                                                    </Border.InputBindings>
+                                                    <Border.Effect>
+                                                        <DropShadowEffect ShadowDepth="2"
+                                                                          Color="#DDD"
+                                                                          BlurRadius="10"
+                                                                          Opacity="0.3"/>
+                                                    </Border.Effect>
+                                                    <StackPanel>
+                                                        <Border Height="160"
+                                                                Background="#F5F5F5"
+                                                                CornerRadius="8,8,0,0">
+                                                            <Image Source="{Binding ImageUrl}"
+                                                                   Stretch="UniformToFill"/>
+                                                        </Border>
+                                                        <StackPanel Margin="12">
+                                                            <TextBlock Text="{Binding ProductName}"
+                                                                       FontWeight="SemiBold"
+                                                                       FontSize="16"
+                                                                       Margin="0,0,0,5"
+                                                                       TextTrimming="CharacterEllipsis"/>
+                                                            <TextBlock Text="{Binding Category}"
+                                                                       Foreground="#999"
+                                                                       FontSize="13"
+                                                                       Margin="0,0,0,10"/>
+                                                            <TextBlock Text="{Binding Price}"
+                                                                       FontWeight="Bold"
+                                                                       FontSize="18"
+                                                                       Foreground="{StaticResource PrimaryBlueBrush}"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
 
                 <!-- Footer -->
-                <shared:Footer/>
+                <shared:Footer NavigateBoatCommand="{Binding NavigateCategoryCommand}"
+                               NavigateEnginesCommand="{Binding NavigateCategoryCommand}"
+                               NavigateGpsCommand="{Binding NavigateCategoryCommand}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
