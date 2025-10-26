@@ -5,18 +5,30 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
+using Microsoft.EntityFrameworkCore;
+using DotNetEnv;
 using BOZea.Helpers;
 using BOZea.Services;
 using BOZea.ViewModels.Dashboard;
 using BOZea.ViewModels.Base;
 using BOZea.ViewModels.Dialogs;
 using BOZea.Views.Payment;
+using BOZea.Repositories;
+using BOZea.Models;
+using BOZea.Data;
 
 namespace BOZea.ViewModels.Payment
 {
     public class PaymentViewModel : INotifyPropertyChanged
     {
         private readonly NavigationService _navigationService;
+        private PaymentRepository? _paymentRepository;
+        private OrderRepository? _orderRepository;
+        private OrderItemRepository? _orderItemRepository;
+        private UserRepository? _userRepository;
+        private ProductRepository? _productRepository;
+        private AppDbContext? _dbContext;
         private PaymentDialogViewModel _dialogViewModel = new();
         public PaymentView? PaymentViewReference { get; set; }
 
@@ -192,10 +204,58 @@ namespace BOZea.ViewModels.Payment
         {
             _navigationService = new NavigationService();
 
+            try
+            {
+                InitializeRepositories();
+                Console.WriteLine("[PaymentVM] Repositories initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentVM] Error initializing repositories: {ex.Message}");
+                Console.WriteLine($"[PaymentVM] StackTrace: {ex.StackTrace}");
+            }
+
             IncreaseQuantityCommand = new RelayCommand(_ => IncreaseQuantity());
             DecreaseQuantityCommand = new RelayCommand(_ => DecreaseQuantity());
             PayCommand = new RelayCommand(_ => ProcessPayment());
             BackCommand = new RelayCommand(_ => NavigateBack());
+        }
+
+        private void InitializeRepositories()
+        {
+            try
+            {
+                // Load environment variables from .env file
+                Env.Load();
+
+                var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+
+                // Get PostgreSQL connection string from environment variables
+                string connString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
+                                    $"Port={Environment.GetEnvironmentVariable("DB_PORT")};" +
+                                    $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
+                                    $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
+                                    $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};" +
+                                    $"SSL Mode=Require;Trust Server Certificate=true;";
+
+                Console.WriteLine($"[PaymentVM] Connecting to PostgreSQL: Host={Environment.GetEnvironmentVariable("DB_HOST")}, Database={Environment.GetEnvironmentVariable("DB_NAME")}");
+
+                optionsBuilder.UseNpgsql(connString);
+                _dbContext = new AppDbContext(optionsBuilder.Options);
+
+                _paymentRepository = new PaymentRepository(_dbContext);
+                _orderRepository = new OrderRepository(_dbContext);
+                _orderItemRepository = new OrderItemRepository(_dbContext);
+                _userRepository = new UserRepository(_dbContext);
+                _productRepository = new ProductRepository(_dbContext);
+
+                Console.WriteLine("[PaymentVM] All repositories initialized successfully with PostgreSQL");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentVM] Error in InitializeRepositories: {ex.Message}");
+                throw;
+            }
         }
 
         private void IncreaseQuantity()
@@ -217,14 +277,12 @@ namespace BOZea.ViewModels.Payment
             {
                 string paymentMethod = GetSelectedPaymentMethod();
 
-                // Validasi
                 if (string.IsNullOrEmpty(paymentMethod))
                 {
                     MessageBox.Show("Please select a payment method", "Payment Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                // Update dialog view model
                 DialogViewModel = new PaymentDialogViewModel
                 {
                     ProductName = ProductName,
@@ -235,7 +293,6 @@ namespace BOZea.ViewModels.Payment
 
                 Console.WriteLine($"[Payment] Showing confirmation dialog");
 
-                // Show overlay
                 if (PaymentViewReference != null)
                 {
                     PaymentViewReference.ShowPaymentConfirmation();
@@ -257,36 +314,43 @@ namespace BOZea.ViewModels.Payment
         {
             try
             {
-                // Generate Order ID
                 OrderId = $"ORD-{DateTime.Now:yyyyMMddHHmmss}";
-
                 Console.WriteLine($"[Payment] Payment completed. Order ID: {OrderId}");
 
-                // Show success dialog
-                if (PaymentViewReference != null)
+                if (SavePaymentToDatabase())
                 {
-                    PaymentViewReference.ShowSuccessDialog();
-
-                    // Schedule navigation setelah 3.5 seconds
-                    var timer = new System.Timers.Timer(3500);
-                    timer.AutoReset = false;
-                    timer.Elapsed += (s, e) =>
+                    if (PaymentViewReference != null)
                     {
-                        try
+                        PaymentViewReference.ShowSuccessDialog();
+
+                        var timer = new System.Timers.Timer(3500);
+                        timer.AutoReset = false;
+                        timer.Elapsed += (s, e) =>
                         {
-                            _navigationService.NavigateBack();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"[Payment] Navigation error: {ex.Message}");
-                        }
-                    };
-                    timer.Start();
+                            try
+                            {
+                                Console.WriteLine("[Payment] Timer elapsed - dispatching navigation");
+                                Application.Current?.Dispatcher.BeginInvoke(() =>
+                                {
+                                    NavigateBackOnUIThread();
+                                }, DispatcherPriority.Normal);
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"[Payment] Error in timer callback: {ex.Message}");
+                            }
+                        };
+                        timer.Start();
+                    }
+                    else
+                    {
+                        Console.WriteLine("[Payment] PaymentViewReference is null!");
+                        MessageBox.Show("Error: Could not show success dialog", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
                 else
                 {
-                    Console.WriteLine("[Payment] PaymentViewReference is null!");
-                    MessageBox.Show("Error: Could not show success dialog", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Error: Failed to save payment to database", "Database Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
@@ -294,6 +358,182 @@ namespace BOZea.ViewModels.Payment
                 Console.WriteLine($"[Payment] Error in CompletePayment: {ex.Message}");
                 MessageBox.Show($"Error: {ex.Message}", "Payment Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private bool SavePaymentToDatabase()
+        {
+            try
+            {
+                Console.WriteLine("[Payment] Saving payment to database...");
+
+                if (_paymentRepository == null || _orderRepository == null || _orderItemRepository == null ||
+                    _userRepository == null || _productRepository == null || _dbContext == null)
+                {
+                    Console.WriteLine("[Payment] ERROR: Repositories not initialized!");
+                    return false;
+                }
+
+                int userId = GetCurrentUserId();
+                decimal totalAmount = _productPriceValue * Quantity;
+
+                // Run async operation
+                var task = System.Threading.Tasks.Task.Run(async () =>
+                    await SavePaymentToDatabaseAsync(userId, totalAmount));
+                task.Wait();
+                return task.Result;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Payment] Error saving to database: {ex.Message}");
+                Console.WriteLine($"[Payment] StackTrace: {ex.StackTrace}");
+                return false;
+            }
+        }
+
+        private async System.Threading.Tasks.Task<bool> SavePaymentToDatabaseAsync(int userId, decimal totalAmount)
+        {
+            try
+            {
+                Console.WriteLine("[Payment] SavePaymentToDatabaseAsync started");
+
+                if (_paymentRepository == null || _orderRepository == null || _orderItemRepository == null ||
+                    _userRepository == null || _productRepository == null || _dbContext == null)
+                {
+                    return false;
+                }
+
+                // 1. Create Payment record
+                var payment = new Models.Payment
+                {
+                    Method = GetSelectedPaymentMethod(),
+                    Amount = totalAmount,
+                    Date = DateTime.UtcNow,  // ✅ Use UTC instead of Now
+                    Status = PaymentStatus.Success
+                };
+
+                await _paymentRepository.AddAsync(payment);
+
+                try
+                {
+                    _dbContext.SaveChanges();
+                    Console.WriteLine($"[Payment] Payment saved with ID: {payment.ID}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Payment] ERROR saving Payment: {ex.Message}");
+                    if (ex.InnerException != null)
+                        Console.WriteLine($"[Payment] Inner exception: {ex.InnerException.Message}");
+                    throw;
+                }
+
+                // 2. Get User
+                var user = await _userRepository.GetByIdAsync(userId);
+                if (user == null)
+                {
+                    Console.WriteLine($"[Payment] ERROR: User with ID {userId} not found!");
+                    return false;
+                }
+
+                // 3. Create Order record
+                var order = new Models.Order
+                {
+                    UserID = userId,
+                    User = user,
+                    PaymentID = payment.ID,
+                    Payment = payment,
+                    Date = DateTime.UtcNow,  // ✅ Use UTC instead of Now
+                    OrderItems = new System.Collections.Generic.List<OrderItem>()
+                };
+
+                await _orderRepository.AddAsync(order);
+
+                try
+                {
+                    _dbContext.SaveChanges();
+                    Console.WriteLine($"[Payment] Order saved with ID: {order.ID}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Payment] ERROR saving Order: {ex.Message}");
+                    if (ex.InnerException != null)
+                        Console.WriteLine($"[Payment] Inner exception: {ex.InnerException.Message}");
+                    throw;
+                }
+
+                // 4. Get Product
+                var product = await _productRepository.GetByIdAsync(_productId);
+                if (product == null)
+                {
+                    Console.WriteLine($"[Payment] ERROR: Product with ID {_productId} not found!");
+                    return false;
+                }
+
+                // 5. Create OrderItem record
+                var orderItem = new OrderItem
+                {
+                    OrderID = order.ID,
+                    Order = order,
+                    ProductID = _productId,
+                    Product = product,
+                    Quantity = Quantity,
+                    Price = _productPriceValue,
+                    Status = OrderItemStatus.Pending
+                };
+
+                await _orderItemRepository.AddAsync(orderItem);
+
+                try
+                {
+                    _dbContext.SaveChanges();
+                    Console.WriteLine($"[Payment] OrderItem saved");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[Payment] ERROR saving OrderItem: {ex.Message}");
+                    if (ex.InnerException != null)
+                        Console.WriteLine($"[Payment] Inner exception: {ex.InnerException.Message}");
+                    throw;
+                }
+
+                Console.WriteLine($"[Payment] Successfully saved to database!");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Payment] Error in SavePaymentToDatabaseAsync: {ex.Message}");
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"[Payment] Inner exception: {ex.InnerException.Message}");
+                    if (ex.InnerException.InnerException != null)
+                        Console.WriteLine($"[Payment] Inner inner exception: {ex.InnerException.InnerException.Message}");
+                }
+                Console.WriteLine($"[Payment] StackTrace: {ex.StackTrace}");
+                return false;
+            }
+        }
+
+        private int GetCurrentUserId()
+        {
+            try
+            {
+                if (UserSession.IsLoggedIn && UserSession.CurrentUserId.HasValue)
+                {
+                    int userId = UserSession.CurrentUserId.Value;
+                    Console.WriteLine($"[Payment] Got user ID from UserSession: {userId}");
+                    return userId;
+                }
+                else
+                {
+                    Console.WriteLine("[Payment] User not logged in via UserSession");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Payment] Error getting user ID: {ex.Message}");
+            }
+
+            Console.WriteLine("[Payment] WARNING: Using default user ID = 1");
+            return 1;
         }
 
         public string GetSelectedPaymentMethod()
@@ -309,13 +549,25 @@ namespace BOZea.ViewModels.Payment
         {
             try
             {
-                Console.WriteLine("[Payment] Calling NavigateBack()");
+                Console.WriteLine("[Payment] Calling NavigateBack() from UI thread");
                 _navigationService.NavigateBack();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[Payment] Error in NavigateBack: {ex.Message}");
-                Console.WriteLine($"[Payment] StackTrace: {ex.StackTrace}");
+            }
+        }
+
+        private void NavigateBackOnUIThread()
+        {
+            try
+            {
+                Console.WriteLine("[Payment] NavigateBackOnUIThread() called");
+                _navigationService.NavigateBack();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[Payment] Error in NavigateBackOnUIThread: {ex.Message}");
             }
         }
 

@@ -13,7 +13,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/BOZea;component/Views/Styles/MaterialOverrides.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
             <!-- BooleanToVisibilityConverter -->
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
@@ -75,7 +75,7 @@
                                    FontWeight="Bold"
                                    TextAlignment="Center"
                                    Margin="0,0,0,15"/>
-                        
+
                         <!-- Category Description -->
                         <TextBlock Text="{Binding CategoryDescription}"
                                    FontSize="16"
@@ -92,7 +92,7 @@
                                   HorizontalAlignment="Center">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel Orientation="Horizontal" 
+                                <WrapPanel Orientation="Horizontal"
                                            HorizontalAlignment="Center"
                                            ItemWidth="310"/>
                             </ItemsPanelTemplate>
@@ -124,7 +124,7 @@
                                             <Image Source="{Binding ImageUrl}"
                                                    Stretch="UniformToFill"/>
                                         </Border>
-                                        
+
                                         <!-- Product Info -->
                                         <StackPanel Margin="15,15,15,20">
                                             <!-- Product Name -->
@@ -134,13 +134,13 @@
                                                        Foreground="#333"
                                                        TextTrimming="CharacterEllipsis"
                                                        Margin="0,0,0,5"/>
-                                            
+
                                             <!-- Category -->
                                             <TextBlock Text="{Binding Category}"
                                                        Foreground="#999"
                                                        FontSize="14"
                                                        Margin="0,0,0,10"/>
-                                            
+
                                             <!-- Price (Highlighted without background) -->
                                             <TextBlock Text="{Binding Price}"
                                                        FontWeight="ExtraBold"

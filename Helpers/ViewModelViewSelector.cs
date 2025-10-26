@@ -23,7 +23,7 @@ namespace BOZea.Helpers
             if (container is FrameworkElement element && item != null)
             {
                 // Mapping ViewModel ke View
-                
+
                 // Auth ViewModels
                 if (item is LoginViewModel)
                 {
@@ -33,39 +33,39 @@ namespace BOZea.Helpers
                 {
                     return CreateTemplate(typeof(RegisterView), element);
                 }
-                
+                else if (item is ProfileViewModel)
+                {
+                    return CreateTemplate(typeof(ProfileView), element);
+                }
+
                 // Dashboard ViewModels
                 else if (item is DashboardViewModel)
                 {
                     return CreateTemplate(typeof(DashboardView), element);
                 }
-                
+
                 // Category ViewModels
                 else if (item is CategoryDetailViewModel)
                 {
                     return CreateTemplate(typeof(CategoryDetailView), element);
                 }
-                
+
                 // Product ViewModels
                 else if (item is ProductDetailViewModel)
                 {
                     return CreateTemplate(typeof(ProductDetailView), element);
                 }
-                
+
                 // Payment ViewModels
                 else if (item is PaymentViewModel)
                 {
                     return CreateTemplate(typeof(PaymentView), element);
                 }
-                
+
                 // Tambahkan mapping lain sesuai kebutuhan
                 // else if (item is CartViewModel)
                 // {
                 //     return CreateTemplate(typeof(CartView), element);
-                // }
-                // else if (item is ProfileViewModel)
-                // {
-                //     return CreateTemplate(typeof(ProfileView), element);
                 // }
                 // else if (item is OrderViewModel)
                 // {
@@ -73,13 +73,10 @@ namespace BOZea.Helpers
                 // }
             }
 
-            // Fallback: tampilkan error message
+            // Fallback: log error instead of showing MessageBox to avoid Dispatcher crash
             if (item != null)
             {
-                MessageBox.Show($"No view mapping found for ViewModel: {item.GetType().Name}", 
-                               "View Mapping Error", 
-                               MessageBoxButton.OK, 
-                               MessageBoxImage.Warning);
+                Console.WriteLine($"[ViewModelViewSelector] No view mapping found for ViewModel: {item.GetType().Name}");
             }
 
             return base.SelectTemplate(item, container);

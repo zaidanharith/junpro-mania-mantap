@@ -647,20 +647,24 @@
                 </Border.Effect>
 
                 <StackPanel>
-                    <!-- Success Icon Circle -->
-                    <Ellipse Width="80"
-                             Height="80"
-                             Fill="#22C55E"
-                             HorizontalAlignment="Center"
-                             Margin="0,0,0,20"/>
+                    <!-- Success Icon - Grid dengan centered content -->
+                    <Grid Width="80"
+                          Height="80"
+                          HorizontalAlignment="Center"
+                          Margin="0,0,0,20">
+                        <!-- Green Circle Background -->
+                        <Ellipse Fill="#22C55E"
+                                 Width="80"
+                                 Height="80"/>
 
-                    <!-- Success Checkmark -->
-                    <TextBlock Text="✓"
-                               FontSize="48"
-                               Foreground="White"
-                               HorizontalAlignment="Center"
-                               Margin="0,-65,0,20"
-                               TextAlignment="Center"/>
+                        <!-- Checkmark centered -->
+                        <TextBlock Text="✓"
+                                   FontSize="48"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="Center"/>
+                    </Grid>
 
                     <!-- Title -->
                     <TextBlock Text="Payment Successful!"

@@ -167,8 +167,33 @@ namespace BOZea.ViewModels.Dashboard
 
         private void OpenProfile()
         {
-            System.Windows.MessageBox.Show($"Open profile for: {CurrentUser?.Name}");
-            // TODO: Implement navigation to profile page
+            try
+            {
+                Console.WriteLine($"[DashboardVM] Opening profile for: {CurrentUser?.Name}");
+
+                if (!UserSession.IsLoggedIn)
+                {
+                    Console.WriteLine("[DashboardVM] User not logged in");
+                    return;
+                }
+
+                // Navigate to ProfileViewModel via MainViewModel
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    var profileViewModel = new BOZea.ViewModels.Auth.ProfileViewModel();
+                    mainViewModel.CurrentViewModel = profileViewModel;
+                    Console.WriteLine("[DashboardVM] Navigated to ProfileViewModel");
+                }
+                else
+                {
+                    Console.WriteLine("[DashboardVM] ERROR: MainViewModel not found");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DashboardVM] Error opening profile: {ex.Message}");
+            }
         }
 
         private void ExecuteSeeAll(object? parameter)
