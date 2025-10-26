@@ -28,8 +28,9 @@
                 <Border Background="White"
                         CornerRadius="90"
                         HorizontalAlignment="Right"
-                        Width="500"
-                        Height="750"
+                        VerticalAlignment="Center"
+                        MaxWidth="500"
+                        MaxHeight="750"
                         Margin="0,0,150,0">
                         <Border.Effect>
                                 <DropShadowEffect Color="Black"
