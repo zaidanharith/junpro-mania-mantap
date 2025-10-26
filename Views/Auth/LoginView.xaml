@@ -30,7 +30,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         MaxWidth="500"
-                        MaxHeight="750"
+                        MaxHeight="800"
                         Margin="0,0,150,0">
                         <Border.Effect>
                                 <DropShadowEffect Color="Black"

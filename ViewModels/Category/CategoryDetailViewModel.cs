@@ -1,25 +1,50 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using System.Linq;
+using BOZea.Data;
+using BOZea.Helpers;
+using BOZea.Models;
+using BOZea.Services;
+using BOZea.ViewModels.Dashboard;
 using BOZea.ViewModels.Product;
 using BOZea.ViewModels.Base;
-using BOZea.Services;
-using BOZea.Models;
-using BOZea.Helpers;
-using BOZea.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace BOZea.ViewModels.Dashboard
+namespace BOZea.ViewModels.Category
 {
-    public class DashboardViewModel : INotifyPropertyChanged
+    public class CategoryDetailViewModel : INotifyPropertyChanged
     {
         private readonly AppDbContext _context;
         private readonly NavigationService _navigationService;
+        private string _categoryName = string.Empty;
+        private string _categoryDescription = string.Empty;
         private User? _currentUser;
         private string _searchQuery = "";
+        private bool _isEmpty;
         private RelayCommand? _productSelectedCommand;
+
+        public string CategoryName
+        {
+            get => _categoryName;
+            set
+            {
+                _categoryName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CategoryDescription
+        {
+            get => _categoryDescription;
+            set
+            {
+                _categoryDescription = value;
+                OnPropertyChanged();
+            }
+        }
 
         public User? CurrentUser
         {
@@ -41,9 +66,18 @@ namespace BOZea.ViewModels.Dashboard
             }
         }
 
-        public ObservableCollection<CategoryWithProducts> CategoriesWithProducts { get; set; }
+        public bool IsEmpty
+        {
+            get => _isEmpty;
+            set
+            {
+                _isEmpty = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public ICommand SeeAllCommand { get; }
+        public ObservableCollection<ProductItem> Products { get; set; }
+
         public ICommand ExecuteSearchCommand { get; }
         public ICommand NavigateHomeCommand { get; }
         public ICommand NavigateCategoryCommand { get; }
@@ -51,43 +85,41 @@ namespace BOZea.ViewModels.Dashboard
         public ICommand ProductSelectedCommand => _productSelectedCommand ??= 
             new RelayCommand(ExecuteProductSelected);
 
-        public DashboardViewModel()
+        public CategoryDetailViewModel(string categoryName)
         {
-            // Create DbContext instance
             var factory = new AppDbContextFactory();
             _context = factory.CreateDbContext(new string[] { });
-
-            // Initialize NavigationService
             _navigationService = new NavigationService();
 
             LoadCurrentUser();
 
-            CategoriesWithProducts = new ObservableCollection<CategoryWithProducts>();
-            LoadCategoriesWithProducts();
+            Products = new ObservableCollection<ProductItem>();
+            LoadCategoryProducts(categoryName);
 
             // Initialize commands
-            SeeAllCommand = new RelayCommand(ExecuteSeeAll);
             ExecuteSearchCommand = new RelayCommand(_ => ExecuteSearch());
             NavigateHomeCommand = new RelayCommand(_ => NavigateHome());
             NavigateCategoryCommand = new RelayCommand(NavigateCategory);
             OpenProfileCommand = new RelayCommand(_ => OpenProfile());
         }
 
-        private void LoadCategoriesWithProducts()
+        private void LoadCategoryProducts(string categoryName)
         {
             try
             {
+                // Load all categories ke memory dulu, baru filter
                 var categories = _context.Categories.ToList();
+                
+                // Filter di client-side (in-memory) untuk case-insensitive comparison
+                var category = categories
+                    .FirstOrDefault(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
 
-                foreach (var category in categories)
+                if (category != null)
                 {
-                    var categoryWithProducts = new CategoryWithProducts
-                    {
-                        CategoryId = category.ID,
-                        CategoryName = category.Name
-                    };
+                    CategoryName = category.Name;
+                    CategoryDescription = category.Description;
 
-                    // Get products for this category through ProductCategory junction table
+                    // Get products for this category
                     var productIds = _context.ProductCategories
                         .Where(pc => pc.CategoryID == category.ID)
                         .Select(pc => pc.ProductID)
@@ -99,7 +131,7 @@ namespace BOZea.ViewModels.Dashboard
 
                     foreach (var product in products)
                     {
-                        categoryWithProducts.Products.Add(new ProductItem
+                        Products.Add(new ProductItem
                         {
                             ProductId = product.ID,
                             ProductName = product.Name,
@@ -109,16 +141,19 @@ namespace BOZea.ViewModels.Dashboard
                         });
                     }
 
-                    // Only add category if it has products
-                    if (categoryWithProducts.Products.Any())
-                    {
-                        CategoriesWithProducts.Add(categoryWithProducts);
-                    }
+                    IsEmpty = !Products.Any();
+                }
+                else
+                {
+                    CategoryName = categoryName;
+                    CategoryDescription = "Category not found";
+                    IsEmpty = true;
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Error loading products: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error loading category products: {ex.Message}");
+                IsEmpty = true;
             }
         }
 
@@ -129,17 +164,10 @@ namespace BOZea.ViewModels.Dashboard
 
         private void ExecuteProductSelected(object? parameter)
         {
-            try
+            if (parameter is ProductItem product)
             {
-                if (parameter is ProductItem product)
-                {
-                    var productDetailVM = new ProductDetailViewModel(product);
-                    _navigationService.NavigateToProductDetail(productDetailVM);
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show($"Error in ExecuteProductSelected: {ex.Message}");
+                var productDetailVM = new ProductDetailViewModel(product);
+                _navigationService.NavigateToProductDetail(productDetailVM);
             }
         }
 
@@ -154,29 +182,19 @@ namespace BOZea.ViewModels.Dashboard
 
         private void NavigateHome()
         {
-            System.Windows.MessageBox.Show("Navigate to Home");
-            // TODO: Implement navigation to home
+            var mainWindow = System.Windows.Application.Current.MainWindow;
+            if (mainWindow?.DataContext is MainViewModel mainViewModel)
+            {
+                _navigationService.NavigateBack();
+            }
         }
 
         private void NavigateCategory(object? parameter)
         {
             var category = parameter as string;
-            System.Windows.MessageBox.Show($"Navigate to category: {category}");
-            // TODO: Implement navigation to category
-        }
-
-        private void OpenProfile()
-        {
-            System.Windows.MessageBox.Show($"Open profile for: {CurrentUser?.Name}");
-            // TODO: Implement navigation to profile page
-        }
-
-        private void ExecuteSeeAll(object? parameter)
-        {
-            var category = parameter as string;
             if (!string.IsNullOrEmpty(category))
             {
-                var categoryDetailVM = new BOZea.ViewModels.Category.CategoryDetailViewModel(category);
+                var categoryDetailVM = new CategoryDetailViewModel(category);
                 var mainWindow = System.Windows.Application.Current.MainWindow;
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
@@ -185,29 +203,14 @@ namespace BOZea.ViewModels.Dashboard
             }
         }
 
+        private void OpenProfile()
+        {
+            System.Windows.MessageBox.Show($"Open profile for: {CurrentUser?.Name}");
+            // TODO: Implement navigation to profile page
+        }
+
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string? name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-    }
-
-    public class CategoryWithProducts
-    {
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; } = string.Empty;
-        public ObservableCollection<ProductItem> Products { get; set; }
-
-        public CategoryWithProducts()
-        {
-            Products = new ObservableCollection<ProductItem>();
-        }
-    }
-
-    public class ProductItem
-    {
-        public int ProductId { get; set; }
-        public string ProductName { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
-        public string Price { get; set; } = string.Empty;
-        public string ImageUrl { get; set; } = string.Empty;
     }
 }

@@ -7,6 +7,7 @@ using BOZea.Views;
 using BOZea.Views.Auth;
 using BOZea.Services;
 using BOZea.Repositories;
+using BOZea.ViewModels;
 using BOZea.ViewModels.Auth;
 using BOZea.ViewModels.Base;
 

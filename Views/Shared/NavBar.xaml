@@ -29,7 +29,7 @@
                               Offset="1"/>
             </LinearGradientBrush>
         </Border.Background>
-        <Grid Margin="60,0">
+        <Grid Margin="50,0,50,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <!-- Logo -->

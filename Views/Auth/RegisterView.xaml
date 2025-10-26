@@ -30,7 +30,7 @@
                         CornerRadius="90"
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
-                        MaxWidth="600"
+                        MaxWidth="500"
                         MaxHeight="1000"
                         Margin="0,0,150,0">
                         <Border.Effect>

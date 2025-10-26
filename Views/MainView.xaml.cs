@@ -24,8 +24,8 @@ public partial class MainView : Window
         InitializeComponent();
 
         WindowState = WindowState.Maximized;
-        WindowStyle = WindowStyle.None;
-        ResizeMode = ResizeMode.NoResize;
+        // WindowStyle = WindowStyle.None;
+        // ResizeMode = ResizeMode.NoResize;
     }
 
 }
