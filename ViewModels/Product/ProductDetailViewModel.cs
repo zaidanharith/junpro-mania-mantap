@@ -21,7 +21,8 @@ namespace BOZea.ViewModels.Product
         private ProductItem? _productItem;
         private ObservableCollection<ReviewModel> _reviews = null!;
         private RelayCommand? _buyNowCommand;
-        private RelayCommand? _backCommand;
+        private RelayCommand? _navigateHomeCommand;
+        private User? _currentUser;
 
         public ProductModel Product
         {
@@ -35,8 +36,14 @@ namespace BOZea.ViewModels.Product
             set { _reviews = value; OnPropertyChanged(); }
         }
 
+        public User? CurrentUser
+        {
+            get => _currentUser;
+            set { _currentUser = value; OnPropertyChanged(); }
+        }
+
         public ICommand BuyNowCommand => _buyNowCommand ??= new RelayCommand(ExecuteBuyNow);
-        public ICommand BackCommand => _backCommand ??= new RelayCommand(ExecuteBack);
+        public ICommand NavigateHomeCommand => _navigateHomeCommand ??= new RelayCommand(ExecuteNavigateHome);
 
         // Constructor default
         public ProductDetailViewModel()
@@ -44,7 +51,8 @@ namespace BOZea.ViewModels.Product
             var factory = new AppDbContextFactory();
             _context = factory.CreateDbContext(new string[] { });
             _navigationService = new NavigationService();
-            
+
+            LoadCurrentUser();
             InitializeData();
         }
 
@@ -54,9 +62,18 @@ namespace BOZea.ViewModels.Product
             var factory = new AppDbContextFactory();
             _context = factory.CreateDbContext(new string[] { });
             _navigationService = new NavigationService();
-            
+
             _productItem = productItem;
+            LoadCurrentUser();
             LoadProductFromDatabase(productItem.ProductId);
+        }
+
+        private void LoadCurrentUser()
+        {
+            if (BOZea.Helpers.UserSession.IsLoggedIn && BOZea.Helpers.UserSession.CurrentUser != null)
+            {
+                CurrentUser = BOZea.Helpers.UserSession.CurrentUser;
+            }
         }
 
         private void LoadProductFromDatabase(int productId)
@@ -64,13 +81,13 @@ namespace BOZea.ViewModels.Product
             try
             {
                 var product = _context.Products.FirstOrDefault(p => p.ID == productId);
-                
+
                 if (product != null)
                 {
                     // Get category name
                     var productCategory = _context.ProductCategories
                         .FirstOrDefault(pc => pc.ProductID == productId);
-                    
+
                     var categoryName = "Unknown";
                     if (productCategory != null)
                     {
@@ -203,7 +220,7 @@ namespace BOZea.ViewModels.Product
                 {
                     // Create PaymentViewModel with product data
                     var paymentVM = new PaymentViewModel(_productItem);
-                    
+
                     // Navigate to Payment page
                     var mainWindow = System.Windows.Application.Current.MainWindow;
                     if (mainWindow?.DataContext is ViewModels.MainViewModel mainViewModel)
@@ -213,24 +230,48 @@ namespace BOZea.ViewModels.Product
                 }
                 else
                 {
-                    System.Windows.MessageBox.Show("Product information not available.", 
-                        "Error", 
-                        System.Windows.MessageBoxButton.OK, 
+                    System.Windows.MessageBox.Show("Product information not available.",
+                        "Error",
+                        System.Windows.MessageBoxButton.OK,
                         System.Windows.MessageBoxImage.Error);
                 }
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show($"Error navigating to payment: {ex.Message}", 
-                    "Error", 
-                    System.Windows.MessageBoxButton.OK, 
+                System.Windows.MessageBox.Show($"Error navigating to payment: {ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
                     System.Windows.MessageBoxImage.Error);
             }
         }
 
-        private void ExecuteBack(object? parameter)
+        private void ExecuteNavigateHome(object? parameter)
         {
-            _navigationService.NavigateBack();
+            try
+            {
+                Console.WriteLine("[ProductDetailVM] Navigating back to Dashboard...");
+
+                // Get MainViewModel and navigate to DashboardViewModel
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is ViewModels.MainViewModel mainViewModel)
+                {
+                    var dashboardVM = new DashboardViewModel();
+                    mainViewModel.CurrentViewModel = dashboardVM;
+                    Console.WriteLine("[ProductDetailVM] Successfully navigated to Dashboard");
+                }
+                else
+                {
+                    Console.WriteLine("[ProductDetailVM] ERROR: MainViewModel not found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProductDetailVM] Error navigating home: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error navigating to dashboard: {ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

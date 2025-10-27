@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
-             FontFamily="Plus Jakarta Sans">
+             FontFamily="Plus Jakarta Sans" d:DesignWidth="2860">
 
         <UserControl.Resources>
                 <ResourceDictionary>

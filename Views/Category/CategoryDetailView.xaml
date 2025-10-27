@@ -50,7 +50,8 @@
                             BorderThickness="0"
                             Cursor="Hand"
                             HorizontalAlignment="Left"
-                            Margin="0,0,0,30">
+                            Margin="0,0,0,30"
+                            Height="45">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="←"
                                        FontSize="20"

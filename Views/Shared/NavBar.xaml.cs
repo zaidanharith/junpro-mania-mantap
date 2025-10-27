@@ -27,7 +27,41 @@ namespace BOZea.Views.Shared
                 OpenProfileCommand = new RelayCommand(_ => OpenProfile());
             }
 
+            // Load current user data
+            LoadCurrentUser();
+
             Console.WriteLine("[NavBar] Loaded");
+        }
+
+        private void LoadCurrentUser()
+        {
+            try
+            {
+                if (UserSession.IsLoggedIn && UserSession.CurrentUser != null)
+                {
+                    var user = UserSession.CurrentUser;
+
+                    // Update greeting text
+                    GreetingText.Text = $"Selamat Datang, {user.Name}!";
+
+                    // Update profile image
+                    if (!string.IsNullOrEmpty(user.Image))
+                    {
+                        ProfileImage.Source = new BitmapImage(new Uri(user.Image));
+                    }
+
+                    Console.WriteLine($"[NavBar] Loaded user: {user.Name}");
+                }
+                else
+                {
+                    GreetingText.Text = "Selamat Datang!";
+                    Console.WriteLine("[NavBar] No user logged in");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[NavBar] Error loading user: {ex.Message}");
+            }
         }
 
         public static readonly DependencyProperty SearchQueryProperty =
@@ -90,6 +124,10 @@ namespace BOZea.Views.Shared
         {
             if (d is NavBar navBar && e.NewValue is User user)
             {
+                // Update greeting text
+                navBar.GreetingText.Text = $"Selamat Datang, {user.Name}!";
+
+                // Update profile image
                 if (!string.IsNullOrEmpty(user.Image) && navBar.ProfileImage != null)
                 {
                     navBar.ProfileImage.Source = new BitmapImage(new Uri(user.Image));
@@ -140,6 +178,11 @@ namespace BOZea.Views.Shared
             {
                 SearchQuery = tb.Text;
             }
+        }
+
+        private void GreetingText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            // Prevent user from editing the greeting text
         }
     }
 

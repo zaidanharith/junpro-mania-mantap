@@ -5,7 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:shared="clr-namespace:BOZea.Views.Shared"
              mc:Ignorable="d"
-             FontFamily="Plus Jakarta Sans">
+             FontFamily="Plus Jakarta Sans"
+             d:DesignWidth="1930"
+             d:DesignHeight="1045.92">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -92,7 +94,7 @@
                                                 Cursor="Hand"
                                                 Command="{Binding DataContext.SeeAllCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding CategoryName}"
-                                                Padding="1"/>
+                                                Padding="0"/>
                                     </Grid>
 
                                     <!-- Products Horizontal List -->

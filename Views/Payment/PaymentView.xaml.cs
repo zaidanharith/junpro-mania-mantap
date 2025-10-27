@@ -136,5 +136,10 @@ namespace BOZea.Views.Payment
                 ClosePaymentConfirmation();
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

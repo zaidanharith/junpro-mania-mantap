@@ -5,7 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:shared="clr-namespace:BOZea.Views.Shared"
              mc:Ignorable="d"
-             FontFamily="Plus Jakarta Sans">
+             FontFamily="Plus Jakarta Sans"
+             d:DesignHeight="1032.38"
+             d:DesignWidth="1913.94">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -39,18 +41,29 @@
             <StackPanel>
                 <!-- Product Header Button -->
                 <Grid Margin="80,40,80,0">
-                    <Button Content="All Products"
-                            Width="120"
-                            Height="40"
-                            Background="White"
-                            BorderBrush="#999"
-                            BorderThickness="1"
-                            Foreground="Black"
-                            FontSize="14"
-                            HorizontalAlignment="Left"
+                    <Button Command="{Binding NavigateHomeCommand}"
+                            Background="Transparent"
+                            BorderThickness="0"
                             Cursor="Hand"
-                            Command="{Binding BackCommand}"/>
+                            HorizontalAlignment="Left"
+                            Padding="0"
+                            Height="45">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="←"
+                                       FontSize="20"
+                                       FontWeight="Bold"
+                                       Foreground="#333"
+                                       Margin="0,0,10,0"
+                                       VerticalAlignment="Center"/>
+                            <TextBlock Text="Back to Dashboard"
+                                       FontSize="16"
+                                       FontWeight="Medium"
+                                       Foreground="#333"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
                 </Grid>
+
 
                 <!-- Product Detail Section -->
                 <Grid Margin="80,30,80,60">
@@ -104,7 +117,7 @@
                         <Button Style="{StaticResource PremiumBuyButton}"
                                 Command="{Binding BuyNowCommand}"
                                 Height="50"
-                                Width="200"
+                                Width="155"
                                 Margin="0,0,0,30"
                                 HorizontalAlignment="Left"
                                 RenderTransformOrigin="0.5,0.5">
@@ -113,7 +126,7 @@
                                                 ScaleY="1"/>
                             </Button.RenderTransform>
                             <TextBlock Text="🛒 Buy Now"
-                                       FontSize="16"
+                                       FontSize="20"
                                        FontWeight="SemiBold"
                                        Foreground="White"
                                        VerticalAlignment="Center"
@@ -121,14 +134,16 @@
                         </Button>
                         <!-- Additional Info -->
                         <StackPanel Orientation="Horizontal"
-                                    Margin="0,25,0,0"
+                                    Margin="0,0,0,0"
                                     VerticalAlignment="Center">
                             <Border Background="#E8F5E9"
                                     CornerRadius="6"
-                                    Padding="12,8"
+                                    Padding="12,0"
                                     Margin="0,0,10,0"
-                                    VerticalAlignment="Center">
+                                    VerticalAlignment="Center"
+                                    Height="28">
                                 <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
                                             VerticalAlignment="Center">
                                     <TextBlock Text="✓"
                                                Foreground="#4CAF50"
@@ -138,14 +153,15 @@
                                     <TextBlock Text="Secure Payment"
                                                Foreground="#2E7D32"
                                                FontSize="13"
-                                               FontWeight="Medium"
-                                               VerticalAlignment="Center"/>
+                                               FontWeight="Bold"
+                                               Margin="0,5,0,5"/>
                                 </StackPanel>
                             </Border>
                             <Border Background="#FFF3E0"
                                     CornerRadius="6"
-                                    Padding="12,8"
-                                    VerticalAlignment="Center">
+                                    Padding="12,0"
+                                    VerticalAlignment="Center"
+                                    Height="29">
                                 <StackPanel Orientation="Horizontal"
                                             VerticalAlignment="Center">
                                     <TextBlock Text="🚚"
@@ -154,8 +170,9 @@
                                     <TextBlock Text="Fast Shipping"
                                                Foreground="#E65100"
                                                FontSize="13"
-                                               FontWeight="Medium"
-                                               VerticalAlignment="Center"/>
+                                               FontWeight="Bold"
+                                               VerticalAlignment="Center"
+                                               Margin="0,5,0,5"/>
                                 </StackPanel>
                             </Border>
                         </StackPanel>
