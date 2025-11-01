@@ -9,6 +9,7 @@ namespace BOZea.Views.Shared
         public Footer()
         {
             InitializeComponent();
+            // DataContext sudah di-set di XAML
         }
 
         public static readonly DependencyProperty NavigateBoatCommandProperty =

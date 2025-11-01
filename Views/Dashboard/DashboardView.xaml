@@ -155,10 +155,7 @@
                     </ItemsControl>
                 </StackPanel>
 
-                <!-- Footer -->
-                <shared:Footer NavigateBoatCommand="{Binding NavigateCategoryCommand}"
-                               NavigateEnginesCommand="{Binding NavigateCategoryCommand}"
-                               NavigateGpsCommand="{Binding NavigateCategoryCommand}"/>
+                <shared:Footer/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

@@ -28,7 +28,8 @@
         </Grid.RowDefinitions>
 
         <!-- NavBar (Fixed) -->
-        <shared:NavBar SearchQuery="{Binding SearchQuery, Mode=TwoWay}"
+        <shared:NavBar Grid.Row="0"
+                       SearchQuery="{Binding SearchQuery, Mode=TwoWay}"
                        ExecuteSearchCommand="{Binding ExecuteSearchCommand}"
                        NavigateHomeCommand="{Binding NavigateHomeCommand}"
                        NavigateCategoryCommand="{Binding NavigateCategoryCommand}"
@@ -40,9 +41,16 @@
         <ScrollViewer Grid.Row="1"
                       VerticalScrollBarVisibility="Auto"
                       HorizontalScrollBarVisibility="Disabled">
-            <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <!-- Main Content -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Footer -->
+                </Grid.RowDefinitions>
+
                 <!-- Main Content -->
-                <StackPanel Margin="80,60,80,60">
+                <StackPanel Grid.Row="0" Margin="80,60,80,60">
 
                     <!-- Back Button -->
                     <Button Command="{Binding NavigateHomeCommand}"
@@ -176,9 +184,9 @@
 
                 </StackPanel>
 
-                <!-- Footer -->
-                <shared:Footer/>
-            </StackPanel>
+                <!-- Footer - Sekarang di Grid.Row="1" -->
+                <shared:Footer Grid.Row="1"/>
+            </Grid>
         </ScrollViewer>
     </Grid>
 </UserControl>

@@ -1,10 +1,16 @@
 ﻿<UserControl x:Class="BOZea.Views.Shared.Footer"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:BOZea.ViewModels.Shared"
              x:Name="Root"
              FontFamily="Plus Jakarta Sans"
              Height="Auto"
              MinHeight="160">
+    
+    <UserControl.DataContext>
+        <vm:FooterViewModel/>
+    </UserControl.DataContext>
+    
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,57 +20,49 @@
     </UserControl.Resources>
 
     <Border Background="{StaticResource PrimaryBlueBrush}">
-        <Grid Margin="60,30,60,30"
-              VerticalAlignment="Top">
+        <Grid Margin="60,30,60,30" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <!-- Left Section - Tagline -->
-            <StackPanel Grid.Column="0"
-                        VerticalAlignment="Top">
+            <StackPanel Grid.Column="0" VerticalAlignment="Top">
                 <TextBlock Text="Sail More, Spend Less!"
                            Foreground="White"
                            FontSize="24"
                            FontWeight="Bold"
-                           Margin="0,0,0,8"/>
+                           Margin="0,0,0,4"/>
                 <TextBlock Text="Find Your Need in One Place."
                            Foreground="White"
+                           FontSize="24"
+                           FontWeight="Bold"
                            Margin="0,0,0,12"/>
                 <TextBlock Text="Shop all maritime related to make your works easy."
                            Foreground="White"/>
             </StackPanel>
 
             <!-- Right Section - Products Menu -->
-            <StackPanel Grid.Column="1"
-                        VerticalAlignment="Top"
-                        Margin="80,0,0,0"
-                        MinWidth="120">
+            <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="80,0,0,0" MinWidth="120">
                 <TextBlock Text="Products"
                            Foreground="White"
                            FontWeight="Bold"
                            Margin="0,0,0,12"
                            FontSize="15"/>
 
-                <!-- Boat -->
-                <TextBlock Margin="0,0,0,8"
-                           FontSize="14">
-                    <Hyperlink Command="{Binding NavigateBoatCommand, ElementName=Root}"
-                               CommandParameter="Boat"
+                <!-- Boat - UBAH BINDING KE DataContext -->
+                <TextBlock Margin="0,0,0,8" FontSize="14">
+                    <Hyperlink Command="{Binding NavigateBoatCommand}"
                                Foreground="White"
                                TextDecorations="None"
                                Cursor="Hand">
                         <Run Text="Boat"/>
                         <Hyperlink.Style>
                             <Style TargetType="Hyperlink">
-                                <Setter Property="Foreground"
-                                        Value="White"/>
+                                <Setter Property="Foreground" Value="White"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Foreground"
-                                                Value="#B3D9FF"/>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#B3D9FF"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -72,24 +70,19 @@
                     </Hyperlink>
                 </TextBlock>
 
-                <!-- Engines -->
-                <TextBlock Margin="0,0,0,8"
-                           FontSize="14">
-                    <Hyperlink Command="{Binding NavigateEnginesCommand, ElementName=Root}"
-                               CommandParameter="Engines"
+                <!-- Engines - UBAH BINDING KE DataContext -->
+                <TextBlock Margin="0,0,0,8" FontSize="14">
+                    <Hyperlink Command="{Binding NavigateEnginesCommand}"
                                Foreground="White"
                                TextDecorations="None"
                                Cursor="Hand">
                         <Run Text="Engines"/>
                         <Hyperlink.Style>
                             <Style TargetType="Hyperlink">
-                                <Setter Property="Foreground"
-                                        Value="White"/>
+                                <Setter Property="Foreground" Value="White"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Foreground"
-                                                Value="#B3D9FF"/>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#B3D9FF"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
@@ -97,24 +90,19 @@
                     </Hyperlink>
                 </TextBlock>
 
-                <!-- GPS -->
-                <TextBlock Margin="0,0,0,0"
-                           FontSize="14">
-                    <Hyperlink Command="{Binding NavigateGpsCommand, ElementName=Root}"
-                               CommandParameter="GPS"
+                <!-- GPS - UBAH BINDING KE DataContext -->
+                <TextBlock Margin="0,0,0,0" FontSize="14">
+                    <Hyperlink Command="{Binding NavigateGpsCommand}"
                                Foreground="White"
                                TextDecorations="None"
                                Cursor="Hand">
                         <Run Text="GPS"/>
                         <Hyperlink.Style>
                             <Style TargetType="Hyperlink">
-                                <Setter Property="Foreground"
-                                        Value="White"/>
+                                <Setter Property="Foreground" Value="White"/>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Foreground"
-                                                Value="#B3D9FF"/>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Foreground" Value="#B3D9FF"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
