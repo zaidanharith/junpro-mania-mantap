@@ -27,15 +27,8 @@
             <!-- ScrollableContent -->
         </Grid.RowDefinitions>
 
-        <!-- NavBar (Fixed) -->
-        <shared:NavBar Grid.Row="0"
-                       SearchQuery="{Binding SearchQuery, Mode=TwoWay}"
-                       ExecuteSearchCommand="{Binding ExecuteSearchCommand}"
-                       NavigateHomeCommand="{Binding NavigateHomeCommand}"
-                       NavigateCategoryCommand="{Binding NavigateCategoryCommand}"
-                       OpenProfileCommand="{Binding OpenProfileCommand}"
-                       CurrentUser="{Binding CurrentUser}"
-                       VerticalAlignment="Top"/>
+        <!-- NavBar (Fixed) - HAPUS SEMUA BINDING -->
+        <shared:NavBar Grid.Row="0"/>
 
         <!-- Scrollable Content -->
         <ScrollViewer Grid.Row="1"

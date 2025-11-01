@@ -3,12 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:BOZea.ViewModels.Shared"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Top"
              FontFamily="Plus Jakarta Sans"
              d:DesignWidth="1913.011">
+
+    <UserControl.DataContext>
+        <vm:NavBarViewModel/>
+    </UserControl.DataContext>
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -18,26 +23,18 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <!-- Navbar wrapper: gradient dari PrimaryBlue ke LightBlue -->
-    <Border Height="72"
-            HorizontalAlignment="Stretch">
+    <Border Height="72" HorizontalAlignment="Stretch">
         <Border.Background>
-            <LinearGradientBrush EndPoint="0.5,1"
-                                 StartPoint="0.5,0">
-                <GradientStop Color="#FF113F67"
-                              Offset="0"/>
-                <GradientStop Color="#FF227DCD"
-                              Offset="1"/>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF113F67" Offset="0"/>
+                <GradientStop Color="#FF227DCD" Offset="1"/>
             </LinearGradientBrush>
         </Border.Background>
         <Grid Margin="50,0,50,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
-                <!-- Logo -->
                 <ColumnDefinition Width="*"/>
-                <!-- Search (tengah) -->
                 <ColumnDefinition Width="Auto"/>
-                <!-- Right menu -->
             </Grid.ColumnDefinitions>
 
             <!-- Logo / Home -->
@@ -48,9 +45,7 @@
                     Padding="0"
                     Cursor="Hand"
                     Command="{Binding NavigateHomeCommand}"
-                    Grid.ColumnSpan="2"
-                    Height="64"
-                    Margin="0,0,1366,0">
+                    Height="64">
                 <Image Source="/Views/Assets/logo_white.png"
                        Height="88"
                        Stretch="Uniform"
@@ -59,37 +54,28 @@
                        Width="148"/>
             </Button>
 
-            <!-- Search (centered) -->
+            <!-- Center - Empty (bisa digunakan untuk search nanti) -->
             <Grid Grid.Column="1"
                   HorizontalAlignment="Center"
-                  VerticalAlignment="Center"
-                  Margin="0,0"/>
+                  VerticalAlignment="Center">
+                <!-- Reserved for future search feature -->
+            </Grid>
 
-            <!-- Right links -->
+            <!-- Right Section - Greeting & Profile -->
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Right"
-                        Margin="0">
+                        HorizontalAlignment="Right">
 
-                <!-- Category menu -->
-                <Menu Background="Transparent"
-                      VerticalAlignment="Center"
-                      BorderThickness="0"
-                      Foreground="White"
-                      Margin="0,0,20,0"/>
-                <TextBox x:Name="GreetingText"
-                         Text="Selamat Datang!"
-                         BorderThickness="0,0,0,0"
-                         TextAlignment="Right"
-                         FontWeight="Bold"
-                         Foreground="White"
-                         FontSize="20"
-                         IsReadOnly="True"
-                         Focusable="False"
-                         Background="Transparent"
-                         Cursor="Arrow"
-                         TextChanged="GreetingText_TextChanged"/>
+                <!-- Greeting Text -->
+                <TextBlock Text="{Binding GreetingText}"
+                           TextAlignment="Right"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           FontSize="20"
+                           Background="Transparent"
+                           VerticalAlignment="Center"
+                           Margin="0,0,15,0"/>
 
                 <!-- Account / Profile -->
                 <Button Background="Transparent"
@@ -109,10 +95,9 @@
                                              RadiusY="20"/>
                         </Border.Clip>
 
-                        <!-- Profile Image dari Cloudinary -->
                         <Grid>
-                            <Image x:Name="ProfileImage"
-                                   Source="{Binding CurrentUser.Image, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            <!-- Profile Image dari CurrentUser -->
+                            <Image Source="{Binding CurrentUser.Image}"
                                    Stretch="UniformToFill"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -120,12 +105,11 @@
                                    Height="40"
                                    RenderTransformOrigin="0.5,0.5">
                                 <Image.RenderTransform>
-                                    <ScaleTransform ScaleX="1.12"
-                                                    ScaleY="1.12"/>
+                                    <ScaleTransform ScaleX="1.12" ScaleY="1.12"/>
                                 </Image.RenderTransform>
                             </Image>
 
-                            <!-- Fallback icon jika tidak ada gambar -->
+                            <!-- Fallback icon -->
                             <materialDesign:PackIcon Kind="AccountCircle"
                                                      Foreground="White"
                                                      Width="40"
@@ -134,18 +118,13 @@
                                                      VerticalAlignment="Center">
                                 <materialDesign:PackIcon.Style>
                                     <Style TargetType="materialDesign:PackIcon">
-                                        <Setter Property="Visibility"
-                                                Value="Collapsed"/>
+                                        <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                         Value="{x:Null}">
-                                                <Setter Property="Visibility"
-                                                        Value="Visible"/>
+                                            <DataTrigger Binding="{Binding CurrentUser.Image}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                         Value="">
-                                                <Setter Property="Visibility"
-                                                        Value="Visible"/>
+                                            <DataTrigger Binding="{Binding CurrentUser.Image}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

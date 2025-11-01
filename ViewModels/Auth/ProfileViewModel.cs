@@ -24,6 +24,7 @@ namespace BOZea.ViewModels.Auth
         private User? _currentUser;
         private ObservableCollection<Order> _userTransactions;
         private bool _isLoading;
+        private RelayCommand? _navigateHomeCommand;
 
         public ProfileViewModel()
         {
@@ -87,6 +88,7 @@ namespace BOZea.ViewModels.Auth
 
         public ICommand EditProfileCommand { get; }
         public ICommand AddReviewCommand { get; }
+        public ICommand NavigateHomeCommand => _navigateHomeCommand ??= new RelayCommand(ExecuteNavigateHome);
 
         private async Task LoadUserDataAsync()
         {
@@ -186,6 +188,34 @@ namespace BOZea.ViewModels.Auth
             if (orderItem == null) return;
             Console.WriteLine($"[ProfileVM] Add review for product: {orderItem.Product?.Name}");
             // TODO: Navigate to add review view
+        }
+
+        private void ExecuteNavigateHome(object? parameter)
+        {
+            try
+            {
+                Console.WriteLine("[ProfileVM] Navigating back to Dashboard...");
+
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    var dashboardVM = new Dashboard.DashboardViewModel();
+                    mainViewModel.CurrentViewModel = dashboardVM;
+                    Console.WriteLine("[ProfileVM] Successfully navigated to Dashboard");
+                }
+                else
+                {
+                    Console.WriteLine("[ProfileVM] ERROR: MainViewModel not found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProfileVM] Error navigating home: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error navigating to dashboard: {ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

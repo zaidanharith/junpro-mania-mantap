@@ -16,16 +16,37 @@
                           ShadowDepth="2"
                           Opacity="0.2"/>
 
-        <!-- Add BoolToVisibilityConverter -->
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
 
     <Grid>
-        <!-- Loading Overlay -->
-
         <!-- Main Content -->
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="100,30,40,40" Width="1024">
+
+                <!-- Back Button -->
+                <Button Command="{Binding NavigateHomeCommand}"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        HorizontalAlignment="Left"
+                        Padding="0"
+                        Height="45"
+                        Margin="0,0,0,20">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="←"
+                                   FontSize="20"
+                                   FontWeight="Bold"
+                                   Foreground="#333"
+                                   Margin="0,0,10,0"
+                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="Back to Dashboard"
+                                   FontSize="16"
+                                   FontWeight="Medium"
+                                   Foreground="#333"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
                 <!-- Header: Greeting + Edit Button -->
                 <Grid Margin="0,0,0,20">

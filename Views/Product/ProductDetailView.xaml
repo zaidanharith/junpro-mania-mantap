@@ -26,13 +26,7 @@
         </Grid.RowDefinitions>
 
         <!-- NavBar (Fixed - tidak scroll) -->
-        <shared:NavBar SearchQuery="{Binding SearchQuery, Mode=TwoWay}"
-                       ExecuteSearchCommand="{Binding ExecuteSearchCommand}"
-                       NavigateHomeCommand="{Binding NavigateHomeCommand}"
-                       NavigateCategoryCommand="{Binding NavigateCategoryCommand}"
-                       OpenProfileCommand="{Binding OpenProfileCommand}"
-                       CurrentUser="{Binding CurrentUser}"
-                       VerticalAlignment="Top"/>
+        <shared:NavBar Grid.Row="0"/>
 
         <!-- Scrollable Content (dengan Footer di dalam) -->
         <ScrollViewer Grid.Row="1"
