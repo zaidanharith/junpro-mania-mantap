@@ -42,7 +42,7 @@
                            Foreground="White"/>
             </StackPanel>
 
-            <!-- Right Section - Products Menu -->
+            <!-- Right Section - Products Menu (Dynamic) -->
             <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="80,0,0,0" MinWidth="120">
                 <TextBlock Text="Products"
                            Foreground="White"
@@ -50,65 +50,31 @@
                            Margin="0,0,0,12"
                            FontSize="15"/>
 
-                <!-- Boat - UBAH BINDING KE DataContext -->
-                <TextBlock Margin="0,0,0,8" FontSize="14">
-                    <Hyperlink Command="{Binding NavigateBoatCommand}"
-                               Foreground="White"
-                               TextDecorations="None"
-                               Cursor="Hand">
-                        <Run Text="Boat"/>
-                        <Hyperlink.Style>
-                            <Style TargetType="Hyperlink">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Foreground" Value="#B3D9FF"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Hyperlink.Style>
-                    </Hyperlink>
-                </TextBlock>
-
-                <!-- Engines - UBAH BINDING KE DataContext -->
-                <TextBlock Margin="0,0,0,8" FontSize="14">
-                    <Hyperlink Command="{Binding NavigateEnginesCommand}"
-                               Foreground="White"
-                               TextDecorations="None"
-                               Cursor="Hand">
-                        <Run Text="Engines"/>
-                        <Hyperlink.Style>
-                            <Style TargetType="Hyperlink">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Foreground" Value="#B3D9FF"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Hyperlink.Style>
-                    </Hyperlink>
-                </TextBlock>
-
-                <!-- GPS - UBAH BINDING KE DataContext -->
-                <TextBlock Margin="0,0,0,0" FontSize="14">
-                    <Hyperlink Command="{Binding NavigateGpsCommand}"
-                               Foreground="White"
-                               TextDecorations="None"
-                               Cursor="Hand">
-                        <Run Text="GPS"/>
-                        <Hyperlink.Style>
-                            <Style TargetType="Hyperlink">
-                                <Setter Property="Foreground" Value="White"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Foreground" Value="#B3D9FF"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Hyperlink.Style>
-                    </Hyperlink>
-                </TextBlock>
+                <!-- Dynamic Categories List -->
+                <ItemsControl ItemsSource="{Binding Categories}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="0,0,0,8" FontSize="14">
+                                <Hyperlink Command="{Binding NavigateCommand}"
+                                           Foreground="White"
+                                           TextDecorations="None"
+                                           Cursor="Hand">
+                                    <Run Text="{Binding CategoryName}"/>
+                                    <Hyperlink.Style>
+                                        <Style TargetType="Hyperlink">
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Foreground" Value="#B3D9FF"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Hyperlink.Style>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </StackPanel>
         </Grid>
     </Border>

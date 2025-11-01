@@ -22,14 +22,14 @@ namespace BOZea.ViewModels.Payment
 {
     public class PaymentViewModel : INotifyPropertyChanged
     {
-        private readonly NavigationService _navigationService;
-        private readonly PaymentRepository _paymentRepository;
-        private readonly OrderRepository _orderRepository;
-        private readonly OrderItemRepository _orderItemRepository;
-        private readonly UserRepository _userRepository;
-        private readonly ProductRepository _productRepository;
+        private PaymentRepository? _paymentRepository;
+        private OrderRepository? _orderRepository;
+        private OrderItemRepository? _orderItemRepository;
+        private UserRepository? _userRepository;
+        private ProductRepository? _productRepository;
         private AppDbContext? _dbContext;
         private PaymentDialogViewModel _dialogViewModel = new();
+        private NavigationService _navigationService;
         public PaymentView? PaymentViewReference { get; set; }
 
         private int _productId;
@@ -173,32 +173,6 @@ namespace BOZea.ViewModels.Payment
         public ICommand PayCommand { get; }
         public ICommand BackCommand { get; }
 
-        // Constructor dengan dependency injection
-        public PaymentViewModel(
-            AppDbContext dbContext,
-            NavigationService navigationService)
-        {
-            _navigationService = navigationService;
-            
-            _paymentRepository = new PaymentRepository(dbContext);
-            _orderRepository = new OrderRepository(dbContext);
-            _orderItemRepository = new OrderItemRepository(dbContext);
-            _userRepository = new UserRepository(dbContext);
-            _productRepository = new ProductRepository(dbContext);
-
-            IncreaseQuantityCommand = new RelayCommand(_ => IncreaseQuantity());
-            DecreaseQuantityCommand = new RelayCommand(_ => DecreaseQuantity());
-            PayCommand = new RelayCommand(_ => ProcessPayment());
-            BackCommand = new RelayCommand(_ => NavigateBack());
-        }
-
-        // Parameterless constructor untuk backward compatibility
-        public PaymentViewModel() : this(
-            new AppDbContextFactory().CreateDbContext(),
-            new NavigationService())
-        {
-        }
-
         public PaymentViewModel(ProductItem product) : this()
         {
             _productId = product.ProductId;
@@ -225,6 +199,65 @@ namespace BOZea.ViewModels.Payment
                 Console.WriteLine($"[PaymentVM] Failed to parse price: {priceString}");
             }
         }
+
+        public PaymentViewModel()
+        {
+            _navigationService = new NavigationService();
+
+            try
+            {
+                InitializeRepositories();
+                Console.WriteLine("[PaymentVM] Repositories initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentVM] Error initializing repositories: {ex.Message}");
+                Console.WriteLine($"[PaymentVM] StackTrace: {ex.StackTrace}");
+            }
+
+            IncreaseQuantityCommand = new RelayCommand(_ => IncreaseQuantity());
+            DecreaseQuantityCommand = new RelayCommand(_ => DecreaseQuantity());
+            PayCommand = new RelayCommand(_ => ProcessPayment());
+            BackCommand = new RelayCommand(_ => NavigateBack());
+        }
+
+        private void InitializeRepositories()
+        {
+            try
+            {
+                // Load environment variables from .env file
+                Env.Load();
+
+                var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+
+                // Get PostgreSQL connection string from environment variables
+                string connString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" +
+                                    $"Port={Environment.GetEnvironmentVariable("DB_PORT")};" +
+                                    $"Database={Environment.GetEnvironmentVariable("DB_NAME")};" +
+                                    $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
+                                    $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};" +
+                                    $"SSL Mode=Require;Trust Server Certificate=true;";
+
+                Console.WriteLine($"[PaymentVM] Connecting to PostgreSQL: Host={Environment.GetEnvironmentVariable("DB_HOST")}, Database={Environment.GetEnvironmentVariable("DB_NAME")}");
+
+                optionsBuilder.UseNpgsql(connString);
+                _dbContext = new AppDbContext(optionsBuilder.Options);
+
+                _paymentRepository = new PaymentRepository(_dbContext);
+                _orderRepository = new OrderRepository(_dbContext);
+                _orderItemRepository = new OrderItemRepository(_dbContext);
+                _userRepository = new UserRepository(_dbContext);
+                _productRepository = new ProductRepository(_dbContext);
+
+                Console.WriteLine("[PaymentVM] All repositories initialized successfully with PostgreSQL");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[PaymentVM] Error in InitializeRepositories: {ex.Message}");
+                throw;
+            }
+        }
+
 
         private void IncreaseQuantity()
         {
@@ -445,7 +478,7 @@ namespace BOZea.ViewModels.Payment
                     Product = product,
                     Quantity = Quantity,
                     Price = _productPriceValue,
-                    Status = OrderItemStatus.Confirmed
+                    Status = OrderItemStatus.Pending
                 };
 
                 await _orderItemRepository.AddAsync(orderItem);
