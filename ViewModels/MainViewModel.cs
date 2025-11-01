@@ -7,6 +7,8 @@ using BOZea.ViewModels.Dashboard;
 using BOZea.ViewModels.Payment;
 using BOZea.Data;
 using BOZea.Repositories;
+using System.Windows;
+using BOZea.Helpers;
 
 namespace BOZea.ViewModels
 {
@@ -15,6 +17,7 @@ namespace BOZea.ViewModels
         private object _currentViewModel = null!;
         private readonly NavigationService _navigation;
         private readonly DashboardViewModel _dashboardViewModel;
+        private readonly LoginViewModel _loginViewModel;
 
         public object CurrentViewModel
         {
@@ -26,6 +29,9 @@ namespace BOZea.ViewModels
             }
         }
 
+        // ✅ Expose LoginViewModel
+        public LoginViewModel LoginViewModel => _loginViewModel;
+
         public MainViewModel()
         {
             _navigation = new NavigationService();
@@ -36,13 +42,13 @@ namespace BOZea.ViewModels
             var userRepo = new UserRepository(dbContext);
             var authService = new AuthService(userRepo);
 
-            // Initialize ViewModels - DashboardViewModel as singleton
-            var loginVM = new LoginViewModel(authService, _navigation);
+            // Initialize ViewModels - DashboardViewModel and LoginViewModel as singleton
+            _loginViewModel = new LoginViewModel(authService, _navigation);
             _dashboardViewModel = new DashboardViewModel();
             var registerVM = new RegisterViewModel(userRepo, _navigation);
 
             // Register ViewModels
-            _navigation.Register(loginVM);
+            _navigation.Register(_loginViewModel);
             _navigation.Register(_dashboardViewModel);
             _navigation.Register(registerVM);
 
@@ -51,13 +57,13 @@ namespace BOZea.ViewModels
 
             // Set initial ViewModel
             // Check if user is logged in
-            if (Helpers.UserSession.CurrentUser != null)
+            if (UserSession.CurrentUser != null)
             {
                 CurrentViewModel = _dashboardViewModel;
             }
             else
             {
-                CurrentViewModel = loginVM;
+                CurrentViewModel = _loginViewModel;
             }
         }
 

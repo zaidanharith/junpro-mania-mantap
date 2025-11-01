@@ -25,6 +25,7 @@ namespace BOZea.ViewModels.Auth
         private ObservableCollection<Order> _userTransactions;
         private bool _isLoading;
         private RelayCommand? _navigateHomeCommand;
+        private RelayCommand? _logoutCommand;
 
         public ProfileViewModel()
         {
@@ -89,6 +90,7 @@ namespace BOZea.ViewModels.Auth
         public ICommand EditProfileCommand { get; }
         public ICommand AddReviewCommand { get; }
         public ICommand NavigateHomeCommand => _navigateHomeCommand ??= new RelayCommand(ExecuteNavigateHome);
+        public ICommand LogoutCommand => _logoutCommand ??= new RelayCommand(ExecuteLogout);
 
         private async Task LoadUserDataAsync()
         {
@@ -196,12 +198,20 @@ namespace BOZea.ViewModels.Auth
             {
                 Console.WriteLine("[ProfileVM] Navigating back to Dashboard...");
 
-                var mainWindow = System.Windows.Application.Current.MainWindow;
-                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow?.DataContext is ViewModels.MainViewModel mainViewModel)
                 {
-                    var dashboardVM = new Dashboard.DashboardViewModel();
-                    mainViewModel.CurrentViewModel = dashboardVM;
-                    Console.WriteLine("[ProfileVM] Successfully navigated to Dashboard");
+                    // ✅ Gunakan DashboardViewModel singleton yang sudah terdaftar
+                    var dashboardVM = Services.NavigationService.GetDashboardInstance();
+                    if (dashboardVM != null)
+                    {
+                        mainViewModel.CurrentViewModel = dashboardVM;
+                        Console.WriteLine("[ProfileVM] Successfully navigated to Dashboard");
+                    }
+                    else
+                    {
+                        Console.WriteLine("[ProfileVM] ERROR: DashboardViewModel instance not found!");
+                    }
                 }
                 else
                 {
@@ -211,10 +221,68 @@ namespace BOZea.ViewModels.Auth
             catch (Exception ex)
             {
                 Console.WriteLine($"[ProfileVM] Error navigating home: {ex.Message}");
-                System.Windows.MessageBox.Show($"Error navigating to dashboard: {ex.Message}",
+                MessageBox.Show($"Error navigating to dashboard: {ex.Message}",
                     "Error",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Error);
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+        }
+
+        private void ExecuteLogout(object? parameter)
+        {
+            try
+            {
+                Console.WriteLine("[ProfileVM] Logout requested");
+
+                // Konfirmasi logout
+                var result = MessageBox.Show(
+                    "Are you sure you want to logout?",
+                    "Logout Confirmation",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                if (result != MessageBoxResult.Yes)
+                {
+                    Console.WriteLine("[ProfileVM] Logout cancelled by user");
+                    return;
+                }
+
+                Console.WriteLine("[ProfileVM] Logging out...");
+
+                // Clear user session
+                UserSession.ClearUser();
+                Console.WriteLine("[ProfileVM] UserSession cleared");
+
+                // Navigate to Login
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow?.DataContext is ViewModels.MainViewModel mainViewModel)
+                {
+                    // ✅ LANGSUNG AKSES LoginViewModel dari MainViewModel
+                    mainViewModel.CurrentViewModel = mainViewModel.LoginViewModel;
+                    Console.WriteLine("[ProfileVM] Successfully navigated to Login");
+                    
+                    MessageBox.Show(
+                        "You have been logged out successfully.",
+                        "Logout Successful",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
+                }
+                else
+                {
+                    Console.WriteLine("[ProfileVM] ERROR: MainViewModel not found!");
+                    MessageBox.Show("Error: Cannot navigate to login page.",
+                        "Navigation Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProfileVM] Error during logout: {ex.Message}");
+                MessageBox.Show($"Error during logout: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
         }
 
