@@ -13,21 +13,6 @@ dotnet watch run
 ```
 
 ```
-dotnet add package Microsoft.EntityFrameworkCore
-dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
-dotnet add package Microsoft.EntityFrameworkCore.Tools
-dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet add package DotNetEnv
-dotnet tool install --global dotnet-ef
-dotnet new tool-manifest
-dotnet tool install dotnet-ef
-dotnet build
-dotnet ef migrations add InitialCreate
-dotnet ef database update
-dotnet watch run
-```
-
-```
 dotnet ef migrations add NamaMigrationBaru
 dotnet ef database update
 ```

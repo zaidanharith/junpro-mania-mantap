@@ -8,7 +8,8 @@
              FontFamily="Plus Jakarta Sans"
              Background="#F5F5F5"
              d:DesignWidth="1869.38"
-             d:DesignHeight="1168.84" Width="1869.5">
+             d:DesignHeight="1168.84"
+             Width="1869.5">
 
     <UserControl.Resources>
         <DropShadowEffect x:Key="CardShadow"
@@ -17,12 +18,57 @@
                           Opacity="0.2"/>
 
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+
+        <!-- Rating Button Style -->
+        <Style x:Key="RatingButtonStyle"
+               TargetType="RadioButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border x:Name="border"
+                                Background="#F0F0F0"
+                                BorderBrush="#DDD"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Padding="8,4"
+                                Margin="0,0,4,0"
+                                Cursor="Hand">
+                            <TextBlock Text="{TemplateBinding Content}"
+                                       FontSize="12"
+                                       Foreground="#666"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked"
+                                     Value="True">
+                                <Setter TargetName="border"
+                                        Property="Background"
+                                        Value="#227DCD"/>
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#227DCD"/>
+                                <Setter Property="Foreground"
+                                        Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver"
+                                     Value="True">
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#227DCD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <!-- Main Content -->
         <ScrollViewer VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="100,30,40,40" Width="1024">
+            <StackPanel Margin="100,30,40,40"
+                        Width="1024">
 
                 <!-- Back Button & Logout Button -->
                 <Grid Margin="0,0,0,20">
@@ -64,13 +110,14 @@
                             Foreground="White"
                             BorderThickness="0"
                             Cursor="Hand"
-                            HorizontalAlignment="Right"
-                            Height="45"
+                            HorizontalAlignment="Center"
                             MinWidth="120"
-                            Padding="20,0">
+                            Padding="20,0"
+                            Margin="0,8,0,0">
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background" Value="#DC3545"/>
+                                <Setter Property="Background"
+                                        Value="#DC3545"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
@@ -78,32 +125,34 @@
                                                     CornerRadius="8"
                                                     Padding="{TemplateBinding Padding}">
                                                 <ContentPresenter HorizontalAlignment="Center"
-                                                                VerticalAlignment="Center"
-                                                                TextElement.Foreground="White"/>
+                                                                  VerticalAlignment="Center"
+                                                                  TextElement.Foreground="White"/>
                                             </Border>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
                                 <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="#C82333"/>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#C82333"/>
                                     </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter Property="Background" Value="#BD2130"/>
+                                    <Trigger Property="IsPressed"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#BD2130"/>
                                     </Trigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Top">
                             <TextBlock Text="🚪"
                                        FontSize="18"
-                                       Margin="0,0,8,0"
-                                       VerticalAlignment="Center"
                                        Foreground="White"/>
                             <TextBlock Text="Logout"
                                        FontSize="16"
                                        FontWeight="SemiBold"
-                                       VerticalAlignment="Center"
                                        Foreground="White"/>
                         </StackPanel>
                     </Button>
@@ -139,7 +188,8 @@
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="8" Padding="10,0,10,0">
+                                        CornerRadius="8"
+                                        Padding="10,0,10,0">
                                     <ContentPresenter HorizontalAlignment="Center"
                                                       VerticalAlignment="Center"/>
                                 </Border>
@@ -149,7 +199,11 @@
                             <materialDesign:PackIcon Kind="Pencil"
                                                      Width="24"
                                                      Height="24"/>
-                            <TextBlock Text="Edit Profile" Margin="5,0,0,0" Foreground="White" FontSize="16" VerticalAlignment="Center"/>
+                            <TextBlock Text="Edit Profile"
+                                       Margin="5,0,0,0"
+                                       Foreground="White"
+                                       FontSize="16"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -158,7 +212,8 @@
                 <Border Background="White"
                         CornerRadius="12"
                         Padding="30"
-                        Margin="5,0,0,20" VerticalAlignment="Center">
+                        Margin="5,0,0,20"
+                        VerticalAlignment="Center">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="8"
                                           ShadowDepth="2"
@@ -292,46 +347,237 @@
                                                                 CornerRadius="6"
                                                                 Padding="10"
                                                                 Margin="0,5,0,0">
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition Width="50"/>
-                                                                    <ColumnDefinition Width="*"/>
-                                                                    <ColumnDefinition Width="Auto"/>
-                                                                </Grid.ColumnDefinitions>
+                                                            <StackPanel>
+                                                                <Grid>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="50"/>
+                                                                        <ColumnDefinition Width="*"/>
+                                                                        <ColumnDefinition Width="Auto"/>
+                                                                    </Grid.ColumnDefinitions>
 
-                                                                <!-- Product Image -->
-                                                                <Border Grid.Column="0"
-                                                                        Width="50"
-                                                                        Height="50"
-                                                                        CornerRadius="4"
-                                                                        Background="#EEE"
-                                                                        ClipToBounds="True">
-                                                                    <Image Source="{Binding Product.Image}"
-                                                                           Stretch="UniformToFill"/>
+                                                                    <!-- Product Image -->
+                                                                    <Border Grid.Column="0"
+                                                                            Width="50"
+                                                                            Height="50"
+                                                                            CornerRadius="4"
+                                                                            Background="#EEE"
+                                                                            ClipToBounds="True">
+                                                                        <Image Source="{Binding Product.Image}"
+                                                                               Stretch="UniformToFill"/>
+                                                                    </Border>
+
+                                                                    <!-- Product Info -->
+                                                                    <StackPanel Grid.Column="1"
+                                                                                Margin="10,0,0,0"
+                                                                                VerticalAlignment="Center">
+                                                                        <TextBlock Text="{Binding Product.Name}"
+                                                                                   FontSize="12"
+                                                                                   FontWeight="SemiBold"
+                                                                                   Foreground="#333"/>
+                                                                        <TextBlock Text="{Binding Quantity, StringFormat='Qty: {0}'}"
+                                                                                   FontSize="10"
+                                                                                   Foreground="#999"
+                                                                                   Margin="0,2,0,0"/>
+                                                                    </StackPanel>
+
+                                                                    <!-- Price -->
+                                                                    <TextBlock Grid.Column="2"
+                                                                               Text="{Binding Price, StringFormat='Rp {0:N0}'}"
+                                                                               FontSize="12"
+                                                                               FontWeight="Bold"
+                                                                               Foreground="#227DCD"
+                                                                               VerticalAlignment="Center"/>
+                                                                </Grid>
+
+                                                                <!-- Review Section -->
+                                                                <Border Background="#F5F9FF"
+                                                                        CornerRadius="6"
+                                                                        Padding="12"
+                                                                        Margin="0,10,0,0">
+
+                                                                    <!-- Single Grid container for both panels -->
+                                                                    <Grid>
+                                                                        <!-- Existing Review Display -->
+                                                                        <StackPanel x:Name="ExistingReviewPanel">
+                                                                            <StackPanel.Style>
+                                                                                <Style TargetType="StackPanel">
+                                                                                    <Setter Property="Visibility"
+                                                                                            Value="Collapsed"/>
+                                                                                    <Style.Triggers>
+                                                                                        <DataTrigger Binding="{Binding HasReview}"
+                                                                                                     Value="True">
+                                                                                            <Setter Property="Visibility"
+                                                                                                    Value="Visible"/>
+                                                                                        </DataTrigger>
+                                                                                    </Style.Triggers>
+                                                                                </Style>
+                                                                            </StackPanel.Style>
+
+                                                                            <TextBlock Text="Your Review"
+                                                                                       FontSize="11"
+                                                                                       FontWeight="SemiBold"
+                                                                                       Foreground="#227DCD"
+                                                                                       Margin="0,0,0,6"/>
+
+                                                                            <!-- Rating Stars Display -->
+                                                                            <ItemsControl ItemsSource="{Binding ReviewStars}">
+                                                                                <ItemsControl.ItemsPanel>
+                                                                                    <ItemsPanelTemplate>
+                                                                                        <StackPanel Orientation="Horizontal"/>
+                                                                                    </ItemsPanelTemplate>
+                                                                                </ItemsControl.ItemsPanel>
+                                                                                <ItemsControl.ItemTemplate>
+                                                                                    <DataTemplate>
+                                                                                        <TextBlock Text="⭐"
+                                                                                                   FontSize="14"
+                                                                                                   Margin="0,0,2,0"/>
+                                                                                    </DataTemplate>
+                                                                                </ItemsControl.ItemTemplate>
+                                                                            </ItemsControl>
+
+                                                                            <TextBlock Text="{Binding ReviewComment}"
+                                                                                       FontSize="11"
+                                                                                       Foreground="#555"
+                                                                                       TextWrapping="Wrap"
+                                                                                       Margin="0,6,0,0"/>
+                                                                        </StackPanel>
+
+                                                                        <!-- Review Input Form -->
+                                                                        <StackPanel x:Name="ReviewFormPanel">
+                                                                            <StackPanel.Style>
+                                                                                <Style TargetType="StackPanel">
+                                                                                    <Setter Property="Visibility"
+                                                                                            Value="Visible"/>
+                                                                                    <Style.Triggers>
+                                                                                        <DataTrigger Binding="{Binding HasReview}"
+                                                                                                     Value="True">
+                                                                                            <Setter Property="Visibility"
+                                                                                                    Value="Collapsed"/>
+                                                                                        </DataTrigger>
+                                                                                    </Style.Triggers>
+                                                                                </Style>
+                                                                            </StackPanel.Style>
+
+                                                                            <TextBlock Text="Rate this product"
+                                                                                       FontSize="11"
+                                                                                       FontWeight="SemiBold"
+                                                                                       Foreground="#333"
+                                                                                       Margin="0,0,0,6"/>
+
+                                                                            <!-- Rating Selection -->
+                                                                            <StackPanel Orientation="Horizontal"
+                                                                                        Margin="0,0,0,8">
+                                                                                <RadioButton GroupName="{Binding ProductID}"
+                                                                                             Content="1⭐"
+                                                                                             Tag="1"
+                                                                                             Checked="RatingButton_Checked"
+                                                                                             Style="{StaticResource RatingButtonStyle}"/>
+                                                                                <RadioButton GroupName="{Binding ProductID}"
+                                                                                             Content="2⭐"
+                                                                                             Tag="2"
+                                                                                             Checked="RatingButton_Checked"
+                                                                                             Style="{StaticResource RatingButtonStyle}"/>
+                                                                                <RadioButton GroupName="{Binding ProductID}"
+                                                                                             Content="3⭐"
+                                                                                             Tag="3"
+                                                                                             Checked="RatingButton_Checked"
+                                                                                             Style="{StaticResource RatingButtonStyle}"/>
+                                                                                <RadioButton GroupName="{Binding ProductID}"
+                                                                                             Content="4⭐"
+                                                                                             Tag="4"
+                                                                                             Checked="RatingButton_Checked"
+                                                                                             Style="{StaticResource RatingButtonStyle}"/>
+                                                                                <RadioButton GroupName="{Binding ProductID}"
+                                                                                             Content="5⭐"
+                                                                                             Tag="5"
+                                                                                             Checked="RatingButton_Checked"
+                                                                                             IsChecked="True"
+                                                                                             Style="{StaticResource RatingButtonStyle}"/>
+                                                                            </StackPanel>
+
+                                                                            <!-- Comment Input -->
+                                                                            <TextBox x:Name="ReviewCommentBox"
+                                                                                     Tag="{Binding}"
+                                                                                     Text="{Binding TempReviewComment, UpdateSourceTrigger=PropertyChanged}"
+                                                                                     Background="White"
+                                                                                     BorderBrush="#DDD"
+                                                                                     BorderThickness="1"
+                                                                                     Padding="8"
+                                                                                     MinHeight="60"
+                                                                                     MaxHeight="100"
+                                                                                     TextWrapping="Wrap"
+                                                                                     AcceptsReturn="True"
+                                                                                     VerticalScrollBarVisibility="Auto"
+                                                                                     FontSize="11"
+                                                                                     Margin="0,0,0,8">
+                                                                                <TextBox.Style>
+                                                                                    <Style TargetType="TextBox">
+                                                                                        <Setter Property="Template">
+                                                                                            <Setter.Value>
+                                                                                                <ControlTemplate TargetType="TextBox">
+                                                                                                    <Border Background="{TemplateBinding Background}"
+                                                                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                                                                                            CornerRadius="4"
+                                                                                                            Padding="{TemplateBinding Padding}">
+                                                                                                        <ScrollViewer x:Name="PART_ContentHost"
+                                                                                                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"/>
+                                                                                                    </Border>
+                                                                                                </ControlTemplate>
+                                                                                            </Setter.Value>
+                                                                                        </Setter>
+                                                                                    </Style>
+                                                                                </TextBox.Style>
+                                                                            </TextBox>
+
+                                                                            <!-- Submit Button -->
+                                                                            <Button Content="Submit Review"
+                                                                                    Command="{Binding DataContext.SubmitReviewCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                                    CommandParameter="{Binding}"
+                                                                                    Background="#227DCD"
+                                                                                    Foreground="White"
+                                                                                    BorderThickness="0"
+                                                                                    Padding="12,6"
+                                                                                    FontSize="11"
+                                                                                    FontWeight="SemiBold"
+                                                                                    Cursor="Hand"
+                                                                                    HorizontalAlignment="Right">
+                                                                                <Button.Template>
+                                                                                    <ControlTemplate TargetType="Button">
+                                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                                CornerRadius="4"
+                                                                                                Padding="{TemplateBinding Padding}">
+                                                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                                                              VerticalAlignment="Center"/>
+                                                                                        </Border>
+                                                                                    </ControlTemplate>
+                                                                                </Button.Template>
+                                                                                <Button.Style>
+                                                                                    <Style TargetType="Button">
+                                                                                        <Setter Property="Background"
+                                                                                                Value="#227DCD"/>
+                                                                                        <Style.Triggers>
+                                                                                            <Trigger Property="IsMouseOver"
+                                                                                                     Value="True">
+                                                                                                <Setter Property="Background"
+                                                                                                        Value="#1A6AB8"/>
+                                                                                            </Trigger>
+                                                                                            <Trigger Property="IsPressed"
+                                                                                                     Value="True">
+                                                                                                <Setter Property="Background"
+                                                                                                        Value="#155A9D"/>
+                                                                                            </Trigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </Button.Style>
+                                                                            </Button>
+
+                                                                        </StackPanel>
+                                                                    </Grid>
+
                                                                 </Border>
 
-                                                                <!-- Product Info -->
-                                                                <StackPanel Grid.Column="1"
-                                                                            Margin="10,0,0,0"
-                                                                            VerticalAlignment="Center">
-                                                                    <TextBlock Text="{Binding Product.Name}"
-                                                                               FontSize="12"
-                                                                               FontWeight="SemiBold"
-                                                                               Foreground="#333"/>
-                                                                    <TextBlock Text="{Binding Quantity, StringFormat='Qty: {0}'}"
-                                                                               FontSize="10"
-                                                                               Foreground="#999"
-                                                                               Margin="0,2,0,0"/>
-                                                                </StackPanel>
-
-                                                                <!-- Price -->
-                                                                <TextBlock Grid.Column="2"
-                                                                           Text="{Binding Price, StringFormat='Rp {0:N0}'}"
-                                                                           FontSize="12"
-                                                                           FontWeight="Bold"
-                                                                           Foreground="#227DCD"
-                                                                           VerticalAlignment="Center"/>
-                                                            </Grid>
+                                                            </StackPanel>
                                                         </Border>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
