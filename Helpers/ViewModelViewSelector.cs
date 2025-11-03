@@ -37,6 +37,10 @@ namespace BOZea.Helpers
                 {
                     return CreateTemplate(typeof(ProfileView), element);
                 }
+                else if (item is EditProfileViewModel)
+                {
+                    return CreateTemplate(typeof(BOZea.Views.Auth.EditProfileView), element);
+                }
 
                 // Dashboard ViewModels
                 else if (item is DashboardViewModel)
@@ -55,22 +59,17 @@ namespace BOZea.Helpers
                 {
                     return CreateTemplate(typeof(ProductDetailView), element);
                 }
+                // ✅ ADD CreateProductViewModel mapping
+                else if (item is CreateProductViewModel)
+                {
+                    return CreateTemplate(typeof(CreateProductView), element);
+                }
 
                 // Payment ViewModels
                 else if (item is PaymentViewModel)
                 {
                     return CreateTemplate(typeof(PaymentView), element);
                 }
-
-                // Tambahkan mapping lain sesuai kebutuhan
-                // else if (item is CartViewModel)
-                // {
-                //     return CreateTemplate(typeof(CartView), element);
-                // }
-                // else if (item is OrderViewModel)
-                // {
-                //     return CreateTemplate(typeof(OrderView), element);
-                // }
             }
 
             // Fallback: log error instead of showing MessageBox to avoid Dispatcher crash

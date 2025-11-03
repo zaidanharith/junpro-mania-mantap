@@ -8,7 +8,6 @@ namespace BOZea.Views.Dashboard
         public DashboardView()
         {
             InitializeComponent();
-            DataContext = new DashboardViewModel();
         }
 
         private void AllProductListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

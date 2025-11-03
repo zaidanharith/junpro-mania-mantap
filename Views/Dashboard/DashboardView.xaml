@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:shared="clr-namespace:BOZea.Views.Shared"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d"
              FontFamily="Plus Jakarta Sans"
              d:DesignWidth="1930"
@@ -14,6 +15,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/BOZea;component/Views/Styles/MaterialOverrides.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <!-- ✅ Add BooleanToVisibilityConverter -->
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -26,7 +30,8 @@
         </Grid.RowDefinitions>
 
         <!-- NavBar (Fixed) -->
-        <shared:NavBar Grid.Row="0" VerticalAlignment="Top"/>
+        <shared:NavBar Grid.Row="0"
+                       VerticalAlignment="Top"/>
 
         <!-- Scrollable Content -->
         <ScrollViewer Grid.Row="1"
@@ -66,6 +71,79 @@
 
                 <!-- Main Content -->
                 <StackPanel Margin="80,40,80,40">
+
+                    <!-- ✅ Admin Section - Add Product Button -->
+                    <Border Background="White"
+                            CornerRadius="12"
+                            Padding="24"
+                            Margin="0,0,0,30"
+                            Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="20"
+                                              ShadowDepth="2"
+                                              Opacity="0.08"
+                                              Color="#000000"/>
+                        </Border.Effect>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Admin Icon -->
+                            <Border Grid.Column="0"
+                                    Width="60"
+                                    Height="60"
+                                    Background="{StaticResource LightBlueBrush}"
+                                    CornerRadius="30"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,20,0">
+                                <materialDesign:PackIcon Kind="ShieldCrown"
+                                                         Width="32"
+                                                         Height="32"
+                                                         Foreground="White"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
+                            </Border>
+
+                            <!-- Admin Text -->
+                            <StackPanel Grid.Column="1"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Product Management"
+                                           FontSize="20"
+                                           FontWeight="Bold"
+                                           Foreground="#113F67"
+                                           Margin="0,0,0,4"/>
+                                <TextBlock Text="Add, edit, or remove products from the marketplace"
+                                           FontSize="14"
+                                           Foreground="#666"/>
+                            </StackPanel>
+
+                            <!-- Add Product Button -->
+                            <Button Grid.Column="2"
+                                    Command="{Binding AddProductCommand}"
+                                    Style="{StaticResource PrimaryButton}"
+                                    Height="50"
+                                    Padding="24,0"
+                                    VerticalAlignment="Center">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Plus"
+                                                             Width="20"
+                                                             Height="20"
+                                                             Foreground="White"
+                                                             Margin="0,0,8,0"
+                                                             VerticalAlignment="Center"/>
+                                    <TextBlock Text="Add New Product"
+                                               VerticalAlignment="Center"
+                                               Foreground="White"
+                                               FontSize="15"/>
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Border>
+
                     <!-- Categories with Products Section -->
                     <ItemsControl ItemsSource="{Binding CategoriesWithProducts}">
                         <ItemsControl.ItemTemplate>
@@ -151,5 +229,58 @@
                 <shared:Footer/>
             </StackPanel>
         </ScrollViewer>
+
+        <!-- ✅ Floating Add Button (Alternative - bottom right) -->
+        <Button Grid.Row="1"
+                Command="{Binding AddProductCommand}"
+                VerticalAlignment="Bottom"
+                HorizontalAlignment="Right"
+                Margin="0,0,40,40"
+                Width="60"
+                Height="60"
+                BorderThickness="0"
+                Cursor="Hand"
+                Visibility="{Binding IsAdmin, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="30">
+                        <Border.Effect>
+                            <DropShadowEffect Color="#227DCD"
+                                              Direction="270"
+                                              ShadowDepth="4"
+                                              BlurRadius="20"
+                                              Opacity="0.5"/>
+                        </Border.Effect>
+                        <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background"
+                            Value="{StaticResource PrimaryBlueBrush}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="#1A6AB8"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="#155A9D"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <materialDesign:PackIcon Kind="Plus"
+                                     Width="28"
+                                     Height="28"
+                                     Foreground="White"
+                                     HorizontalAlignment="Center"
+                                     VerticalAlignment="Center"/>
+        </Button>
     </Grid>
 </UserControl>

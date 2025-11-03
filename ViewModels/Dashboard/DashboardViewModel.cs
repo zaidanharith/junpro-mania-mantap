@@ -20,6 +20,7 @@ namespace BOZea.ViewModels.Dashboard
         private User? _currentUser;
         private string _searchQuery = "";
         private RelayCommand? _productSelectedCommand;
+        private RelayCommand? _addProductCommand; // ✅ NEW
 
         public User? CurrentUser
         {
@@ -28,8 +29,12 @@ namespace BOZea.ViewModels.Dashboard
             {
                 _currentUser = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsAdmin)); // ✅ Notify IsAdmin when user changes
             }
         }
+
+        // ✅ NEW - Check if current user is admin
+        public bool IsAdmin => CurrentUser?.Username?.ToLower() == "admin";
 
         public string SearchQuery
         {
@@ -50,6 +55,9 @@ namespace BOZea.ViewModels.Dashboard
         public ICommand OpenProfileCommand { get; }
         public ICommand ProductSelectedCommand => _productSelectedCommand ??=
             new RelayCommand(ExecuteProductSelected);
+
+        // ✅ NEW - Add Product Command
+        public ICommand AddProductCommand => _addProductCommand ??= new RelayCommand(ExecuteAddProduct);
 
         public DashboardViewModel()
         {
@@ -125,6 +133,7 @@ namespace BOZea.ViewModels.Dashboard
         private void LoadCurrentUser()
         {
             CurrentUser = UserSession.CurrentUser;
+            Console.WriteLine($"[DashboardVM] Current user loaded: {CurrentUser?.Name}, IsAdmin: {IsAdmin}");
         }
 
         private void ExecuteProductSelected(object? parameter)
@@ -140,6 +149,39 @@ namespace BOZea.ViewModels.Dashboard
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show($"Error in ExecuteProductSelected: {ex.Message}");
+            }
+        }
+
+        // ✅ NEW - Navigate to Add Product page
+        private void ExecuteAddProduct(object? parameter)
+        {
+            try
+            {
+                if (!IsAdmin)
+                {
+                    System.Windows.MessageBox.Show("Only administrators can add products.",
+                        "Access Denied",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
+                    return;
+                }
+
+                Console.WriteLine("[DashboardVM] Navigating to CreateProduct...");
+
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = new CreateProductViewModel();
+                    Console.WriteLine("[DashboardVM] Successfully navigated to CreateProductView");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DashboardVM] Error navigating to CreateProduct: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error: {ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
             }
         }
 

@@ -21,6 +21,9 @@ namespace BOZea.Models
         public DateTime CreateDate { get; set; }
         public bool HasShop { get; set; }
 
+        [NotMapped]
+        public bool IsAdmin => Username?.ToLower() == "admin";
+
         public User() { }
 
         public User(int id, string name, string email, string phone, string username, string password, string address, string image)

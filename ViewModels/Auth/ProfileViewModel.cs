@@ -208,8 +208,29 @@ namespace BOZea.ViewModels.Auth
 
         private void EditProfile()
         {
-            Console.WriteLine("[ProfileVM] Edit profile clicked");
-            // TODO: Navigate to edit profile view
+            try
+            {
+                Console.WriteLine("[ProfileVM] Navigating to Edit Profile...");
+
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow?.DataContext is ViewModels.MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = new EditProfileViewModel();
+                    Console.WriteLine("[ProfileVM] Successfully navigated to EditProfileView");
+                }
+                else
+                {
+                    Console.WriteLine("[ProfileVM] ERROR: MainViewModel not found!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProfileVM] Error navigating to edit profile: {ex.Message}");
+                MessageBox.Show($"Error opening edit profile: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
         }
 
         private void AddReview(OrderItem? orderItem)
