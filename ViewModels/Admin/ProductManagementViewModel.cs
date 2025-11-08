@@ -5,17 +5,17 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Linq;
 using BOZea.ViewModels.Base;
-using BOZea.ViewModels.Admin;
 using BOZea.Helpers;
 using BOZea.Models;
 using BOZea.Data;
+using Microsoft.EntityFrameworkCore; // ✅ Add this
 using ProductModel = BOZea.Models.Product;
 
 namespace BOZea.ViewModels.Admin
 {
     public class ProductManagementViewModel : INotifyPropertyChanged
     {
-        private readonly AppDbContext _context;
+        private AppDbContext? _context;
         private User? _currentUser;
         private ObservableCollection<ProductModel> _products;
         private bool _isLoading;
@@ -71,19 +71,84 @@ namespace BOZea.ViewModels.Admin
 
         public ProductManagementViewModel()
         {
-            // ✅ Create DbContext using Factory pattern (same as ProductDetailViewModel)
-            var factory = new AppDbContextFactory();
-            _context = factory.CreateDbContext(new string[] { });
-            
+            Console.WriteLine("[ProductManagementVM] Constructor started");
             _products = new ObservableCollection<ProductModel>();
-            LoadCurrentUser();
-            LoadProductsFromDatabase();
+            
+            try
+            {
+                Console.WriteLine("[ProductManagementVM] Loading current user...");
+                LoadCurrentUser();
+                
+                Console.WriteLine("[ProductManagementVM] Initializing database...");
+                InitializeDatabase();
+                
+                Console.WriteLine("[ProductManagementVM] Loading products...");
+                LoadProductsFromDatabase();
+                
+                Console.WriteLine("[ProductManagementVM] Constructor completed successfully");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProductManagementVM] CRITICAL ERROR in constructor: {ex.Message}");
+                Console.WriteLine($"[ProductManagementVM] Stack trace: {ex.StackTrace}");
+                Console.WriteLine($"[ProductManagementVM] Inner exception: {ex.InnerException?.Message}");
+                
+                // Show error to user
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
+                    System.Windows.MessageBox.Show(
+                        $"Error initializing Product Management:\n\n{ex.Message}\n\nInner: {ex.InnerException?.Message}",
+                        "Initialization Error",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
+                });
+                
+                Products = new ObservableCollection<ProductModel>();
+            }
         }
 
         private void LoadCurrentUser()
         {
-            CurrentUser = UserSession.CurrentUser;
-            Console.WriteLine($"[ProductManagementVM] Current admin loaded: {CurrentUser?.Name}");
+            try
+            {
+                CurrentUser = UserSession.CurrentUser;
+                Console.WriteLine($"[ProductManagementVM] Current admin loaded: {CurrentUser?.Name ?? "null"}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProductManagementVM] Error loading user: {ex.Message}");
+                throw;
+            }
+        }
+
+        private void InitializeDatabase()
+        {
+            try
+            {
+                Console.WriteLine("[ProductManagementVM] Creating AppDbContextFactory...");
+                var factory = new AppDbContextFactory();
+                
+                Console.WriteLine("[ProductManagementVM] Creating DbContext...");
+                _context = factory.CreateDbContext(new string[] { });
+                
+                Console.WriteLine("[ProductManagementVM] DbContext created successfully");
+                
+                // Test database connection
+                Console.WriteLine("[ProductManagementVM] Testing database connection...");
+                var canConnect = _context.Database.CanConnect();
+                Console.WriteLine($"[ProductManagementVM] Can connect to database: {canConnect}");
+                
+                if (!canConnect)
+                {
+                    Console.WriteLine("[ProductManagementVM] WARNING: Cannot connect to database!");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProductManagementVM] Database initialization error: {ex.Message}");
+                Console.WriteLine($"[ProductManagementVM] Stack trace: {ex.StackTrace}");
+                throw new Exception($"Database initialization failed: {ex.Message}", ex);
+            }
         }
 
         private void LoadProductsFromDatabase()
@@ -91,32 +156,47 @@ namespace BOZea.ViewModels.Admin
             try
             {
                 IsLoading = true;
-                Console.WriteLine("[ProductManagementVM] Loading products from database...");
+                Console.WriteLine("[ProductManagementVM] Starting to load products...");
 
-                // ✅ Query products from database (same pattern as ProductDetailViewModel)
-                var products = _context.Products
+                if (_context == null)
+                {
+                    Console.WriteLine("[ProductManagementVM] ERROR: DbContext is null!");
+                    Products = new ObservableCollection<ProductModel>();
+                    return;
+                }
+
+                Console.WriteLine("[ProductManagementVM] Querying products from database...");
+                
+                // ✅ FIX: Include Shop navigation property to avoid null reference
+                var productsList = _context.Products
+                    .Include(p => p.Shop)  // ✅ Include Shop to load related data
                     .OrderByDescending(p => p.ID)
                     .ToList();
 
+                Console.WriteLine($"[ProductManagementVM] Found {productsList.Count} products in database");
+
                 Products = new ObservableCollection<ProductModel>();
 
-                foreach (var product in products)
+                foreach (var product in productsList)
                 {
+                    Console.WriteLine($"[ProductManagementVM] Adding product: ID={product.ID}, Name={product.Name}, Shop={product.Shop?.Name ?? "null"}");
                     Products.Add(product);
                 }
 
-                Console.WriteLine($"[ProductManagementVM] Loaded {Products.Count} products");
+                Console.WriteLine($"[ProductManagementVM] Successfully loaded {Products.Count} products");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[ProductManagementVM] Error loading products: {ex.Message}");
+                Console.WriteLine($"[ProductManagementVM] Stack trace: {ex.StackTrace}");
+                Console.WriteLine($"[ProductManagementVM] Inner exception: {ex.InnerException?.Message}");
+                
                 System.Windows.MessageBox.Show(
-                    $"Error loading products: {ex.Message}",
+                    $"Error loading products:\n\n{ex.Message}\n\nInner: {ex.InnerException?.Message}",
                     "Error",
                     System.Windows.MessageBoxButton.OK,
                     System.Windows.MessageBoxImage.Error);
                 
-                // ✅ Fallback to empty list if error
                 Products = new ObservableCollection<ProductModel>();
             }
             finally
@@ -178,29 +258,22 @@ namespace BOZea.ViewModels.Admin
                     IsLoading = true;
                     Console.WriteLine($"[ProductManagementVM] Deleting product: {product.Name}");
 
-                    // ✅ Find and delete from database (same pattern as ProductDetailViewModel)
-                    var productToDelete = _context.Products.Find(product.ID);
-                    if (productToDelete != null)
+                    if (_context != null)
                     {
-                        _context.Products.Remove(productToDelete);
-                        _context.SaveChanges();
-                        
-                        // ✅ Remove from collection
-                        Products.Remove(product);
+                        var productToDelete = _context.Products.Find(product.ID);
+                        if (productToDelete != null)
+                        {
+                            _context.Products.Remove(productToDelete);
+                            _context.SaveChanges();
+                            
+                            Products.Remove(product);
 
-                        System.Windows.MessageBox.Show(
-                            "Product deleted successfully!",
-                            "Success",
-                            System.Windows.MessageBoxButton.OK,
-                            System.Windows.MessageBoxImage.Information);
-                    }
-                    else
-                    {
-                        System.Windows.MessageBox.Show(
-                            "Product not found in database.",
-                            "Error",
-                            System.Windows.MessageBoxButton.OK,
-                            System.Windows.MessageBoxImage.Error);
+                            System.Windows.MessageBox.Show(
+                                "Product deleted successfully!",
+                                "Success",
+                                System.Windows.MessageBoxButton.OK,
+                                System.Windows.MessageBoxImage.Information);
+                        }
                     }
                 }
             }

@@ -188,313 +188,330 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <!-- Header -->
+                <!-- Header with Add Product Button -->
                 <RowDefinition Height="*"/>
                 <!-- Content -->
             </Grid.RowDefinitions>
 
-            <!-- Header -->
+            <!-- Header - Same as Dashboard -->
             <Border Grid.Row="0"
                     Margin="0,30,0,20"
                     Padding="40,0">
-                <Grid Height="70">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <!-- Title -->
-                    <TextBlock Grid.Column="0"
-                               Text="Product Management"
-                               FontSize="40"
-                               FontWeight="Bold"
-                               Foreground="#113F67"
-                               VerticalAlignment="Center"
-                               Margin="0"/>
-
-                    <!-- User Profile + Add Button -->
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal"
-                                VerticalAlignment="Center">
-
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="70"/>
+                        <!-- Title and Profile -->
+                        <RowDefinition Height="Auto"/>
                         <!-- Add Product Button -->
-                        <Button Content="+ Add Product"
-                                Background="#227DCD"
-                                Foreground="White"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Padding="20,12"
-                                Margin="0,0,20,0"
-                                BorderThickness="0"
-                                Cursor="Hand"
-                                Command="{Binding AddProductCommand}">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        CornerRadius="8"
-                                                        Padding="{TemplateBinding Padding}">
-                                                    <ContentPresenter HorizontalAlignment="Center"
-                                                                      VerticalAlignment="Center"/>
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver"
-                                                 Value="True">
-                                            <Setter Property="Background"
-                                                    Value="#1A6BB8"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
+                    </Grid.RowDefinitions>
 
-                        <!-- User Profile Icon -->
-                        <Border Width="64"
-                                Height="64"
-                                Background="#E8F4F8"
-                                CornerRadius="32"
-                                VerticalAlignment="Center"
-                                Cursor="Hand">
-                            <materialDesign:PackIcon Kind="Account"
-                                                     Width="32"
-                                                     Height="32"
-                                                     Foreground="#0D5785"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center"/>
-                        </Border>
-                    </StackPanel>
+                    <!-- Top Row: Title and Profile -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Title -->
+                        <TextBlock Grid.Column="0"
+                                   Text="Product Management"
+                                   FontSize="40"
+                                   FontWeight="Bold"
+                                   Foreground="#113F67"
+                                   VerticalAlignment="Center"
+                                   Margin="0"/>
+
+                        <!-- User Profile -->
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center"
+                                    Cursor="Hand">
+
+                            <StackPanel Margin="0,0,15,0"
+                                        VerticalAlignment="Center">
+                                <TextBlock Text="Selamat Datang,"
+                                           FontSize="16"
+                                           Foreground="#666"
+                                           HorizontalAlignment="Right"
+                                           Margin="0"/>
+                                <TextBlock Text="{Binding AdminName}"
+                                           FontSize="16"
+                                           FontWeight="SemiBold"
+                                           Foreground="#113F67"
+                                           HorizontalAlignment="Right"
+                                           Margin="0"/>
+                            </StackPanel>
+
+                            <Border Width="64"
+                                    Height="64"
+                                    Background="#E8F4F8"
+                                    CornerRadius="32"
+                                    VerticalAlignment="Center">
+                                <materialDesign:PackIcon Kind="Account"
+                                                         Width="32"
+                                                         Height="32"
+                                                         Foreground="#0D5785"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+
+                    <!-- Bottom Row: Add Product Button (Right Aligned) -->
+                    <Button Grid.Row="1"
+                            Content="+ Add Product"
+                            Background="#227DCD"
+                            Foreground="White"
+                            FontSize="14"
+                            FontWeight="SemiBold"
+                            Padding="20,12"
+                            BorderThickness="0"
+                            Cursor="Hand"
+                            HorizontalAlignment="Right"
+                            Margin="0,15,0,0"
+                            Command="{Binding AddProductCommand}">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="8"
+                                                    Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Background"
+                                                Value="#1A6BB8"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </Grid>
             </Border>
 
             <!-- Content Area -->
             <ScrollViewer Grid.Row="1"
                           VerticalScrollBarVisibility="Auto"
-                          Margin="20,10,20,0"
+                          Margin="20,0,20,0"
                           Padding="40,0,40,40">
 
-                <!-- Wrapper untuk semua content -->
-                <StackPanel>
-                    <!-- Loading Indicator -->
-                    <ProgressBar IsIndeterminate="True"
-                                 Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}"
-                                 Height="4"
-                                 Margin="0,20,0,0"/>
+                <!-- Product Table -->
+                <Border Background="#0D5785"
+                        CornerRadius="12"
+                        Margin="0,20,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <!-- Header -->
+                            <RowDefinition Height="*"/>
+                            <!-- Data -->
+                        </Grid.RowDefinitions>
 
-                    <!-- Product Table -->
-                    <Border Background="#0D5785"
-                            CornerRadius="12"
-                            Margin="0,20,0,0">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <!-- Header -->
-                                <RowDefinition Height="*"/>
-                                <!-- Data -->
-                            </Grid.RowDefinitions>
+                        <!-- Table Header -->
+                        <Grid Grid.Row="0"
+                              Background="#0D5785"
+                              Margin="20,20,20,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <!-- ID -->
+                                <ColumnDefinition Width="100"/>
+                                <!-- ShopID -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Name -->
+                                <ColumnDefinition Width="2*"/>
+                                <!-- Description -->
+                                <ColumnDefinition Width="120"/>
+                                <!-- Price -->
+                                <ColumnDefinition Width="120"/>
+                                <!-- Action -->
+                            </Grid.ColumnDefinitions>
 
-                            <!-- Table Header -->
-                            <Grid Grid.Row="0"
-                                  Background="#0D5785"
-                                  Margin="20,20,20,0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="80"/>
-                                    <!-- ID -->
-                                    <ColumnDefinition Width="100"/>
-                                    <!-- ShopID -->
-                                    <ColumnDefinition Width="*"/>
-                                    <!-- Name -->
-                                    <ColumnDefinition Width="2*"/>
-                                    <!-- Description -->
-                                    <ColumnDefinition Width="120"/>
-                                    <!-- Price -->
-                                    <ColumnDefinition Width="120"/>
-                                    <!-- Action -->
-                                </Grid.ColumnDefinitions>
-
-                                <TextBlock Grid.Column="0"
-                                           Text="ID"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           Foreground="White"
-                                           Margin="10,10"/>
-                                <TextBlock Grid.Column="1"
-                                           Text="ShopID"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           Foreground="White"
-                                           Margin="10,10"/>
-                                <TextBlock Grid.Column="2"
-                                           Text="Name"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           Foreground="White"
-                                           Margin="10,10"/>
-                                <TextBlock Grid.Column="3"
-                                           Text="Description"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           Foreground="White"
-                                           Margin="10,10"/>
-                                <TextBlock Grid.Column="4"
-                                           Text="Price"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           Foreground="White"
-                                           Margin="10,10"/>
-                                <TextBlock Grid.Column="5"
-                                           Text="Action"
-                                           FontSize="16"
-                                           FontWeight="Bold"
-                                           Foreground="White"
-                                           Margin="10,10"
-                                           HorizontalAlignment="Center"/>
-                            </Grid>
-
-                            <!-- Table Data -->
-                            <ItemsControl Grid.Row="1"
-                                          ItemsSource="{Binding Products}"
-                                          Margin="20,10,20,20">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <Border Background="White"
-                                                CornerRadius="8"
-                                                Margin="0,5"
-                                                Padding="0,15">
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="80"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="120"/>
-                                                    <ColumnDefinition Width="120"/>
-                                                </Grid.ColumnDefinitions>
-
-                                                <TextBlock Grid.Column="0"
-                                                           Text="{Binding ID}"
-                                                           FontSize="14"
-                                                           Foreground="#333"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0"/>
-                                                <TextBlock Grid.Column="1"
-                                                           Text="{Binding ShopID}"
-                                                           FontSize="14"
-                                                           Foreground="#333"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0"/>
-                                                <TextBlock Grid.Column="2"
-                                                           Text="{Binding Name}"
-                                                           FontSize="14"
-                                                           Foreground="#333"
-                                                           TextWrapping="Wrap"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0"/>
-                                                <TextBlock Grid.Column="3"
-                                                           Text="{Binding Description}"
-                                                           FontSize="14"
-                                                           Foreground="#666"
-                                                           TextWrapping="Wrap"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0"/>
-                                                <TextBlock Grid.Column="4"
-                                                           Text="{Binding Price, StringFormat={}{0:N0}}"
-                                                           FontSize="14"
-                                                           FontWeight="SemiBold"
-                                                           Foreground="#113F67"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0"/>
-
-                                                <!-- Action Buttons -->
-                                                <StackPanel Grid.Column="5"
-                                                            Orientation="Horizontal"
-                                                            HorizontalAlignment="Center"
-                                                            VerticalAlignment="Center">
-                                                    <!-- Edit Button -->
-                                                    <Button Width="32"
-                                                            Height="32"
-                                                            Background="#227DCD"
-                                                            BorderThickness="0"
-                                                            Cursor="Hand"
-                                                            Margin="0,0,8,0"
-                                                            Command="{Binding DataContext.EditProductCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}">
-                                                        <Button.Style>
-                                                            <Style TargetType="Button">
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="Button">
-                                                                            <Border Background="{TemplateBinding Background}"
-                                                                                    CornerRadius="6">
-                                                                                <materialDesign:PackIcon Kind="Pencil"
-                                                                                                         Width="16"
-                                                                                                         Height="16"
-                                                                                                         Foreground="White"
-                                                                                                         HorizontalAlignment="Center"
-                                                                                                         VerticalAlignment="Center"/>
-                                                                            </Border>
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                                <Style.Triggers>
-                                                                    <Trigger Property="IsMouseOver"
-                                                                             Value="True">
-                                                                        <Setter Property="Background"
-                                                                                Value="#1A6BB8"/>
-                                                                    </Trigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Button.Style>
-                                                    </Button>
-
-                                                    <!-- Delete Button -->
-                                                    <Button Width="32"
-                                                            Height="32"
-                                                            Background="#DC3545"
-                                                            BorderThickness="0"
-                                                            Cursor="Hand"
-                                                            Command="{Binding DataContext.DeleteProductCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}">
-                                                        <Button.Style>
-                                                            <Style TargetType="Button">
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="Button">
-                                                                            <Border Background="{TemplateBinding Background}"
-                                                                                    CornerRadius="6">
-                                                                                <materialDesign:PackIcon Kind="Delete"
-                                                                                                         Width="16"
-                                                                                                         Height="16"
-                                                                                                         Foreground="White"
-                                                                                                         HorizontalAlignment="Center"
-                                                                                                         VerticalAlignment="Center"/>
-                                                                            </Border>
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                                <Style.Triggers>
-                                                                    <Trigger Property="IsMouseOver"
-                                                                             Value="True">
-                                                                        <Setter Property="Background"
-                                                                                Value="#BD2130"/>
-                                                                    </Trigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Button.Style>
-                                                    </Button>
-                                                </StackPanel>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                            <TextBlock Grid.Column="0"
+                                       Text="ID"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10,10"/>
+                            <TextBlock Grid.Column="1"
+                                       Text="ShopID"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10,10"/>
+                            <TextBlock Grid.Column="2"
+                                       Text="Name"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10,10"/>
+                            <TextBlock Grid.Column="3"
+                                       Text="Description"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10,10"/>
+                            <TextBlock Grid.Column="4"
+                                       Text="Price"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10,10"/>
+                            <TextBlock Grid.Column="5"
+                                       Text="Action"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10,10"
+                                       HorizontalAlignment="Center"/>
                         </Grid>
-                    </Border>
-                </StackPanel>
+
+                        <!-- Table Data -->
+                        <ItemsControl Grid.Row="1"
+                                      ItemsSource="{Binding Products}"
+                                      Margin="20,10,20,20">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White"
+                                            CornerRadius="8"
+                                            Margin="0,5"
+                                            Padding="0,15">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="80"/>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="120"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock Grid.Column="0"
+                                                       Text="{Binding ID}"
+                                                       FontSize="14"
+                                                       Foreground="#333"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0"/>
+                                            <TextBlock Grid.Column="1"
+                                                       Text="{Binding ShopID}"
+                                                       FontSize="14"
+                                                       Foreground="#333"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0"/>
+                                            <TextBlock Grid.Column="2"
+                                                       Text="{Binding Name}"
+                                                       FontSize="14"
+                                                       Foreground="#333"
+                                                       TextWrapping="Wrap"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0"/>
+                                            <TextBlock Grid.Column="3"
+                                                       Text="{Binding Description}"
+                                                       FontSize="14"
+                                                       Foreground="#666"
+                                                       TextWrapping="Wrap"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0"/>
+                                            <TextBlock Grid.Column="4"
+                                                       Text="{Binding Price, StringFormat={}{0:N0}}"
+                                                       FontSize="14"
+                                                       FontWeight="SemiBold"
+                                                       Foreground="#113F67"
+                                                       VerticalAlignment="Center"
+                                                       Margin="10,0"/>
+
+                                            <!-- Action Buttons -->
+                                            <StackPanel Grid.Column="5"
+                                                        Orientation="Horizontal"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center">
+                                                <!-- Edit Button -->
+                                                <Button Width="32"
+                                                        Height="32"
+                                                        Background="#227DCD"
+                                                        BorderThickness="0"
+                                                        Cursor="Hand"
+                                                        Margin="0,0,8,0"
+                                                        Command="{Binding DataContext.EditProductCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="6">
+                                                                            <materialDesign:PackIcon Kind="Pencil"
+                                                                                                     Width="16"
+                                                                                                     Height="16"
+                                                                                                     Foreground="White"
+                                                                                                     HorizontalAlignment="Center"
+                                                                                                     VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver"
+                                                                         Value="True">
+                                                                    <Setter Property="Background"
+                                                                            Value="#1A6BB8"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+
+                                                <!-- Delete Button -->
+                                                <Button Width="32"
+                                                        Height="32"
+                                                        Background="#DC3545"
+                                                        BorderThickness="0"
+                                                        Cursor="Hand"
+                                                        Command="{Binding DataContext.DeleteProductCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                        CommandParameter="{Binding}">
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                CornerRadius="6">
+                                                                            <materialDesign:PackIcon Kind="Delete"
+                                                                                                     Width="16"
+                                                                                                     Height="16"
+                                                                                                     Foreground="White"
+                                                                                                     HorizontalAlignment="Center"
+                                                                                                     VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Style.Triggers>
+                                                                <Trigger Property="IsMouseOver"
+                                                                         Value="True">
+                                                                    <Setter Property="Background"
+                                                                            Value="#BD2130"/>
+                                                                </Trigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </Button.Style>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Grid>
+                </Border>
             </ScrollViewer>
         </Grid>
     </Grid>
