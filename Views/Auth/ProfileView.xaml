@@ -22,6 +22,8 @@
         <!-- Rating Button Style -->
         <Style x:Key="RatingButtonStyle"
                TargetType="RadioButton">
+            <Setter Property="Foreground"
+                    Value="#666"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
@@ -35,7 +37,7 @@
                                 Cursor="Hand">
                             <TextBlock Text="{TemplateBinding Content}"
                                        FontSize="12"
-                                       Foreground="#666"
+                                       Foreground="{TemplateBinding Foreground}"
                                        HorizontalAlignment="Center"
                                        VerticalAlignment="Center"/>
                         </Border>
@@ -49,7 +51,7 @@
                                         Property="BorderBrush"
                                         Value="#227DCD"/>
                                 <Setter Property="Foreground"
-                                        Value="White"/>
+                                        Value="Gold"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver"
                                      Value="True">
@@ -430,6 +432,7 @@
                                                                                     <DataTemplate>
                                                                                         <TextBlock Text="⭐"
                                                                                                    FontSize="14"
+                                                                                                   Foreground="Gold"
                                                                                                    Margin="0,0,2,0"/>
                                                                                     </DataTemplate>
                                                                                 </ItemsControl.ItemTemplate>
@@ -499,6 +502,8 @@
                                                                             <TextBox x:Name="ReviewCommentBox"
                                                                                      Tag="{Binding}"
                                                                                      Text="{Binding TempReviewComment, UpdateSourceTrigger=PropertyChanged}"
+                                                                                     materialDesign:HintAssist.Hint="Write your review..."
+                                                                                     materialDesign:HintAssist.IsFloating="False"
                                                                                      Background="White"
                                                                                      BorderBrush="#DDD"
                                                                                      BorderThickness="1"
@@ -542,16 +547,33 @@
                                                                                     FontWeight="SemiBold"
                                                                                     Cursor="Hand"
                                                                                     HorizontalAlignment="Right">
+
+                                                                                <!-- Paksa konten mengikuti Foreground tombol, dan hindari implicit TextBlock style -->
+                                                                                <Button.ContentTemplate>
+                                                                                    <DataTemplate>
+                                                                                        <TextBlock Style="{x:Null}"
+                                                                                                   Text="{Binding}"
+                                                                                                   Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                                                                   FontWeight="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontWeight}"
+                                                                                                   FontSize="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontSize}"
+                                                                                                   HorizontalAlignment="Center"
+                                                                                                   VerticalAlignment="Center"/>
+                                                                                    </DataTemplate>
+                                                                                </Button.ContentTemplate>
+
                                                                                 <Button.Template>
                                                                                     <ControlTemplate TargetType="Button">
                                                                                         <Border Background="{TemplateBinding Background}"
                                                                                                 CornerRadius="4"
-                                                                                                Padding="{TemplateBinding Padding}">
+                                                                                                Padding="{TemplateBinding Padding}"
+                                                                                                TextElement.Foreground="{TemplateBinding Foreground}">
+                                                                                            <!-- penting -->
                                                                                             <ContentPresenter HorizontalAlignment="Center"
                                                                                                               VerticalAlignment="Center"/>
                                                                                         </Border>
                                                                                     </ControlTemplate>
                                                                                 </Button.Template>
+
                                                                                 <Button.Style>
                                                                                     <Style TargetType="Button">
                                                                                         <Setter Property="Background"
@@ -571,7 +593,6 @@
                                                                                     </Style>
                                                                                 </Button.Style>
                                                                             </Button>
-
                                                                         </StackPanel>
                                                                     </Grid>
 
