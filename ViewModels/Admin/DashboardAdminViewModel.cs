@@ -5,7 +5,6 @@ using System.Windows.Input;
 using BOZea.ViewModels.Base;
 using BOZea.Helpers;
 using BOZea.Models;
-using BOZea.ViewModels.Admin; 
 
 namespace BOZea.ViewModels.Admin
 {
@@ -80,9 +79,7 @@ namespace BOZea.ViewModels.Admin
                 var mainWindow = System.Windows.Application.Current.MainWindow;
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
-                    // TODO: Create OrderManagementViewModel
-                    System.Windows.MessageBox.Show("Order Management - Coming Soon!");
-                    // mainViewModel.CurrentViewModel = new OrderManagementViewModel();
+                    mainViewModel.CurrentViewModel = new OrderManagementViewModel();
                 }
             }
             catch (Exception ex)
@@ -115,19 +112,20 @@ namespace BOZea.ViewModels.Admin
         {
             try
             {
-                Console.WriteLine($"[DashboardAdminVM] Opening profile for: {CurrentUser?.Name}");
+                Console.WriteLine($"[DashboardAdminVM] Opening settings for: {CurrentUser?.Name}");
 
                 var mainWindow = System.Windows.Application.Current.MainWindow;
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
-                    var profileViewModel = new BOZea.ViewModels.Auth.ProfileViewModel();
-                    mainViewModel.CurrentViewModel = profileViewModel;
-                    Console.WriteLine("[DashboardAdminVM] Navigated to ProfileViewModel");
+                    // TODO: Create SettingsViewModel
+                    System.Windows.MessageBox.Show("Settings - Coming Soon!");
+                    // mainViewModel.CurrentViewModel = new SettingsViewModel();
+                    Console.WriteLine("[DashboardAdminVM] Navigated to Settings (Coming Soon)");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DashboardAdminVM] Error opening profile: {ex.Message}");
+                Console.WriteLine($"[DashboardAdminVM] Error opening settings: {ex.Message}");
             }
         }
 

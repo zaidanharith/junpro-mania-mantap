@@ -79,6 +79,10 @@ namespace BOZea.Helpers
                 {
                     return CreateTemplate(typeof(ProductManagementView), element); // ✅ Bisa pakai short name karena tidak ada konflik
                 }
+                else if (item is OrderManagementViewModel)
+                {
+                    return CreateTemplate(typeof(OrderManagementView), element);
+                }
             }
 
             // Fallback: log error instead of showing MessageBox to avoid Dispatcher crash

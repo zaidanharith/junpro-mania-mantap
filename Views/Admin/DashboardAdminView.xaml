@@ -251,12 +251,54 @@
                                 Background="#E8F4F8"
                                 CornerRadius="32"
                                 VerticalAlignment="Center">
-                            <materialDesign:PackIcon Kind="Account"
-                                                     Width="32"
-                                                     Height="32"
-                                                     Foreground="#0D5785"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center"/>
+                            <Border.Clip>
+                                <EllipseGeometry Center="32,32"
+                                                 RadiusX="32"
+                                                 RadiusY="32"/>
+                            </Border.Clip>
+
+                            <Grid>
+                                <!-- Profile Image dari CurrentUser -->
+                                <Image Source="{Binding CurrentUser.Image}"
+                                       Stretch="UniformToFill"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       Width="64"
+                                       Height="64"
+                                       RenderTransformOrigin="0.5,0.5">
+                                    <Image.RenderTransform>
+                                        <ScaleTransform ScaleX="1.12"
+                                                ScaleY="1.12"/>
+                                    </Image.RenderTransform>
+                                </Image>
+
+                                <!-- Fallback icon -->
+                                <materialDesign:PackIcon Kind="Account"
+                                                         Width="32"
+                                                         Height="32"
+                                                         Foreground="#0D5785"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center">
+                                    <materialDesign:PackIcon.Style>
+                                        <Style TargetType="materialDesign:PackIcon">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                        Value="{x:Null}">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                        Value="">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </materialDesign:PackIcon.Style>
+                                </materialDesign:PackIcon>
+                            </Grid>
                         </Border>
                     </StackPanel>
                 </Grid>

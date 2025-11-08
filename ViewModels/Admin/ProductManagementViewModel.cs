@@ -13,16 +13,27 @@ using ProductModel = BOZea.Models.Product;
 
 namespace BOZea.ViewModels.Admin
 {
+    public class ProductDisplayModel
+    {
+        public int ID { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Category { get; set; } = string.Empty;
+        public decimal Price { get; set; }
+        public ProductModel Product { get; set; } = null!;
+    }
+
     public class ProductManagementViewModel : INotifyPropertyChanged
     {
         private AppDbContext? _context;
         private User? _currentUser;
-        private ObservableCollection<ProductModel> _products;
+        private ObservableCollection<ProductDisplayModel> _products;
         private bool _isLoading;
         private RelayCommand? _addProductCommand;
         private RelayCommand? _editProductCommand;
         private RelayCommand? _deleteProductCommand;
         private RelayCommand? _backToDashboardCommand;
+        private RelayCommand? _navigateOrderManagementCommand;
 
         public User? CurrentUser
         {
@@ -37,7 +48,7 @@ namespace BOZea.ViewModels.Admin
 
         public string AdminName => CurrentUser?.Name ?? "Admin";
 
-        public ObservableCollection<ProductModel> Products
+        public ObservableCollection<ProductDisplayModel> Products
         {
             get => _products;
             set
@@ -61,18 +72,21 @@ namespace BOZea.ViewModels.Admin
             new RelayCommand(_ => AddProduct());
 
         public ICommand EditProductCommand => _editProductCommand ??=
-            new RelayCommand(parameter => EditProduct(parameter as ProductModel));
+            new RelayCommand(parameter => EditProduct(parameter as ProductDisplayModel));
 
         public ICommand DeleteProductCommand => _deleteProductCommand ??=
-            new RelayCommand(parameter => DeleteProduct(parameter as ProductModel));
+            new RelayCommand(parameter => DeleteProduct(parameter as ProductDisplayModel));
 
         public ICommand BackToDashboardCommand => _backToDashboardCommand ??=
             new RelayCommand(_ => BackToDashboard());
 
+        public ICommand NavigateOrderManagementCommand => _navigateOrderManagementCommand ??=
+            new RelayCommand(_ => NavigateToOrderManagement());
+
         public ProductManagementViewModel()
         {
             Console.WriteLine("[ProductManagementVM] Constructor started");
-            _products = new ObservableCollection<ProductModel>();
+            _products = new ObservableCollection<ProductDisplayModel>();
             
             try
             {
@@ -103,7 +117,7 @@ namespace BOZea.ViewModels.Admin
                         System.Windows.MessageBoxImage.Error);
                 });
                 
-                Products = new ObservableCollection<ProductModel>();
+                Products = new ObservableCollection<ProductDisplayModel>();
             }
         }
 
@@ -161,7 +175,7 @@ namespace BOZea.ViewModels.Admin
                 if (_context == null)
                 {
                     Console.WriteLine("[ProductManagementVM] ERROR: DbContext is null!");
-                    Products = new ObservableCollection<ProductModel>();
+                    Products = new ObservableCollection<ProductDisplayModel>();
                     return;
                 }
 
@@ -170,17 +184,37 @@ namespace BOZea.ViewModels.Admin
                 // ✅ FIX: Include Shop navigation property to avoid null reference
                 var productsList = _context.Products
                     .Include(p => p.Shop)  // ✅ Include Shop to load related data
-                    .OrderByDescending(p => p.ID)
+                    .OrderBy(p => p.ID)
                     .ToList();
 
                 Console.WriteLine($"[ProductManagementVM] Found {productsList.Count} products in database");
 
-                Products = new ObservableCollection<ProductModel>();
+                Products = new ObservableCollection<ProductDisplayModel>();
 
                 foreach (var product in productsList)
                 {
-                    Console.WriteLine($"[ProductManagementVM] Adding product: ID={product.ID}, Name={product.Name}, Shop={product.Shop?.Name ?? "null"}");
-                    Products.Add(product);
+                    // Get categories for this product
+                    var productCategories = _context.Set<ProductCategory>()
+                        .Where(pc => pc.ProductID == product.ID)
+                        .Include(pc => pc.Category)
+                        .ToList();
+
+                    var categoryNames = productCategories.Any() 
+                        ? string.Join(", ", productCategories.Select(pc => pc.Category.Name))
+                        : "No Category";
+
+                    var displayModel = new ProductDisplayModel
+                    {
+                        ID = product.ID,
+                        Name = product.Name,
+                        Description = product.Description,
+                        Category = categoryNames,
+                        Price = product.Price,
+                        Product = product
+                    };
+
+                    Console.WriteLine($"[ProductManagementVM] Adding product: ID={displayModel.ID}, Name={displayModel.Name}, Category={displayModel.Category}");
+                    Products.Add(displayModel);
                 }
 
                 Console.WriteLine($"[ProductManagementVM] Successfully loaded {Products.Count} products");
@@ -197,7 +231,7 @@ namespace BOZea.ViewModels.Admin
                     System.Windows.MessageBoxButton.OK,
                     System.Windows.MessageBoxImage.Error);
                 
-                Products = new ObservableCollection<ProductModel>();
+                Products = new ObservableCollection<ProductDisplayModel>();
             }
             finally
             {
@@ -222,7 +256,7 @@ namespace BOZea.ViewModels.Admin
             }
         }
 
-        private void EditProduct(ProductModel? product)
+        private void EditProduct(ProductDisplayModel? product)
         {
             if (product == null) return;
 
@@ -241,7 +275,7 @@ namespace BOZea.ViewModels.Admin
             }
         }
 
-        private void DeleteProduct(ProductModel? product)
+        private void DeleteProduct(ProductDisplayModel? product)
         {
             if (product == null) return;
 
@@ -301,6 +335,23 @@ namespace BOZea.ViewModels.Admin
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
                     mainViewModel.CurrentViewModel = new DashboardAdminViewModel();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProductManagementVM] Error: {ex.Message}");
+            }
+        }
+
+        private void NavigateToOrderManagement()
+        {
+            try
+            {
+                Console.WriteLine("[ProductManagementVM] Navigating to Order Management");
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = new OrderManagementViewModel();
                 }
             }
             catch (Exception ex)

@@ -121,6 +121,10 @@
                             Margin="15,0,15,10"
                             Padding="15,12"
                             Cursor="Hand">
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick"
+                                          Command="{Binding NavigateOrderManagementCommand}"/>
+                        </Border.InputBindings>
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="Background"
@@ -247,12 +251,54 @@
                                     Background="#E8F4F8"
                                     CornerRadius="32"
                                     VerticalAlignment="Center">
-                                <materialDesign:PackIcon Kind="Account"
-                                                         Width="32"
-                                                         Height="32"
-                                                         Foreground="#0D5785"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center"/>
+                                <Border.Clip>
+                                    <EllipseGeometry Center="32,32"
+                                                     RadiusX="32"
+                                                     RadiusY="32"/>
+                                </Border.Clip>
+
+                                <Grid>
+                                    <!-- Profile Image dari CurrentUser -->
+                                    <Image Source="{Binding CurrentUser.Image}"
+                                           Stretch="UniformToFill"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           Width="64"
+                                           Height="64"
+                                           RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <ScaleTransform ScaleX="1.12"
+                                                            ScaleY="1.12"/>
+                                        </Image.RenderTransform>
+                                    </Image>
+
+                                    <!-- Fallback icon -->
+                                    <materialDesign:PackIcon Kind="Account"
+                                                             Width="32"
+                                                             Height="32"
+                                                             Foreground="#0D5785"
+                                                             HorizontalAlignment="Center"
+                                                             VerticalAlignment="Center">
+                                        <materialDesign:PackIcon.Style>
+                                            <Style TargetType="materialDesign:PackIcon">
+                                                <Setter Property="Visibility"
+                                                        Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                                 Value="{x:Null}">
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                                 Value="">
+                                                        <Setter Property="Visibility"
+                                                                Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </materialDesign:PackIcon.Style>
+                                    </materialDesign:PackIcon>
+                                </Grid>
                             </Border>
                         </StackPanel>
                     </Grid>
@@ -316,7 +362,7 @@
                 <!-- Product Table -->
                 <Border Background="#0D5785"
                         CornerRadius="12"
-                        Margin="0,0,0,0">
+                        Margin="0,-10,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -332,12 +378,12 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="80"/>
                                 <!-- ID -->
-                                <ColumnDefinition Width="100"/>
-                                <!-- ShopID -->
                                 <ColumnDefinition Width="*"/>
                                 <!-- Name -->
                                 <ColumnDefinition Width="2*"/>
                                 <!-- Description -->
+                                <ColumnDefinition Width="150"/>
+                                <!-- Category -->
                                 <ColumnDefinition Width="120"/>
                                 <!-- Price -->
                                 <ColumnDefinition Width="120"/>
@@ -351,19 +397,19 @@
                                        Foreground="White"
                                        Margin="10,10"/>
                             <TextBlock Grid.Column="1"
-                                       Text="ShopID"
-                                       FontSize="16"
-                                       FontWeight="Bold"
-                                       Foreground="White"
-                                       Margin="10,10"/>
-                            <TextBlock Grid.Column="2"
                                        Text="Name"
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Foreground="White"
                                        Margin="10,10"/>
-                            <TextBlock Grid.Column="3"
+                            <TextBlock Grid.Column="2"
                                        Text="Description"
+                                       FontSize="16"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="10,10"/>
+                            <TextBlock Grid.Column="3"
+                                       Text="Category"
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Foreground="White"
@@ -397,9 +443,9 @@
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="80"/>
-                                                    <ColumnDefinition Width="100"/>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="2*"/>
+                                                    <ColumnDefinition Width="150"/>
                                                     <ColumnDefinition Width="120"/>
                                                     <ColumnDefinition Width="120"/>
                                                 </Grid.ColumnDefinitions>
@@ -411,24 +457,25 @@
                                                            VerticalAlignment="Center"
                                                            Margin="10,0"/>
                                                 <TextBlock Grid.Column="1"
-                                                           Text="{Binding ShopID}"
-                                                           FontSize="14"
-                                                           Foreground="#333"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0"/>
-                                                <TextBlock Grid.Column="2"
                                                            Text="{Binding Name}"
                                                            FontSize="14"
                                                            Foreground="#333"
                                                            TextTrimming="CharacterEllipsis"
                                                            VerticalAlignment="Center"
                                                            Margin="10,0"/>
-                                                <TextBlock Grid.Column="3"
+                                                <TextBlock Grid.Column="2"
                                                            Text="{Binding Description}"
                                                            FontSize="14"
                                                            Foreground="#666"
                                                            TextTrimming="CharacterEllipsis"
                                                            MaxHeight="20"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0"/>
+                                                <TextBlock Grid.Column="3"
+                                                           Text="{Binding Category}"
+                                                           FontSize="14"
+                                                           Foreground="#333"
+                                                           TextTrimming="CharacterEllipsis"
                                                            VerticalAlignment="Center"
                                                            Margin="10,0"/>
                                                 <TextBlock Grid.Column="4"
