@@ -8,11 +8,13 @@ using BOZea.ViewModels.Category;
 using BOZea.ViewModels.Dashboard;
 using BOZea.ViewModels.Product;
 using BOZea.ViewModels.Payment;
+using BOZea.ViewModels.Admin;
 using BOZea.Views.Auth;
 using BOZea.Views.Category;
 using BOZea.Views.Dashboard;
 using BOZea.Views.Product;
 using BOZea.Views.Payment;
+using BOZea.Views.Admin; 
 
 namespace BOZea.Helpers
 {
@@ -39,13 +41,17 @@ namespace BOZea.Helpers
                 }
                 else if (item is EditProfileViewModel)
                 {
-                    return CreateTemplate(typeof(BOZea.Views.Auth.EditProfileView), element);
+                    return CreateTemplate(typeof(EditProfileView), element);
                 }
 
                 // Dashboard ViewModels
                 else if (item is DashboardViewModel)
                 {
                     return CreateTemplate(typeof(DashboardView), element);
+                }
+                else if (item is DashboardAdminViewModel)
+                {
+                    return CreateTemplate(typeof(BOZea.Views.Admin.DashboardAdminView), element); // ✅ Hanya ini yang perlu fully qualified
                 }
 
                 // Category ViewModels
@@ -59,7 +65,6 @@ namespace BOZea.Helpers
                 {
                     return CreateTemplate(typeof(ProductDetailView), element);
                 }
-                // ✅ ADD CreateProductViewModel mapping
                 else if (item is CreateProductViewModel)
                 {
                     return CreateTemplate(typeof(CreateProductView), element);
@@ -69,6 +74,10 @@ namespace BOZea.Helpers
                 else if (item is PaymentViewModel)
                 {
                     return CreateTemplate(typeof(PaymentView), element);
+                }
+                else if (item is ProductManagementViewModel)
+                {
+                    return CreateTemplate(typeof(ProductManagementView), element); // ✅ Bisa pakai short name karena tidak ada konflik
                 }
             }
 

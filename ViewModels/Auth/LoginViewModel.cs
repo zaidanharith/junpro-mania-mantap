@@ -7,6 +7,7 @@ using BOZea.Services;
 using BOZea.ViewModels.Base;
 using BOZea.ViewModels.Dashboard;
 using BOZea.ViewModels.Auth;
+using BOZea.ViewModels.Admin;
 using BOZea.Helpers;
 
 namespace BOZea.ViewModels.Auth
@@ -95,7 +96,17 @@ namespace BOZea.ViewModels.Auth
 
                 UserSession.SetUser(user);
 
-                _navigation.NavigateTo<DashboardViewModel>();
+                // ✅ Check if user is admin and navigate accordingly
+                if (user.IsAdmin)
+                {
+                    Console.WriteLine($"[LoginVM] Admin logged in: {user.Name}");
+                    _navigation.NavigateTo<DashboardAdminViewModel>();
+                }
+                else
+                {
+                    Console.WriteLine($"[LoginVM] Regular user logged in: {user.Name}");
+                    _navigation.NavigateTo<DashboardViewModel>();
+                }
 
                 return true;
             }

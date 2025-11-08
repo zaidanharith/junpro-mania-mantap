@@ -5,6 +5,7 @@ using BOZea.ViewModels;
 using BOZea.ViewModels.Product;
 using BOZea.ViewModels.Dashboard;
 using BOZea.ViewModels.Category;
+using BOZea.ViewModels.Admin;
 
 namespace BOZea.Services
 {
@@ -13,6 +14,7 @@ namespace BOZea.Services
         private readonly Dictionary<Type, object> _viewModels = new();
         private Action<object>? _onNavigate;
         private static DashboardViewModel? _dashboardInstance;
+        private static DashboardAdminViewModel? _dashboardAdminInstance; // ✅ Add this
 
         public void Configure(Action<object> onNavigate)
         {
@@ -31,10 +33,32 @@ namespace BOZea.Services
             {
                 _dashboardInstance = dashboard;
             }
+            
+            // ✅ Store DashboardAdminViewModel instance
+            if (viewModel is DashboardAdminViewModel dashboardAdmin)
+            {
+                _dashboardAdminInstance = dashboardAdmin;
+            }
         }
 
         public void NavigateTo<TViewModel>() where TViewModel : class
         {
+            // ✅ Special handling for DashboardAdminViewModel
+            if (typeof(TViewModel) == typeof(DashboardAdminViewModel))
+            {
+                Console.WriteLine("[NavigationService] Creating new DashboardAdminViewModel instance");
+                var newDashboardAdmin = new DashboardAdminViewModel();
+                _dashboardAdminInstance = newDashboardAdmin;
+                
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = newDashboardAdmin;
+                    Console.WriteLine("[NavigationService] Successfully navigated to DashboardAdmin");
+                }
+                return;
+            }
+
             if (!_viewModels.TryGetValue(typeof(TViewModel), out var vm))
                 throw new InvalidOperationException($"ViewModel {typeof(TViewModel).Name} not registered.");
 
@@ -71,6 +95,11 @@ namespace BOZea.Services
                     case "dashboard":
                         Console.WriteLine("[NavigationService] Navigating to Dashboard");
                         NavigateBack();
+                        break;
+
+                    case "dashboardadmin": // ✅ Add this case
+                        Console.WriteLine("[NavigationService] Navigating to DashboardAdmin");
+                        NavigateTo<DashboardAdminViewModel>();
                         break;
 
                     case "productdetail":
@@ -179,6 +208,35 @@ namespace BOZea.Services
             NavigateBack();
         }
 
+        // ✅ Add method to navigate to Admin Dashboard
+        public void NavigateToDashboardAdmin()
+        {
+            try
+            {
+                Console.WriteLine("[NavigationService] NavigateToDashboardAdmin() called");
+
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow?.DataContext is not MainViewModel mainViewModel)
+                {
+                    Console.WriteLine("[NavigationService] ERROR: MainViewModel not found!");
+                    return;
+                }
+
+                Console.WriteLine("[NavigationService] Creating new DashboardAdminViewModel instance");
+                var newDashboardAdmin = new DashboardAdminViewModel();
+                _dashboardAdminInstance = newDashboardAdmin;
+                mainViewModel.CurrentViewModel = newDashboardAdmin;
+
+                Console.WriteLine("[NavigationService] Successfully navigated to DashboardAdmin");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[NavigationService] ERROR in NavigateToDashboardAdmin: {ex.Message}");
+                Console.WriteLine($"[NavigationService] StackTrace: {ex.StackTrace}");
+                MessageBox.Show($"Navigation to Admin Dashboard error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         public static void SetDashboardInstance(DashboardViewModel dashboard)
         {
             _dashboardInstance = dashboard;
@@ -189,9 +247,26 @@ namespace BOZea.Services
             return _dashboardInstance;
         }
 
+        // ✅ Add methods for Admin Dashboard instance
+        public static void SetDashboardAdminInstance(DashboardAdminViewModel dashboardAdmin)
+        {
+            _dashboardAdminInstance = dashboardAdmin;
+        }
+
+        public static DashboardAdminViewModel? GetDashboardAdminInstance()
+        {
+            return _dashboardAdminInstance;
+        }
+
         public void ClearDashboardInstance()
         {
             _dashboardInstance = null;
+        }
+
+        // ✅ Add method to clear Admin Dashboard instance
+        public void ClearDashboardAdminInstance()
+        {
+            _dashboardAdminInstance = null;
         }
     }
 }
