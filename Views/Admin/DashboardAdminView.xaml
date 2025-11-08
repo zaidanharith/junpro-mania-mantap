@@ -182,10 +182,15 @@
                                                  Value="True">
                                             <Setter Property="Effect">
                                                 <Setter.Value>
-                                                    <DropShadowEffect BlurRadius="25"
-                                                                      ShadowDepth="3"
-                                                                      Opacity="0.15"
+                                                    <DropShadowEffect BlurRadius="30"
+                                                                      ShadowDepth="8"
+                                                                      Opacity="0.25"
                                                                       Color="#227DCD"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <TranslateTransform Y="-5"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </Trigger>
@@ -258,10 +263,15 @@
                                                  Value="True">
                                             <Setter Property="Effect">
                                                 <Setter.Value>
-                                                    <DropShadowEffect BlurRadius="25"
-                                                                      ShadowDepth="3"
-                                                                      Opacity="0.15"
+                                                    <DropShadowEffect BlurRadius="30"
+                                                                      ShadowDepth="8"
+                                                                      Opacity="0.25"
                                                                       Color="#227DCD"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <TranslateTransform Y="-5"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </Trigger>
@@ -334,10 +344,15 @@
                                                  Value="True">
                                             <Setter Property="Effect">
                                                 <Setter.Value>
-                                                    <DropShadowEffect BlurRadius="25"
-                                                                      ShadowDepth="3"
-                                                                      Opacity="0.15"
+                                                    <DropShadowEffect BlurRadius="30"
+                                                                      ShadowDepth="8"
+                                                                      Opacity="0.25"
                                                                       Color="#227DCD"/>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter Property="RenderTransform">
+                                                <Setter.Value>
+                                                    <TranslateTransform Y="-5"/>
                                                 </Setter.Value>
                                             </Setter>
                                         </Trigger>

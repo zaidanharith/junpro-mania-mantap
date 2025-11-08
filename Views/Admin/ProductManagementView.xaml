@@ -201,7 +201,8 @@
             <!-- Content Area -->
             <Border Grid.Row="1"
                     CornerRadius="10"
-                    Margin="40,0,40,40">
+                    Margin="40,0,40,40"
+                    VerticalAlignment="Top">
                 <!-- Product Table -->
                 <Border Background="white"
                         Margin="0,0,0,0">
@@ -210,13 +211,14 @@
                             <RowDefinition Height="Auto"/>
                             <!-- Header -->
                             <RowDefinition Height="*"/>
-                            <!-- Data -->
+                            <!-- Data with ScrollViewer -->
                         </Grid.RowDefinitions>
 
-                        <!-- Table Header -->
+                        <!-- Table Header (Fixed) -->
                         <Grid Grid.Row="0"
                               Background="#0D5785"
-                              Margin="20,20,20,0">
+                              Margin="20,20,20,0"
+                              ZIndex="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="80"/>
                                 <!-- ID -->
@@ -271,11 +273,12 @@
                                        HorizontalAlignment="Center"/>
                         </Grid>
 
-                        <!-- Table Data with ScrollViewer -->
+                        <!-- Table Data (Scrollable) -->
                         <ScrollViewer Grid.Row="1"
-                                      VerticalScrollBarVisibility="Disabled"
-                                      Margin="20,10,10,20">
-                            <ItemsControl ItemsSource="{Binding Products}">
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding Products}"
+                                          Margin="20,10,10,20">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Border Background="White"
@@ -324,7 +327,6 @@
                                                            FontSize="14"
                                                            FontWeight="SemiBold"
                                                            Foreground="#113F67"
-                                                           VerticalAlignment="Center"
                                                            Margin="10,0"/>
 
                                                 <!-- Action Buttons -->
@@ -404,12 +406,12 @@
                                                             </Style>
                                                         </Button.Style>
                                                     </Button>
-                                                </StackPanel>
-                                            </Grid>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                         </ScrollViewer>
                     </Grid>
                 </Border>
