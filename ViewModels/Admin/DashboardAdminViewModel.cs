@@ -15,6 +15,7 @@ namespace BOZea.ViewModels.Admin
         private RelayCommand? _navigateOrderManagementCommand;
         private RelayCommand? _navigateSettingsCommand;
         private RelayCommand? _openProfileCommand;
+        private string _currentPage = "Dashboard";
 
         public User? CurrentUser
         {
@@ -28,6 +29,16 @@ namespace BOZea.ViewModels.Admin
         }
 
         public string AdminName => CurrentUser?.Name ?? "Admin";
+
+        public string CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ICommand NavigateProductManagementCommand => _navigateProductManagementCommand ??=
             new RelayCommand(_ => NavigateToProductManagement());
@@ -56,6 +67,7 @@ namespace BOZea.ViewModels.Admin
         {
             try
             {
+                CurrentPage = "ProductManagement";
                 Console.WriteLine("[DashboardAdminVM] Navigating to Product Management...");
                 
                 var mainWindow = System.Windows.Application.Current.MainWindow;
@@ -74,6 +86,7 @@ namespace BOZea.ViewModels.Admin
         {
             try
             {
+                CurrentPage = "OrderManagement";
                 Console.WriteLine("[DashboardAdminVM] Navigating to Order Management...");
                 
                 var mainWindow = System.Windows.Application.Current.MainWindow;

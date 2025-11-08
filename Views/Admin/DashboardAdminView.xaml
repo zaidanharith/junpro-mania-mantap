@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:shared="clr-namespace:BOZea.Views.Shared"
              mc:Ignorable="d"
              FontFamily="Plus Jakarta Sans"
              d:DesignWidth="1280"
@@ -25,173 +26,9 @@
             <!-- Main Content -->
         </Grid.ColumnDefinitions>
 
-        <!-- Sidebar with Rounded Corners -->
-        <Border Grid.Column="0"
-                Background="#0D5785"
-                CornerRadius="0,20,20,0"
-                Margin="0,0,0,0">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="20"
-                                  ShadowDepth="0"
-                                  Opacity="0.1"
-                                  Color="#000000"/>
-            </Border.Effect>
-
-            <StackPanel>
-                <!-- Logo Section - Using same logo as NavBar -->
-                <Border Margin="30,30,30,0"
-                        HorizontalAlignment="Center"
-                        Height="64">
-                    <Image Source="/Views/Assets/logo_white.png"
-                           Height="88"
-                           Stretch="Uniform"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Width="148"/>
-                </Border>
-
-                <!-- Admin Panel Label -->
-                <TextBlock Text="Admin Panel"
-                           FontSize="14"
-                           FontWeight="SemiBold"
-                           Foreground="#B0D4E8"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,20"/>
-
-                <!-- Menu Items -->
-                <StackPanel>
-                    <!-- Dashboard -->
-                    <Border Background="#0A4567"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ViewDashboard"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Dashboard"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Product Management -->
-                    <Border Background="Transparent"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12"
-                            Cursor="Hand">
-                        <Border.InputBindings>
-                            <MouseBinding MouseAction="LeftClick"
-                                          Command="{Binding NavigateProductManagementCommand}"/>
-                        </Border.InputBindings>
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background"
-                                        Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#0A4567"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Package"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Product Management"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Order Management -->
-                    <Border Background="Transparent"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12"
-                            Cursor="Hand">
-                        <Border.InputBindings>
-                            <MouseBinding MouseAction="LeftClick"
-                                          Command="{Binding NavigateOrderManagementCommand}"/>
-                        </Border.InputBindings>
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background"
-                                        Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#0A4567"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ShoppingOutline"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Order Management"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Settings -->
-                    <Border Background="Transparent"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12"
-                            Cursor="Hand">
-                        <Border.InputBindings>
-                            <MouseBinding MouseAction="LeftClick"
-                                          Command="{Binding NavigateSettingsCommand}"/>
-                        </Border.InputBindings>
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background"
-                                        Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#0A4567"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Cog"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Settings"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </StackPanel>
-        </Border>
+        <!-- Sidebar -->
+        <shared:AdminSidebar Grid.Column="0"
+                             DataContext="{Binding}"/>
 
         <!-- Main Content Area -->
         <Grid Grid.Column="1">
@@ -308,7 +145,7 @@
             <ScrollViewer Grid.Row="1"
                           VerticalScrollBarVisibility="Auto"
                           Margin="20,10,20,0"
-                          Padding="40,0,40,40">
+                          Padding="0,0,0,40">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -316,16 +153,18 @@
                     </Grid.RowDefinitions>
 
                     <!-- Dashboard Cards -->
-                    <UniformGrid Grid.Row="0"
-                                 Columns="3"
-                                 Margin="0,0,0,40">
+                    <WrapPanel Grid.Row="0"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,40">
 
                         <!-- Product Management Card -->
                         <Border Background="White"
                                 CornerRadius="12"
-                                Margin="0,0,20,0"
                                 Padding="30"
-                                Cursor="Hand">
+                                Cursor="Hand"
+                                Margin="10"
+                                MinWidth="320"
+                                MaxWidth="450">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick"
                                               Command="{Binding NavigateProductManagementCommand}"/>
@@ -380,12 +219,13 @@
                                 <StackPanel Grid.Column="1"
                                             VerticalAlignment="Center">
                                     <TextBlock Text="Product Management"
-                                               FontSize="32"
+                                               FontSize="24"
                                                FontWeight="Bold"
                                                Foreground="#113F67"
-                                               Margin="0,0,0,8"/>
+                                               Margin="0,0,0,8"
+                                               TextWrapping="Wrap"/>
                                     <TextBlock Text="lorem ipsum dolor sit amet"
-                                               FontSize="16"
+                                               FontSize="14"
                                                Foreground="#666"
                                                TextWrapping="Wrap"
                                                Margin="0"/>
@@ -396,9 +236,11 @@
                         <!-- Order Management Card -->
                         <Border Background="White"
                                 CornerRadius="12"
-                                Margin="0,0,20,0"
                                 Padding="30"
-                                Cursor="Hand">
+                                Cursor="Hand"
+                                Margin="10"
+                                MinWidth="320"
+                                MaxWidth="450">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick"
                                               Command="{Binding NavigateOrderManagementCommand}"/>
@@ -453,12 +295,13 @@
                                 <StackPanel Grid.Column="1"
                                             VerticalAlignment="Center">
                                     <TextBlock Text="Order Management"
-                                               FontSize="32"
+                                               FontSize="24"
                                                FontWeight="Bold"
                                                Foreground="#113F67"
-                                               Margin="0,0,0,8"/>
+                                               Margin="0,0,0,8"
+                                               TextWrapping="Wrap"/>
                                     <TextBlock Text="lorem ipsum dolor sit amet"
-                                               FontSize="16"
+                                               FontSize="14"
                                                Foreground="#666"
                                                TextWrapping="Wrap"
                                                Margin="0"/>
@@ -466,14 +309,17 @@
                             </Grid>
                         </Border>
 
-                        <!-- Settings Card -->
+                        <!-- Logout Card -->
                         <Border Background="White"
                                 CornerRadius="12"
                                 Padding="30"
-                                Cursor="Hand">
+                                Cursor="Hand"
+                                Margin="10"
+                                MinWidth="320"
+                                MaxWidth="450">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick"
-                                              Command="{Binding NavigateSettingsCommand}"/>
+                                              Command="{Binding LogoutCommand}"/>
                             </Border.InputBindings>
                             <Border.Effect>
                                 <DropShadowEffect BlurRadius="20"
@@ -513,7 +359,7 @@
                                         CornerRadius="30"
                                         VerticalAlignment="Center"
                                         Margin="0,0,20,0">
-                                    <materialDesign:PackIcon Kind="Cog"
+                                    <materialDesign:PackIcon Kind="Logout"
                                                              Width="30"
                                                              Height="30"
                                                              Foreground="#0D5785"
@@ -524,20 +370,22 @@
                                 <!-- Title + Description -->
                                 <StackPanel Grid.Column="1"
                                             VerticalAlignment="Center">
-                                    <TextBlock Text="Settings"
-                                               FontSize="32"
+                                    <TextBlock Text="Logout"
+                                               FontSize="24"
                                                FontWeight="Bold"
                                                Foreground="#113F67"
-                                               Margin="0,0,0,8"/>
-                                    <TextBlock Text="lorem ipsum dolor sit amet"
-                                               FontSize="16"
+                                               Margin="0,0,0,8"
+                                               TextWrapping="Wrap"/>
+                                    <TextBlock Text="Keluar dari akun Anda"
+                                               FontSize="14"
                                                Foreground="#666"
                                                TextWrapping="Wrap"
                                                Margin="0"/>
                                 </StackPanel>
                             </Grid>
                         </Border>
-                    </UniformGrid>
+
+                    </WrapPanel>
                 </Grid>
             </ScrollViewer>
         </Grid>

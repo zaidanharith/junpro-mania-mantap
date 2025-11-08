@@ -16,6 +16,7 @@ namespace BOZea.ViewModels.Admin
     public class ProductDisplayModel
     {
         public int ID { get; set; }
+        public int ShopID { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
@@ -34,6 +35,7 @@ namespace BOZea.ViewModels.Admin
         private RelayCommand? _deleteProductCommand;
         private RelayCommand? _backToDashboardCommand;
         private RelayCommand? _navigateOrderManagementCommand;
+        private string _currentPage = "ProductManagement";
 
         public User? CurrentUser
         {
@@ -83,8 +85,19 @@ namespace BOZea.ViewModels.Admin
         public ICommand NavigateOrderManagementCommand => _navigateOrderManagementCommand ??=
             new RelayCommand(_ => NavigateToOrderManagement());
 
+        public string CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ProductManagementViewModel()
         {
+            CurrentPage = "ProductManagement";
             Console.WriteLine("[ProductManagementVM] Constructor started");
             _products = new ObservableCollection<ProductDisplayModel>();
             
@@ -206,6 +219,7 @@ namespace BOZea.ViewModels.Admin
                     var displayModel = new ProductDisplayModel
                     {
                         ID = product.ID,
+                        ShopID = product.ShopID,
                         Name = product.Name,
                         Description = product.Description,
                         Category = categoryNames,
@@ -213,7 +227,7 @@ namespace BOZea.ViewModels.Admin
                         Product = product
                     };
 
-                    Console.WriteLine($"[ProductManagementVM] Adding product: ID={displayModel.ID}, Name={displayModel.Name}, Category={displayModel.Category}");
+                    Console.WriteLine($"[ProductManagementVM] Adding product: ID={displayModel.ID}, ShopID={displayModel.ShopID}, Name={displayModel.Name}, Category={displayModel.Category}");
                     Products.Add(displayModel);
                 }
 

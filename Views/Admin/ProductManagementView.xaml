@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:shared="clr-namespace:BOZea.Views.Shared"
              mc:Ignorable="d"
              FontFamily="Plus Jakarta Sans"
              d:DesignWidth="1280"
@@ -26,167 +27,8 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <Border Grid.Column="0"
-                Background="#0D5785"
-                CornerRadius="0,20,20,0">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="20"
-                                  ShadowDepth="0"
-                                  Opacity="0.1"
-                                  Color="#000000"/>
-            </Border.Effect>
-
-            <StackPanel>
-                <!-- Logo Section -->
-                <Border Margin="30,30,30,0"
-                        HorizontalAlignment="Center"
-                        Height="64">
-                    <Image Source="/Views/Assets/logo_white.png"
-                           Height="88"
-                           Stretch="Uniform"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           Width="148"/>
-                </Border>
-
-                <!-- Admin Panel Label -->
-                <TextBlock Text="Admin Panel"
-                           FontSize="14"
-                           FontWeight="SemiBold"
-                           Foreground="#B0D4E8"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,20"/>
-
-                <!-- Menu Items -->
-                <StackPanel>
-                    <!-- Dashboard -->
-                    <Border Background="Transparent"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12"
-                            Cursor="Hand">
-                        <Border.InputBindings>
-                            <MouseBinding MouseAction="LeftClick"
-                                          Command="{Binding BackToDashboardCommand}"/>
-                        </Border.InputBindings>
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background"
-                                        Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#0A4567"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ViewDashboard"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Dashboard"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Product Management (Active) -->
-                    <Border Background="#0A4567"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Package"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Product Management"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Order Management -->
-                    <Border Background="Transparent"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12"
-                            Cursor="Hand">
-                        <Border.InputBindings>
-                            <MouseBinding MouseAction="LeftClick"
-                                          Command="{Binding NavigateOrderManagementCommand}"/>
-                        </Border.InputBindings>
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background"
-                                        Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#0A4567"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ShoppingOutline"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Order Management"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Settings -->
-                    <Border Background="Transparent"
-                            CornerRadius="8"
-                            Margin="15,0,15,10"
-                            Padding="15,12"
-                            Cursor="Hand">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="Background"
-                                        Value="Transparent"/>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#0A4567"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Cog"
-                                                     Width="20"
-                                                     Height="20"
-                                                     Foreground="White"
-                                                     VerticalAlignment="Center"
-                                                     Margin="0,0,12,0"/>
-                            <TextBlock Text="Settings"
-                                       FontSize="15"
-                                       Foreground="White"
-                                       VerticalAlignment="Center"/>
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
-            </StackPanel>
-        </Border>
+        <shared:AdminSidebar Grid.Column="0"
+                             DataContext="{Binding}"/>
 
         <!-- Main Content Area -->
         <Grid Grid.Column="1">
@@ -358,11 +200,11 @@
 
             <!-- Content Area -->
             <Border Grid.Row="1"
+                    CornerRadius="10"
                     Margin="40,0,40,40">
                 <!-- Product Table -->
-                <Border Background="#0D5785"
-                        CornerRadius="12"
-                        Margin="0,-10,0,0">
+                <Border Background="white"
+                        Margin="0,0,0,0">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
@@ -378,12 +220,12 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="80"/>
                                 <!-- ID -->
+                                <ColumnDefinition Width="100"/>
+                                <!-- ShopID -->
                                 <ColumnDefinition Width="*"/>
                                 <!-- Name -->
                                 <ColumnDefinition Width="2*"/>
                                 <!-- Description -->
-                                <ColumnDefinition Width="150"/>
-                                <!-- Category -->
                                 <ColumnDefinition Width="120"/>
                                 <!-- Price -->
                                 <ColumnDefinition Width="120"/>
@@ -397,19 +239,19 @@
                                        Foreground="White"
                                        Margin="10,10"/>
                             <TextBlock Grid.Column="1"
-                                       Text="Name"
+                                       Text="ShopID"
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Foreground="White"
                                        Margin="10,10"/>
                             <TextBlock Grid.Column="2"
-                                       Text="Description"
+                                       Text="Name"
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Foreground="White"
                                        Margin="10,10"/>
                             <TextBlock Grid.Column="3"
-                                       Text="Category"
+                                       Text="Description"
                                        FontSize="16"
                                        FontWeight="Bold"
                                        Foreground="White"
@@ -431,7 +273,7 @@
 
                         <!-- Table Data with ScrollViewer -->
                         <ScrollViewer Grid.Row="1"
-                                      VerticalScrollBarVisibility="Auto"
+                                      VerticalScrollBarVisibility="Disabled"
                                       Margin="20,10,10,20">
                             <ItemsControl ItemsSource="{Binding Products}">
                                 <ItemsControl.ItemTemplate>
@@ -443,9 +285,9 @@
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="80"/>
+                                                    <ColumnDefinition Width="100"/>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="150"/>
                                                     <ColumnDefinition Width="120"/>
                                                     <ColumnDefinition Width="120"/>
                                                 </Grid.ColumnDefinitions>
@@ -457,25 +299,24 @@
                                                            VerticalAlignment="Center"
                                                            Margin="10,0"/>
                                                 <TextBlock Grid.Column="1"
+                                                           Text="{Binding ShopID}"
+                                                           FontSize="14"
+                                                           Foreground="#333"
+                                                           VerticalAlignment="Center"
+                                                           Margin="10,0"/>
+                                                <TextBlock Grid.Column="2"
                                                            Text="{Binding Name}"
                                                            FontSize="14"
                                                            Foreground="#333"
                                                            TextTrimming="CharacterEllipsis"
                                                            VerticalAlignment="Center"
                                                            Margin="10,0"/>
-                                                <TextBlock Grid.Column="2"
+                                                <TextBlock Grid.Column="3"
                                                            Text="{Binding Description}"
                                                            FontSize="14"
                                                            Foreground="#666"
                                                            TextTrimming="CharacterEllipsis"
                                                            MaxHeight="20"
-                                                           VerticalAlignment="Center"
-                                                           Margin="10,0"/>
-                                                <TextBlock Grid.Column="3"
-                                                           Text="{Binding Category}"
-                                                           FontSize="14"
-                                                           Foreground="#333"
-                                                           TextTrimming="CharacterEllipsis"
                                                            VerticalAlignment="Center"
                                                            Margin="10,0"/>
                                                 <TextBlock Grid.Column="4"

@@ -21,6 +21,7 @@ namespace BOZea.ViewModels.Admin
         private RelayCommand? _backToDashboardCommand;
         private RelayCommand? _navigateProductManagementCommand;
         private RelayCommand? _viewDetailCommand;
+        private string _currentPage = "OrderManagement";
 
         public User? CurrentUser
         {
@@ -64,8 +65,19 @@ namespace BOZea.ViewModels.Admin
         public ICommand ViewDetailCommand => _viewDetailCommand ??=
             new RelayCommand(parameter => ViewOrderDetail(parameter as OrderItemDisplay));
 
+        public string CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                _currentPage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public OrderManagementViewModel()
         {
+            CurrentPage = "OrderManagement";
             Console.WriteLine("[OrderManagementVM] Constructor started");
             _orderItems = new ObservableCollection<OrderItemDisplay>();
             
