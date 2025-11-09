@@ -22,7 +22,7 @@ namespace BOZea.ViewModels.Auth
         private readonly OrderRepository _orderRepository;
         private readonly AppDbContext _dbContext;
         private User? _currentUser;
-        private ObservableCollection<Order> _userTransactions;
+        private ObservableCollection<Models.Order> _userTransactions;
         private bool _isLoading;
         private RelayCommand? _navigateHomeCommand;
         private RelayCommand? _logoutCommand;
@@ -36,7 +36,7 @@ namespace BOZea.ViewModels.Auth
             _dbContext = factory.CreateDbContext(Array.Empty<string>());
             _userRepository = new UserRepository(_dbContext);
             _orderRepository = new OrderRepository(_dbContext);
-            _userTransactions = new ObservableCollection<Order>();
+            _userTransactions = new ObservableCollection<Models.Order>();
 
             EditProfileCommand = new RelayCommand(_ => EditProfile());
             AddReviewCommand = new RelayCommand(param => AddReview(param as OrderItem));
@@ -58,7 +58,7 @@ namespace BOZea.ViewModels.Auth
             }
         }
 
-        public ObservableCollection<Order> UserTransactions
+        public ObservableCollection<Models.Order> UserTransactions
         {
             get => _userTransactions;
             set
@@ -144,7 +144,7 @@ namespace BOZea.ViewModels.Auth
                 // Add 5 second timeout
                 var completedTask = await Task.WhenAny(ordersTask, Task.Delay(5000));
 
-                List<Order> orders;
+                List<Models.Order> orders;
                 if (completedTask == ordersTask)
                 {
                     orders = await ordersTask;
@@ -153,7 +153,7 @@ namespace BOZea.ViewModels.Auth
                 else
                 {
                     Console.WriteLine("[ProfileVM] Transaction query timeout - using empty list");
-                    orders = new List<Order>();
+                    orders = new List<Models.Order>();
                 }
 
                 // Update on UI thread

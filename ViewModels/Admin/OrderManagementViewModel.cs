@@ -8,6 +8,7 @@ using BOZea.ViewModels.Base;
 using BOZea.Helpers;
 using BOZea.Models;
 using BOZea.Data;
+using BOZea.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace BOZea.ViewModels.Admin
@@ -301,34 +302,13 @@ namespace BOZea.ViewModels.Admin
                     return;
                 }
 
-                // Build detail message
-                var details = $"ORDER DETAILS\n" +
-                             $"═══════════════════════════════════\n\n" +
-                             $"Order ID: {order.ID}\n" +
-                             $"Date: {order.Date:dd/MM/yyyy HH:mm}\n" +
-                             $"Customer: {order.User?.Name ?? "Unknown"}\n" +
-                             $"Payment Method: {order.Payment?.Method ?? "Unknown"}\n" +
-                             $"Payment Status: {order.Payment?.Status.ToString() ?? "Unknown"}\n\n" +
-                             $"ITEMS:\n" +
-                             $"───────────────────────────────────\n";
-
-                foreach (var item in order.OrderItems)
+                // Navigate to OrderDetailView
+                Console.WriteLine("[OrderManagementVM] Navigating to OrderDetailView...");
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
-                    details += $"\n• {item.Product?.Name ?? "Unknown Product"}\n";
-                    details += $"  Quantity: {item.Quantity}\n";
-                    details += $"  Price: Rp {item.Price:N0}\n";
-                    details += $"  Subtotal: Rp {(item.Price * item.Quantity):N0}\n";
-                    details += $"  Status: {item.Status}\n";
+                    mainViewModel.CurrentViewModel = new BOZea.ViewModels.Order.OrderDetailViewModel(order);
                 }
-
-                details += $"\n───────────────────────────────────\n";
-                details += $"TOTAL: Rp {order.TotalPrice:N0}";
-
-                System.Windows.MessageBox.Show(
-                    details,
-                    "Order Details",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Information);
             }
             catch (Exception ex)
             {

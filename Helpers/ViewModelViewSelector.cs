@@ -9,12 +9,14 @@ using BOZea.ViewModels.Dashboard;
 using BOZea.ViewModels.Product;
 using BOZea.ViewModels.Payment;
 using BOZea.ViewModels.Admin;
+using BOZea.ViewModels.Order;
 using BOZea.Views.Auth;
 using BOZea.Views.Category;
 using BOZea.Views.Dashboard;
 using BOZea.Views.Product;
 using BOZea.Views.Payment;
-using BOZea.Views.Admin; 
+using BOZea.Views.Admin;
+using BOZea.Views.Order; 
 
 namespace BOZea.Helpers
 {
@@ -86,6 +88,12 @@ namespace BOZea.Helpers
                 else if (item is OrderManagementViewModel)
                 {
                     return CreateTemplate(typeof(OrderManagementView), element);
+                }
+                
+                // Order ViewModels
+                else if (item is OrderDetailViewModel)
+                {
+                    return CreateTemplate(typeof(OrderDetailView), element);
                 }
             }
 
