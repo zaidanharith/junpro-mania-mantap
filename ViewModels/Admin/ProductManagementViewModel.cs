@@ -35,6 +35,7 @@ namespace BOZea.ViewModels.Admin
         private RelayCommand? _deleteProductCommand;
         private RelayCommand? _backToDashboardCommand;
         private RelayCommand? _navigateOrderManagementCommand;
+        private RelayCommand? _logoutCommand;
         private string _currentPage = "ProductManagement";
 
         public User? CurrentUser
@@ -84,6 +85,9 @@ namespace BOZea.ViewModels.Admin
 
         public ICommand NavigateOrderManagementCommand => _navigateOrderManagementCommand ??=
             new RelayCommand(_ => NavigateToOrderManagement());
+
+        public ICommand LogoutCommand => _logoutCommand ??=
+            new RelayCommand(_ => ExecuteLogout());
 
         public string CurrentPage
         {
@@ -257,12 +261,13 @@ namespace BOZea.ViewModels.Admin
         {
             try
             {
-                Console.WriteLine("[ProductManagementVM] Add Product clicked");
-                System.Windows.MessageBox.Show(
-                    "Add Product feature - Coming Soon!",
-                    "Info",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Information);
+                Console.WriteLine("[ProductManagementVM] Navigating to Create Product...");
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = new Product.CreateProductViewModel();
+                    Console.WriteLine("[ProductManagementVM] Successfully navigated to CreateProductView");
+                }
             }
             catch (Exception ex)
             {
@@ -277,15 +282,38 @@ namespace BOZea.ViewModels.Admin
             try
             {
                 Console.WriteLine($"[ProductManagementVM] Edit Product: {product.Name}");
-                System.Windows.MessageBox.Show(
-                    $"Edit Product: {product.Name}\n\nComing Soon!",
-                    "Info",
-                    System.Windows.MessageBoxButton.OK,
-                    System.Windows.MessageBoxImage.Information);
+
+                // Get full product data from database
+                var fullProduct = _context?.Products
+                    .Include(p => p.Shop)
+                    .FirstOrDefault(p => p.ID == product.ID);
+
+                if (fullProduct == null)
+                {
+                    System.Windows.MessageBox.Show(
+                        "Product not found.",
+                        "Error",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
+                    return;
+                }
+
+                // Navigate to EditProductView
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = new Product.EditProductViewModel(fullProduct);
+                    Console.WriteLine("[ProductManagementVM] Navigated to EditProductView");
+                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[ProductManagementVM] Error: {ex.Message}");
+                System.Windows.MessageBox.Show(
+                    $"Error loading product: {ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
             }
         }
 
@@ -371,6 +399,63 @@ namespace BOZea.ViewModels.Admin
             catch (Exception ex)
             {
                 Console.WriteLine($"[ProductManagementVM] Error: {ex.Message}");
+            }
+        }
+
+        private void ExecuteLogout()
+        {
+            try
+            {
+                Console.WriteLine("[ProductManagementVM] Logout requested");
+
+                // Konfirmasi logout
+                var result = System.Windows.MessageBox.Show(
+                    "Are you sure you want to logout?",
+                    "Logout Confirmation",
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Question);
+
+                if (result != System.Windows.MessageBoxResult.Yes)
+                {
+                    Console.WriteLine("[ProductManagementVM] Logout cancelled by user");
+                    return;
+                }
+
+                Console.WriteLine("[ProductManagementVM] Logging out...");
+
+                // Clear user session
+                UserSession.ClearUser();
+                Console.WriteLine("[ProductManagementVM] UserSession cleared");
+
+                // Navigate to Login
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = mainViewModel.LoginViewModel;
+                    Console.WriteLine("[ProductManagementVM] Successfully navigated to Login");
+
+                    System.Windows.MessageBox.Show(
+                        "You have been logged out successfully.",
+                        "Logout Successful",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Information);
+                }
+                else
+                {
+                    Console.WriteLine("[ProductManagementVM] ERROR: MainViewModel not found!");
+                    System.Windows.MessageBox.Show("Error: Cannot navigate to login page.",
+                        "Navigation Error",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProductManagementVM] Error during logout: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error during logout: {ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
             }
         }
 

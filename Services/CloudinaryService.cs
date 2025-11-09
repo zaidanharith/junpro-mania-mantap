@@ -19,6 +19,9 @@ namespace BOZea.Services
         {
             try
             {
+                Console.WriteLine($"[CloudinaryService] Starting upload from: {filePath}");
+                Console.WriteLine($"[CloudinaryService] Target folder: {folder}");
+
                 var uploadParams = new ImageUploadParams
                 {
                     File = new FileDescription(filePath),
@@ -28,15 +31,27 @@ namespace BOZea.Services
 
                 var result = await _cloudinary.UploadAsync(uploadParams);
 
+                Console.WriteLine($"[CloudinaryService] Upload status code: {result.StatusCode}");
+                Console.WriteLine($"[CloudinaryService] Upload result: {result.JsonObj}");
+
                 if (result.StatusCode == System.Net.HttpStatusCode.OK)
                 {
+                    Console.WriteLine($"[CloudinaryService] Upload successful: {result.SecureUrl}");
                     return result.SecureUrl.ToString();
+                }
+
+                Console.WriteLine($"[CloudinaryService] Upload failed with status: {result.StatusCode}");
+                if (result.Error != null)
+                {
+                    Console.WriteLine($"[CloudinaryService] Error message: {result.Error.Message}");
                 }
 
                 return null;
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"[CloudinaryService] Exception during upload: {ex.Message}");
+                Console.WriteLine($"[CloudinaryService] Stack trace: {ex.StackTrace}");
                 System.Diagnostics.Debug.WriteLine($"Cloudinary upload error: {ex.Message}");
                 return null;
             }

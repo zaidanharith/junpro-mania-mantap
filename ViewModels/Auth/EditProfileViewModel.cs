@@ -13,19 +13,23 @@ using BOZea.Services;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Controls;
+using DotNetEnv;
 
 namespace BOZea.ViewModels.Auth
 {
     public class EditProfileViewModel : INotifyPropertyChanged
     {
         private readonly AppDbContext _dbContext;
+        private readonly CloudinaryService _cloudinaryService;
         private User? _currentUser;
         private string _name = string.Empty;
         private string _email = string.Empty;
         private string _phone = string.Empty;
         private string _address = string.Empty;
-        private string _profileImage = "/Views/Assets/avatar-default.png";
+        private string? _profileImage;
+        private string? _imageFilePath;
         private bool _isLoading;
+        private bool _isUploading;
 
         private RelayCommand? _backCommand;
         private RelayCommand? _saveCommand;
@@ -58,7 +62,7 @@ namespace BOZea.ViewModels.Auth
             set { _address = value; OnPropertyChanged(); }
         }
 
-        public string ProfileImage
+        public string? ProfileImage
         {
             get => _profileImage;
             set { _profileImage = value; OnPropertyChanged(); }
@@ -68,6 +72,12 @@ namespace BOZea.ViewModels.Auth
         {
             get => _isLoading;
             set { _isLoading = value; OnPropertyChanged(); }
+        }
+
+        public bool IsUploading
+        {
+            get => _isUploading;
+            set { _isUploading = value; OnPropertyChanged(); }
         }
 
         // Commands
@@ -81,6 +91,26 @@ namespace BOZea.ViewModels.Auth
         {
             var factory = new AppDbContextFactory();
             _dbContext = factory.CreateDbContext(new string[] { });
+
+            // Load environment variables
+            DotNetEnv.Env.Load();
+            
+            var cloudName = Environment.GetEnvironmentVariable("CLOUD_NAME");
+            var apiKey = Environment.GetEnvironmentVariable("CLOUD_API_KEY");
+            var apiSecret = Environment.GetEnvironmentVariable("CLOUD_API_SECRET");
+
+            if (string.IsNullOrWhiteSpace(cloudName) ||
+                string.IsNullOrWhiteSpace(apiKey) ||
+                string.IsNullOrWhiteSpace(apiSecret))
+            {
+                Console.WriteLine("[EditProfileVM] Warning: Cloudinary credentials not found in environment variables");
+                // Use default/fallback credentials
+                cloudName = "dpfxbhyze";
+                apiKey = "842661622858438";
+                apiSecret = "SxW5MWTKa15bIjKuNMxZBxz6z7I";
+            }
+
+            _cloudinaryService = new CloudinaryService(cloudName, apiKey, apiSecret);
 
             Console.WriteLine("[EditProfileVM] Constructor started");
             LoadUserData();
@@ -105,9 +135,7 @@ namespace BOZea.ViewModels.Auth
                 Email = _currentUser.Email;
                 Phone = _currentUser.Phone ?? string.Empty;
                 Address = _currentUser.Address ?? string.Empty;
-                ProfileImage = !string.IsNullOrEmpty(_currentUser.Image)
-                    ? _currentUser.Image
-                    : "/Views/Assets/avatar-default.png";
+                ProfileImage = _currentUser.Image; // Keep null if no image
 
                 Console.WriteLine("[EditProfileVM] User data loaded successfully");
             }
@@ -321,7 +349,7 @@ namespace BOZea.ViewModels.Auth
             }
         }
 
-        private void ExecuteChangePhoto(object? parameter)
+        private async void ExecuteChangePhoto(object? parameter)
         {
             try
             {
@@ -347,20 +375,35 @@ namespace BOZea.ViewModels.Auth
                         return;
                     }
 
-                    // Copy file to Assets folder
-                    string fileName = $"profile_{_currentUser?.ID}_{DateTime.Now:yyyyMMddHHmmss}{fileInfo.Extension}";
-                    string assetsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Views", "Assets");
+                    // Store file path temporarily
+                    _imageFilePath = filePath;
 
-                    if (!Directory.Exists(assetsPath))
+                    // Upload to Cloudinary
+                    IsUploading = true;
+                    Console.WriteLine($"[EditProfileVM] Uploading profile photo to Cloudinary...");
+                    Console.WriteLine($"[EditProfileVM] File path: {filePath}");
+                    Console.WriteLine($"[EditProfileVM] File size: {fileInfo.Length} bytes");
+
+                    var imageUrl = await _cloudinaryService.UploadImageAsync(filePath, "bozea/users");
+
+                    IsUploading = false;
+
+                    if (imageUrl == null)
                     {
-                        Directory.CreateDirectory(assetsPath);
+                        Console.WriteLine($"[EditProfileVM] Upload failed - imageUrl is null");
+                        MessageBox.Show("Failed to upload photo. Please check:\n" +
+                                      "1. Internet connection\n" +
+                                      "2. Cloudinary credentials\n" +
+                                      "3. File format is supported\n\n" +
+                                      "Check console for detailed error.",
+                            "Upload Failed",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return;
                     }
 
-                    string destPath = Path.Combine(assetsPath, fileName);
-                    File.Copy(filePath, destPath, true);
-
-                    ProfileImage = $"/Views/Assets/{fileName}";
-                    Console.WriteLine($"[EditProfileVM] Profile photo updated: {ProfileImage}");
+                    ProfileImage = imageUrl;
+                    Console.WriteLine($"[EditProfileVM] Profile photo uploaded successfully: {ProfileImage}");
 
                     MessageBox.Show("Profile photo updated. Don't forget to save changes!",
                         "Success",
@@ -370,8 +413,10 @@ namespace BOZea.ViewModels.Auth
             }
             catch (Exception ex)
             {
+                IsUploading = false;
                 Console.WriteLine($"[EditProfileVM] Error changing photo: {ex.Message}");
-                MessageBox.Show($"Error uploading photo: {ex.Message}",
+                Console.WriteLine($"[EditProfileVM] Stack trace: {ex.StackTrace}");
+                MessageBox.Show($"Error uploading photo:\n{ex.Message}\n\nCheck console for details.",
                     "Error",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -387,8 +432,8 @@ namespace BOZea.ViewModels.Auth
 
             if (result == MessageBoxResult.Yes)
             {
-                ProfileImage = "/Views/Assets/avatar-default.png";
-                Console.WriteLine("[EditProfileVM] Profile photo removed");
+                ProfileImage = null;
+                Console.WriteLine("[EditProfileVM] Profile photo removed - set to null");
 
                 MessageBox.Show("Profile photo removed. Don't forget to save changes!",
                     "Success",

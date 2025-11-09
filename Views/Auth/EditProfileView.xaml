@@ -177,8 +177,40 @@
                                                              RadiusX="60"
                                                              RadiusY="60"/>
                                         </Border.Clip>
-                                        <Image Source="{Binding ProfileImage}"
-                                               Stretch="UniformToFill"/>
+                                        <Grid>
+                                            <!-- Profile Image -->
+                                            <Image Source="{Binding ProfileImage}"
+                                                   Stretch="UniformToFill"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"/>
+
+                                            <!-- Fallback icon when no image -->
+                                            <materialDesign:PackIcon Kind="AccountCircle"
+                                                                     Foreground="#CCCCCC"
+                                                                     Width="120"
+                                                                     Height="120"
+                                                                     HorizontalAlignment="Center"
+                                                                     VerticalAlignment="Center">
+                                                <materialDesign:PackIcon.Style>
+                                                    <Style TargetType="materialDesign:PackIcon">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ProfileImage}"
+                                                                    Value="{x:Null}">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Visible"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ProfileImage}"
+                                                                    Value="">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </materialDesign:PackIcon.Style>
+                                            </materialDesign:PackIcon>
+                                        </Grid>
                                     </Border>
 
                                     <!-- Camera Icon Overlay -->

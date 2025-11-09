@@ -18,11 +18,12 @@ using DotNetEnv;
 
 namespace BOZea.ViewModels.Product
 {
-    public class CreateProductViewModel : INotifyPropertyChanged
+    public class EditProductViewModel : INotifyPropertyChanged
     {
         private readonly AppDbContext _dbContext;
         private readonly IProductRepository _productRepository;
         private readonly CloudinaryService _cloudinaryService;
+        private readonly Models.Product _product;
 
         private string _productName = string.Empty;
         private string _description = string.Empty;
@@ -90,11 +91,11 @@ namespace BOZea.ViewModels.Product
             set { _selectedShop = value; OnPropertyChanged(); }
         }
 
-        // Collections - ✅ FIX: Use fully qualified type name
+        // Collections
         public ObservableCollection<string> TransactionTypes { get; set; }
         public ObservableCollection<Shop> Shops { get; set; }
-        public ObservableCollection<Models.Category> Categories { get; set; } // ✅ FIXED
-        public ObservableCollection<Models.Category> SelectedCategories { get; set; } // ✅ FIXED
+        public ObservableCollection<Models.Category> Categories { get; set; }
+        public ObservableCollection<Models.Category> SelectedCategories { get; set; }
 
         // Commands
         private RelayCommand? _uploadImageCommand;
@@ -111,7 +112,7 @@ namespace BOZea.ViewModels.Product
         public ICommand RemoveCategoryCommand => _removeCategoryCommand ??= new RelayCommand(ExecuteRemoveCategory);
         public ICommand BackCommand => _backCommand ??= new RelayCommand(ExecuteBack);
 
-        public CreateProductViewModel()
+        public EditProductViewModel(Models.Product product)
         {
             var factory = new AppDbContextFactory();
             _dbContext = factory.CreateDbContext(new string[] { });
@@ -128,7 +129,7 @@ namespace BOZea.ViewModels.Product
                 string.IsNullOrWhiteSpace(apiKey) ||
                 string.IsNullOrWhiteSpace(apiSecret))
             {
-                Console.WriteLine("[CreateProductVM] Warning: Cloudinary credentials not found in environment variables");
+                Console.WriteLine("[EditProductVM] Warning: Cloudinary credentials not found in environment variables");
                 // Use default/fallback credentials
                 cloudName = "dpfxbhyze";
                 apiKey = "842661622858438";
@@ -136,17 +137,19 @@ namespace BOZea.ViewModels.Product
             }
 
             _cloudinaryService = new CloudinaryService(cloudName, apiKey, apiSecret);
+            _product = product;
 
-            Console.WriteLine("[CreateProductVM] Constructor started");
+            Console.WriteLine($"[EditProductVM] Constructor started for product: {product.Name}");
 
             // Initialize collections
             TransactionTypes = new ObservableCollection<string> { "Sale", "Rent" };
             Shops = new ObservableCollection<Shop>();
-            Categories = new ObservableCollection<Models.Category>(); // ✅ FIXED
-            SelectedCategories = new ObservableCollection<Models.Category>(); // ✅ FIXED
+            Categories = new ObservableCollection<Models.Category>();
+            SelectedCategories = new ObservableCollection<Models.Category>();
 
             LoadShops();
             LoadCategories();
+            LoadProductData();
         }
 
         private void LoadShops()
@@ -160,17 +163,11 @@ namespace BOZea.ViewModels.Product
                     Shops.Add(shop);
                 }
 
-                // Auto-select first shop if available
-                if (Shops.Any())
-                {
-                    SelectedShop = Shops.First();
-                }
-
-                Console.WriteLine($"[CreateProductVM] Loaded {Shops.Count} shops");
+                Console.WriteLine($"[EditProductVM] Loaded {Shops.Count} shops");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[CreateProductVM] Error loading shops: {ex.Message}");
+                Console.WriteLine($"[EditProductVM] Error loading shops: {ex.Message}");
             }
         }
 
@@ -185,11 +182,47 @@ namespace BOZea.ViewModels.Product
                     Categories.Add(category);
                 }
 
-                Console.WriteLine($"[CreateProductVM] Loaded {Categories.Count} categories");
+                Console.WriteLine($"[EditProductVM] Loaded {Categories.Count} categories");
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[CreateProductVM] Error loading categories: {ex.Message}");
+                Console.WriteLine($"[EditProductVM] Error loading categories: {ex.Message}");
+            }
+        }
+
+        private void LoadProductData()
+        {
+            try
+            {
+                // Load product data
+                ProductName = _product.Name;
+                Description = _product.Description;
+                Price = _product.Price;
+                Stock = _product.Stock;
+                ImagePath = _product.Image ?? "/Views/Assets/placeholder.png";
+                SelectedTransactionType = _product.TransactionType == ProductTransactionType.Sale ? "Sale" : "Rent";
+
+                // Set selected shop
+                SelectedShop = Shops.FirstOrDefault(s => s.ID == _product.ShopID);
+
+                // Load selected categories
+                var productCategories = _dbContext.ProductCategories
+                    .Where(pc => pc.ProductID == _product.ID)
+                    .Include(pc => pc.Category)
+                    .Select(pc => pc.Category)
+                    .ToList();
+
+                SelectedCategories.Clear();
+                foreach (var category in productCategories)
+                {
+                    SelectedCategories.Add(category);
+                }
+
+                Console.WriteLine($"[EditProductVM] Loaded product data. Selected categories: {SelectedCategories.Count}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EditProductVM] Error loading product data: {ex.Message}");
             }
         }
 
@@ -224,9 +257,7 @@ namespace BOZea.ViewModels.Product
 
                     // Upload to Cloudinary
                     IsUploading = true;
-                    Console.WriteLine($"[CreateProductVM] Starting upload to Cloudinary...");
-                    Console.WriteLine($"[CreateProductVM] File path: {filePath}");
-                    Console.WriteLine($"[CreateProductVM] File size: {fileInfo.Length} bytes");
+                    Console.WriteLine($"[EditProductVM] Uploading image to Cloudinary...");
 
                     var imageUrl = await _cloudinaryService.UploadImageAsync(filePath, "bozea/products");
 
@@ -234,12 +265,7 @@ namespace BOZea.ViewModels.Product
 
                     if (imageUrl == null)
                     {
-                        Console.WriteLine($"[CreateProductVM] Upload failed - imageUrl is null");
-                        MessageBox.Show("Failed to upload image. Please check:\n" +
-                                      "1. Internet connection\n" +
-                                      "2. Cloudinary credentials\n" +
-                                      "3. File format is supported\n\n" +
-                                      "Check console for detailed error.",
+                        MessageBox.Show("Failed to upload image. Please try again.",
                             "Upload Failed",
                             MessageBoxButton.OK,
                             MessageBoxImage.Error);
@@ -247,7 +273,7 @@ namespace BOZea.ViewModels.Product
                     }
 
                     ImagePath = imageUrl;
-                    Console.WriteLine($"[CreateProductVM] Image uploaded successfully: {ImagePath}");
+                    Console.WriteLine($"[EditProductVM] Image uploaded successfully: {ImagePath}");
 
                     MessageBox.Show("Image uploaded successfully!",
                         "Success",
@@ -258,9 +284,8 @@ namespace BOZea.ViewModels.Product
             catch (Exception ex)
             {
                 IsUploading = false;
-                Console.WriteLine($"[CreateProductVM] Error uploading image: {ex.Message}");
-                Console.WriteLine($"[CreateProductVM] Stack trace: {ex.StackTrace}");
-                MessageBox.Show($"Error uploading image:\n{ex.Message}\n\nCheck console for details.",
+                Console.WriteLine($"[EditProductVM] Error uploading image: {ex.Message}");
+                MessageBox.Show($"Error uploading image: {ex.Message}",
                     "Error",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -327,41 +352,51 @@ namespace BOZea.ViewModels.Product
                 }
 
                 IsLoading = true;
-                Console.WriteLine("[CreateProductVM] Saving product...");
+                Console.WriteLine("[EditProductVM] Updating product...");
 
                 // Parse transaction type
                 var transactionType = SelectedTransactionType == "Sale"
                     ? ProductTransactionType.Sale
                     : ProductTransactionType.Rent;
 
-                // Create new product
-                var product = new Models.Product
+                // Get the product from database to ensure it's tracked
+                var productToUpdate = _dbContext.Products
+                    .FirstOrDefault(p => p.ID == _product.ID);
+
+                if (productToUpdate == null)
                 {
-                    Name = ProductName.Trim(),
-                    Description = Description.Trim(),
-                    Price = Price,
-                    Stock = Stock,
-                    TransactionType = transactionType,
-                    Image = ImagePath,
-                    Shop = SelectedShop,
-                    ShopID = SelectedShop.ID
-                };
+                    IsLoading = false;
+                    MessageBox.Show("Product not found in database.",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    return;
+                }
 
-                // Add product
-                await _productRepository.AddAsync(product);
-                await _dbContext.SaveChangesAsync();
+                // Update product properties
+                productToUpdate.Name = ProductName.Trim();
+                productToUpdate.Description = Description.Trim();
+                productToUpdate.Price = Price;
+                productToUpdate.Stock = Stock;
+                productToUpdate.TransactionType = transactionType;
+                productToUpdate.Image = ImagePath;
+                productToUpdate.ShopID = SelectedShop.ID;
 
-                Console.WriteLine($"[CreateProductVM] Product created with ID: {product.ID}");
+                // Remove existing categories
+                var existingCategories = _dbContext.ProductCategories
+                    .Where(pc => pc.ProductID == _product.ID)
+                    .ToList();
+                _dbContext.ProductCategories.RemoveRange(existingCategories);
 
-                // ✅ FIX: Add product categories dengan required members
+                // Add new categories
                 foreach (var category in SelectedCategories)
                 {
                     var productCategory = new ProductCategory
                     {
-                        ProductID = product.ID,
-                        Product = product,              // ✅ Set required member
+                        ProductID = _product.ID,
+                        Product = productToUpdate,
                         CategoryID = category.ID,
-                        Category = category             // ✅ Set required member
+                        Category = category
                     };
                     _dbContext.ProductCategories.Add(productCategory);
                 }
@@ -370,7 +405,7 @@ namespace BOZea.ViewModels.Product
 
                 IsLoading = false;
 
-                MessageBox.Show("Product created successfully!",
+                MessageBox.Show("Product updated successfully!",
                     "Success",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -381,10 +416,10 @@ namespace BOZea.ViewModels.Product
             catch (DbUpdateException dbEx)
             {
                 IsLoading = false;
-                Console.WriteLine($"[CreateProductVM] Database error: {dbEx.Message}");
-                Console.WriteLine($"[CreateProductVM] Inner exception: {dbEx.InnerException?.Message}");
+                Console.WriteLine($"[EditProductVM] Database error: {dbEx.Message}");
+                Console.WriteLine($"[EditProductVM] Inner exception: {dbEx.InnerException?.Message}");
 
-                MessageBox.Show($"Error saving product: {dbEx.InnerException?.Message ?? dbEx.Message}",
+                MessageBox.Show($"Error updating product: {dbEx.InnerException?.Message ?? dbEx.Message}",
                     "Error",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -392,8 +427,8 @@ namespace BOZea.ViewModels.Product
             catch (Exception ex)
             {
                 IsLoading = false;
-                Console.WriteLine($"[CreateProductVM] Error saving product: {ex.Message}");
-                MessageBox.Show($"Error saving product: {ex.Message}",
+                Console.WriteLine($"[EditProductVM] Error updating product: {ex.Message}");
+                MessageBox.Show($"Error updating product: {ex.Message}",
                     "Error",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
@@ -415,24 +450,22 @@ namespace BOZea.ViewModels.Product
 
         private void ExecuteAddCategory(object? parameter)
         {
-            // ✅ FIX: Use Models.Category
             if (parameter is Models.Category category)
             {
                 if (!SelectedCategories.Contains(category))
                 {
                     SelectedCategories.Add(category);
-                    Console.WriteLine($"[CreateProductVM] Added category: {category.Name}");
+                    Console.WriteLine($"[EditProductVM] Added category: {category.Name}");
                 }
             }
         }
 
         private void ExecuteRemoveCategory(object? parameter)
         {
-            // ✅ FIX: Use Models.Category
             if (parameter is Models.Category category)
             {
                 SelectedCategories.Remove(category);
-                Console.WriteLine($"[CreateProductVM] Removed category: {category.Name}");
+                Console.WriteLine($"[EditProductVM] Removed category: {category.Name}");
             }
         }
 
@@ -453,18 +486,18 @@ namespace BOZea.ViewModels.Product
         {
             try
             {
-                Console.WriteLine("[CreateProductVM] Navigating back to Product Management...");
+                Console.WriteLine("[EditProductVM] Navigating back to Product Management...");
 
                 var mainWindow = Application.Current.MainWindow;
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
                     mainViewModel.CurrentViewModel = new Admin.ProductManagementViewModel();
-                    Console.WriteLine("[CreateProductVM] Successfully navigated to Product Management");
+                    Console.WriteLine("[EditProductVM] Successfully navigated to Product Management");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[CreateProductVM] Error navigating to product management: {ex.Message}");
+                Console.WriteLine($"[EditProductVM] Error navigating to product management: {ex.Message}");
             }
         }
 

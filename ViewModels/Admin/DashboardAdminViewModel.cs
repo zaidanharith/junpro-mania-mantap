@@ -15,6 +15,7 @@ namespace BOZea.ViewModels.Admin
         private RelayCommand? _navigateOrderManagementCommand;
         private RelayCommand? _navigateSettingsCommand;
         private RelayCommand? _openProfileCommand;
+        private RelayCommand? _logoutCommand;
         private string _currentPage = "Dashboard";
 
         public User? CurrentUser
@@ -51,6 +52,9 @@ namespace BOZea.ViewModels.Admin
 
         public ICommand OpenProfileCommand => _openProfileCommand ??=
             new RelayCommand(_ => OpenProfile());
+
+        public ICommand LogoutCommand => _logoutCommand ??=
+            new RelayCommand(_ => ExecuteLogout());
 
         public DashboardAdminViewModel()
         {
@@ -139,6 +143,63 @@ namespace BOZea.ViewModels.Admin
             catch (Exception ex)
             {
                 Console.WriteLine($"[DashboardAdminVM] Error opening settings: {ex.Message}");
+            }
+        }
+
+        private void ExecuteLogout()
+        {
+            try
+            {
+                Console.WriteLine("[DashboardAdminVM] Logout requested");
+
+                // Konfirmasi logout
+                var result = System.Windows.MessageBox.Show(
+                    "Are you sure you want to logout?",
+                    "Logout Confirmation",
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Question);
+
+                if (result != System.Windows.MessageBoxResult.Yes)
+                {
+                    Console.WriteLine("[DashboardAdminVM] Logout cancelled by user");
+                    return;
+                }
+
+                Console.WriteLine("[DashboardAdminVM] Logging out...");
+
+                // Clear user session
+                UserSession.ClearUser();
+                Console.WriteLine("[DashboardAdminVM] UserSession cleared");
+
+                // Navigate to Login
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = mainViewModel.LoginViewModel;
+                    Console.WriteLine("[DashboardAdminVM] Successfully navigated to Login");
+
+                    System.Windows.MessageBox.Show(
+                        "You have been logged out successfully.",
+                        "Logout Successful",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Information);
+                }
+                else
+                {
+                    Console.WriteLine("[DashboardAdminVM] ERROR: MainViewModel not found!");
+                    System.Windows.MessageBox.Show("Error: Cannot navigate to login page.",
+                        "Navigation Error",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[DashboardAdminVM] Error during logout: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error during logout: {ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
             }
         }
 

@@ -19,6 +19,10 @@
 
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
+        <!-- Converter untuk check apakah rating sudah dipilih (rating > 0) -->
+        <local:RatingValidConverter x:Key="RatingValidConverter"
+                                    xmlns:local="clr-namespace:BOZea.Views.Auth"/>
+
         <!-- Rating Button Style -->
         <Style x:Key="RatingButtonStyle"
                TargetType="RadioButton">
@@ -116,35 +120,91 @@
                             MinWidth="120"
                             Padding="20,0"
                             Margin="0,8,0,0">
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="6"
+                                              ShadowDepth="2"
+                                              Opacity="0.3"
+                                              Color="#DC3545"/>
+                        </Button.Effect>
                         <Button.Style>
                             <Style TargetType="Button">
-                                <Setter Property="Background"
-                                        Value="#DC3545"/>
+                                <Setter Property="RenderTransformOrigin"
+                                        Value="0.5,0.5"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1"
+                                                        ScaleY="1"/>
+                                    </Setter.Value>
+                                </Setter>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}"
+                                            <Border x:Name="border"
+                                                    Background="{TemplateBinding Background}"
                                                     CornerRadius="8"
                                                     Padding="{TemplateBinding Padding}">
                                                 <ContentPresenter HorizontalAlignment="Center"
                                                                   VerticalAlignment="Center"
                                                                   TextElement.Foreground="White"/>
                                             </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="border"
+                                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                                To="#C82333"
+                                                                                Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                 To="1.05"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                 To="1.05"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)"
+                                                                                 To="4"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                                                                                 To="10"
+                                                                                 Duration="0:0:0.2"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="border"
+                                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                                To="#DC3545"
+                                                                                Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                 To="1"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                 To="1"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)"
+                                                                                 To="2"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                                                                                 To="6"
+                                                                                 Duration="0:0:0.2"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
+                                                         Value="True">
+                                                    <Setter TargetName="border"
+                                                            Property="Background"
+                                                            Value="#BD2130"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
                                 </Setter>
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#C82333"/>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed"
-                                             Value="True">
-                                        <Setter Property="Background"
-                                                Value="#BD2130"/>
-                                    </Trigger>
-                                </Style.Triggers>
                             </Style>
                         </Button.Style>
                         <StackPanel Orientation="Horizontal"
@@ -183,20 +243,96 @@
                             Command="{Binding EditProfileCommand}"
                             Background="#227DCD"
                             Foreground="White"
-                            Padding="10,10"
                             FontSize="13"
                             FontWeight="SemiBold"
-                            Cursor="Hand">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border Background="{TemplateBinding Background}"
-                                        CornerRadius="8"
-                                        Padding="10,0,10,0">
-                                    <ContentPresenter HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Button.Template>
+                            Cursor="Hand"
+                            Margin="0,25,0,0">
+                        <Button.Effect>
+                            <DropShadowEffect BlurRadius="6"
+                                              ShadowDepth="2"
+                                              Opacity="0.3"
+                                              Color="#227DCD"/>
+                        </Button.Effect>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="RenderTransformOrigin"
+                                        Value="0.5,0.5"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="1"
+                                                        ScaleY="1"/>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="border"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="8"
+                                                    Padding="20,10">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver"
+                                                         Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="border"
+                                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                                To="#1A6BB8"
+                                                                                Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                 To="1.05"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                 To="1.05"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)"
+                                                                                 To="4"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                                                                                 To="10"
+                                                                                 Duration="0:0:0.2"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <ColorAnimation Storyboard.TargetName="border"
+                                                                                Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                                To="#227DCD"
+                                                                                Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                 To="1"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                 To="1"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)"
+                                                                                 To="2"
+                                                                                 Duration="0:0:0.2"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                                                                                 To="6"
+                                                                                 Duration="0:0:0.2"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed"
+                                                         Value="True">
+                                                    <Setter TargetName="border"
+                                                            Property="Background"
+                                                            Value="#155A9E"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Pencil"
                                                      Width="24"
@@ -228,8 +364,8 @@
                         </Grid.ColumnDefinitions>
 
                         <!-- Profile Image -->
-                        <Border Grid.Column="0"
-                                Width="120"
+                        <!-- Profile Photo -->
+                        <Border Width="120"
                                 Height="120"
                                 CornerRadius="60"
                                 BorderBrush="#227DCD"
@@ -240,8 +376,40 @@
                                                  RadiusX="60"
                                                  RadiusY="60"/>
                             </Border.Clip>
-                            <Image Source="{Binding CurrentUser.Image}"
-                                   Stretch="UniformToFill"/>
+                            <Grid>
+                                <!-- Profile Image -->
+                                <Image Source="{Binding CurrentUser.Image}"
+                                       Stretch="UniformToFill"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"/>
+
+                                <!-- Fallback icon when no image -->
+                                <materialDesign:PackIcon Kind="AccountCircle"
+                                                         Foreground="#CCCCCC"
+                                                         Width="120"
+                                                         Height="120"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center">
+                                    <materialDesign:PackIcon.Style>
+                                        <Style TargetType="materialDesign:PackIcon">
+                                            <Setter Property="Visibility"
+                                                    Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                        Value="{x:Null}">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                        Value="">
+                                                    <Setter Property="Visibility"
+                                                            Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </materialDesign:PackIcon.Style>
+                                </materialDesign:PackIcon>
+                            </Grid>
                         </Border>
 
                         <!-- User Info -->
@@ -494,51 +662,99 @@
                                                                                              Content="5⭐"
                                                                                              Tag="5"
                                                                                              Checked="RatingButton_Checked"
-                                                                                             IsChecked="True"
                                                                                              Style="{StaticResource RatingButtonStyle}"/>
                                                                             </StackPanel>
 
                                                                             <!-- Comment Input -->
-                                                                            <TextBox x:Name="ReviewCommentBox"
-                                                                                     Tag="{Binding}"
-                                                                                     Text="{Binding TempReviewComment, UpdateSourceTrigger=PropertyChanged}"
-                                                                                     materialDesign:HintAssist.Hint="Write your review..."
-                                                                                     materialDesign:HintAssist.IsFloating="False"
-                                                                                     Background="White"
-                                                                                     BorderBrush="#DDD"
-                                                                                     BorderThickness="1"
-                                                                                     Padding="8"
-                                                                                     MinHeight="60"
-                                                                                     MaxHeight="100"
-                                                                                     TextWrapping="Wrap"
-                                                                                     AcceptsReturn="True"
-                                                                                     VerticalScrollBarVisibility="Auto"
-                                                                                     FontSize="11"
-                                                                                     Margin="0,0,0,8">
-                                                                                <TextBox.Style>
-                                                                                    <Style TargetType="TextBox">
-                                                                                        <Setter Property="Template">
-                                                                                            <Setter.Value>
-                                                                                                <ControlTemplate TargetType="TextBox">
-                                                                                                    <Border Background="{TemplateBinding Background}"
-                                                                                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                                                                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                                                                                            CornerRadius="4"
-                                                                                                            Padding="{TemplateBinding Padding}">
-                                                                                                        <ScrollViewer x:Name="PART_ContentHost"
-                                                                                                                      VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"/>
-                                                                                                    </Border>
-                                                                                                </ControlTemplate>
-                                                                                            </Setter.Value>
-                                                                                        </Setter>
-                                                                                    </Style>
-                                                                                </TextBox.Style>
-                                                                            </TextBox>
+                                                                            <Grid>
+                                                                                <TextBox x:Name="ReviewCommentBox"
+                                                                                         Tag="{Binding}"
+                                                                                         Text="{Binding TempReviewComment, UpdateSourceTrigger=PropertyChanged}"
+                                                                                         Background="White"
+                                                                                         BorderBrush="#DDD"
+                                                                                         BorderThickness="1"
+                                                                                         Padding="8"
+                                                                                         MinHeight="60"
+                                                                                         MaxHeight="100"
+                                                                                         TextWrapping="Wrap"
+                                                                                         AcceptsReturn="True"
+                                                                                         VerticalScrollBarVisibility="Auto"
+                                                                                         FontSize="11"
+                                                                                         Margin="0,0,0,8">
+                                                                                    <TextBox.Style>
+                                                                                        <Style TargetType="TextBox">
+                                                                                            <Setter Property="Template">
+                                                                                                <Setter.Value>
+                                                                                                    <ControlTemplate TargetType="TextBox">
+                                                                                                        <Border Background="{TemplateBinding Background}"
+                                                                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                                                                                CornerRadius="4"
+                                                                                                                Padding="{TemplateBinding Padding}">
+                                                                                                            <ScrollViewer x:Name="PART_ContentHost"
+                                                                                                                          VerticalScrollBarVisibility="{TemplateBinding VerticalScrollBarVisibility}"/>
+                                                                                                        </Border>
+                                                                                                    </ControlTemplate>
+                                                                                                </Setter.Value>
+                                                                                            </Setter>
+                                                                                            <!-- Trigger untuk border color saat focus -->
+                                                                                            <Style.Triggers>
+                                                                                                <Trigger Property="IsFocused"
+                                                                                                         Value="True">
+                                                                                                    <Setter Property="BorderBrush"
+                                                                                                            Value="#227DCD"/>
+                                                                                                    <Setter Property="BorderThickness"
+                                                                                                            Value="2"/>
+                                                                                                </Trigger>
+                                                                                            </Style.Triggers>
+                                                                                        </Style>
+                                                                                    </TextBox.Style>
+                                                                                </TextBox>
+
+                                                                                <!-- Placeholder Text -->
+                                                                                <TextBlock Text="Write your review here... (e.g., Great product! Highly recommended.)"
+                                                                                           FontSize="11"
+                                                                                           Foreground="#999"
+                                                                                           Margin="9,8,8,8"
+                                                                                           IsHitTestVisible="False"
+                                                                                           VerticalAlignment="Top">
+                                                                                    <TextBlock.Style>
+                                                                                        <Style TargetType="TextBlock">
+                                                                                            <Setter Property="Visibility"
+                                                                                                    Value="Collapsed"/>
+                                                                                            <Style.Triggers>
+                                                                                                <!-- Tampilkan placeholder jika TextBox kosong DAN tidak fokus -->
+                                                                                                <MultiDataTrigger>
+                                                                                                    <MultiDataTrigger.Conditions>
+                                                                                                        <Condition Binding="{Binding ElementName=ReviewCommentBox, Path=IsFocused}"
+                                                                                                                   Value="False"/>
+                                                                                                        <Condition Binding="{Binding TempReviewComment}"
+                                                                                                                   Value=""/>
+                                                                                                    </MultiDataTrigger.Conditions>
+                                                                                                    <Setter Property="Visibility"
+                                                                                                            Value="Visible"/>
+                                                                                                </MultiDataTrigger>
+                                                                                                <MultiDataTrigger>
+                                                                                                    <MultiDataTrigger.Conditions>
+                                                                                                        <Condition Binding="{Binding ElementName=ReviewCommentBox, Path=IsFocused}"
+                                                                                                                   Value="False"/>
+                                                                                                        <Condition Binding="{Binding TempReviewComment}"
+                                                                                                                   Value="{x:Null}"/>
+                                                                                                    </MultiDataTrigger.Conditions>
+                                                                                                    <Setter Property="Visibility"
+                                                                                                            Value="Visible"/>
+                                                                                                </MultiDataTrigger>
+                                                                                            </Style.Triggers>
+                                                                                        </Style>
+                                                                                    </TextBlock.Style>
+                                                                                </TextBlock>
+                                                                            </Grid>
 
                                                                             <!-- Submit Button -->
                                                                             <Button Content="Submit Review"
                                                                                     Command="{Binding DataContext.SubmitReviewCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                                     CommandParameter="{Binding}"
+                                                                                    IsEnabled="{Binding TempRating, Converter={StaticResource RatingValidConverter}}"
                                                                                     Background="#227DCD"
                                                                                     Foreground="White"
                                                                                     BorderThickness="0"
@@ -547,6 +763,12 @@
                                                                                     FontWeight="SemiBold"
                                                                                     Cursor="Hand"
                                                                                     HorizontalAlignment="Right">
+                                                                                <Button.Effect>
+                                                                                    <DropShadowEffect BlurRadius="4"
+                                                                                                      ShadowDepth="1"
+                                                                                                      Opacity="0.3"
+                                                                                                      Color="#227DCD"/>
+                                                                                </Button.Effect>
 
                                                                                 <!-- Paksa konten mengikuti Foreground tombol, dan hindari implicit TextBlock style -->
                                                                                 <Button.ContentTemplate>
@@ -561,35 +783,47 @@
                                                                                     </DataTemplate>
                                                                                 </Button.ContentTemplate>
 
-                                                                                <Button.Template>
-                                                                                    <ControlTemplate TargetType="Button">
-                                                                                        <Border Background="{TemplateBinding Background}"
-                                                                                                CornerRadius="4"
-                                                                                                Padding="{TemplateBinding Padding}"
-                                                                                                TextElement.Foreground="{TemplateBinding Foreground}">
-                                                                                            <!-- penting -->
-                                                                                            <ContentPresenter HorizontalAlignment="Center"
-                                                                                                              VerticalAlignment="Center"/>
-                                                                                        </Border>
-                                                                                    </ControlTemplate>
-                                                                                </Button.Template>
-
                                                                                 <Button.Style>
                                                                                     <Style TargetType="Button">
-                                                                                        <Setter Property="Background"
-                                                                                                Value="#227DCD"/>
-                                                                                        <Style.Triggers>
-                                                                                            <Trigger Property="IsMouseOver"
-                                                                                                     Value="True">
-                                                                                                <Setter Property="Background"
-                                                                                                        Value="#1A6AB8"/>
-                                                                                            </Trigger>
-                                                                                            <Trigger Property="IsPressed"
-                                                                                                     Value="True">
-                                                                                                <Setter Property="Background"
-                                                                                                        Value="#155A9D"/>
-                                                                                            </Trigger>
-                                                                                        </Style.Triggers>
+                                                                                        <Setter Property="Template">
+                                                                                            <Setter.Value>
+                                                                                                <ControlTemplate TargetType="Button">
+                                                                                                    <Border x:Name="border"
+                                                                                                            Background="{TemplateBinding Background}"
+                                                                                                            CornerRadius="4"
+                                                                                                            Padding="{TemplateBinding Padding}"
+                                                                                                            TextElement.Foreground="{TemplateBinding Foreground}">
+                                                                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                                                                          VerticalAlignment="Center"/>
+                                                                                                    </Border>
+                                                                                                    <ControlTemplate.Triggers>
+                                                                                                        <Trigger Property="IsMouseOver"
+                                                                                                                 Value="True">
+                                                                                                            <Setter TargetName="border"
+                                                                                                                    Property="Background"
+                                                                                                                    Value="#1A6AB8"/>
+                                                                                                        </Trigger>
+                                                                                                        <Trigger Property="IsPressed"
+                                                                                                                 Value="True">
+                                                                                                            <Setter TargetName="border"
+                                                                                                                    Property="Background"
+                                                                                                                    Value="#155A9D"/>
+                                                                                                        </Trigger>
+                                                                                                        <Trigger Property="IsEnabled"
+                                                                                                                 Value="False">
+                                                                                                            <Setter TargetName="border"
+                                                                                                                    Property="Background"
+                                                                                                                    Value="#CCCCCC"/>
+                                                                                                            <Setter TargetName="border"
+                                                                                                                    Property="TextElement.Foreground"
+                                                                                                                    Value="#888888"/>
+                                                                                                            <Setter Property="Cursor"
+                                                                                                                    Value="No"/>
+                                                                                                        </Trigger>
+                                                                                                    </ControlTemplate.Triggers>
+                                                                                                </ControlTemplate>
+                                                                                            </Setter.Value>
+                                                                                        </Setter>
                                                                                     </Style>
                                                                                 </Button.Style>
                                                                             </Button>

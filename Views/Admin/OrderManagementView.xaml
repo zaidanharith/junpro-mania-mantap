@@ -311,12 +311,27 @@
                                                         HorizontalAlignment="Center"
                                                         Command="{Binding DataContext.ViewDetailCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                                         CommandParameter="{Binding}">
+                                                    <Button.Effect>
+                                                        <DropShadowEffect BlurRadius="4"
+                                                                          ShadowDepth="1"
+                                                                          Opacity="0.3"
+                                                                          Color="#28A745"/>
+                                                    </Button.Effect>
                                                     <Button.Style>
                                                         <Style TargetType="Button">
+                                                            <Setter Property="RenderTransformOrigin"
+                                                                    Value="0.5,0.5"/>
+                                                            <Setter Property="RenderTransform">
+                                                                <Setter.Value>
+                                                                    <ScaleTransform ScaleX="1"
+                                                                                    ScaleY="1"/>
+                                                                </Setter.Value>
+                                                            </Setter>
                                                             <Setter Property="Template">
                                                                 <Setter.Value>
                                                                     <ControlTemplate TargetType="Button">
-                                                                        <Border Background="{TemplateBinding Background}"
+                                                                        <Border x:Name="border"
+                                                                                Background="{TemplateBinding Background}"
                                                                                 CornerRadius="6">
                                                                             <materialDesign:PackIcon Kind="Eye"
                                                                                                      Width="16"
@@ -325,16 +340,64 @@
                                                                                                      HorizontalAlignment="Center"
                                                                                                      VerticalAlignment="Center"/>
                                                                         </Border>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <Trigger Property="IsMouseOver"
+                                                                                     Value="True">
+                                                                                <Trigger.EnterActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard>
+                                                                                            <ColorAnimation Storyboard.TargetName="border"
+                                                                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                                                            To="#218838"
+                                                                                                            Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                                             To="1.1"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                                             To="1.1"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)"
+                                                                                                             To="3"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                                                                                                             To="8"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </Trigger.EnterActions>
+                                                                                <Trigger.ExitActions>
+                                                                                    <BeginStoryboard>
+                                                                                        <Storyboard>
+                                                                                            <ColorAnimation Storyboard.TargetName="border"
+                                                                                                            Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                                                                                                            To="#28A745"
+                                                                                                            Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                                                                                             To="1"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                                                                                             To="1"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.ShadowDepth)"
+                                                                                                             To="1"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.Effect).(DropShadowEffect.BlurRadius)"
+                                                                                                             To="4"
+                                                                                                             Duration="0:0:0.15"/>
+                                                                                        </Storyboard>
+                                                                                    </BeginStoryboard>
+                                                                                </Trigger.ExitActions>
+                                                                            </Trigger>
+                                                                            <Trigger Property="IsPressed"
+                                                                                     Value="True">
+                                                                                <Setter TargetName="border"
+                                                                                        Property="Background"
+                                                                                        Value="#1E7E34"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
                                                                     </ControlTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
-                                                            <Style.Triggers>
-                                                                <Trigger Property="IsMouseOver"
-                                                                         Value="True">
-                                                                    <Setter Property="Background"
-                                                                            Value="#218838"/>
-                                                                </Trigger>
-                                                            </Style.Triggers>
                                                         </Style>
                                                     </Button.Style>
                                                 </Button>

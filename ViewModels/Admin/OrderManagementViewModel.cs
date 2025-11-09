@@ -21,6 +21,7 @@ namespace BOZea.ViewModels.Admin
         private RelayCommand? _backToDashboardCommand;
         private RelayCommand? _navigateProductManagementCommand;
         private RelayCommand? _viewDetailCommand;
+        private RelayCommand? _logoutCommand;
         private string _currentPage = "OrderManagement";
 
         public User? CurrentUser
@@ -64,6 +65,9 @@ namespace BOZea.ViewModels.Admin
 
         public ICommand ViewDetailCommand => _viewDetailCommand ??=
             new RelayCommand(parameter => ViewOrderDetail(parameter as OrderItemDisplay));
+
+        public ICommand LogoutCommand => _logoutCommand ??=
+            new RelayCommand(_ => ExecuteLogout());
 
         public string CurrentPage
         {
@@ -331,6 +335,63 @@ namespace BOZea.ViewModels.Admin
                 Console.WriteLine($"[OrderManagementVM] Error viewing order detail: {ex.Message}");
                 System.Windows.MessageBox.Show(
                     $"Error loading order details:\n{ex.Message}",
+                    "Error",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
+            }
+        }
+
+        private void ExecuteLogout()
+        {
+            try
+            {
+                Console.WriteLine("[OrderManagementVM] Logout requested");
+
+                // Konfirmasi logout
+                var result = System.Windows.MessageBox.Show(
+                    "Are you sure you want to logout?",
+                    "Logout Confirmation",
+                    System.Windows.MessageBoxButton.YesNo,
+                    System.Windows.MessageBoxImage.Question);
+
+                if (result != System.Windows.MessageBoxResult.Yes)
+                {
+                    Console.WriteLine("[OrderManagementVM] Logout cancelled by user");
+                    return;
+                }
+
+                Console.WriteLine("[OrderManagementVM] Logging out...");
+
+                // Clear user session
+                UserSession.ClearUser();
+                Console.WriteLine("[OrderManagementVM] UserSession cleared");
+
+                // Navigate to Login
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = mainViewModel.LoginViewModel;
+                    Console.WriteLine("[OrderManagementVM] Successfully navigated to Login");
+
+                    System.Windows.MessageBox.Show(
+                        "You have been logged out successfully.",
+                        "Logout Successful",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Information);
+                }
+                else
+                {
+                    Console.WriteLine("[OrderManagementVM] ERROR: MainViewModel not found!");
+                    System.Windows.MessageBox.Show("Error: Cannot navigate to login page.",
+                        "Navigation Error",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[OrderManagementVM] Error during logout: {ex.Message}");
+                System.Windows.MessageBox.Show($"Error during logout: {ex.Message}",
                     "Error",
                     System.Windows.MessageBoxButton.OK,
                     System.Windows.MessageBoxImage.Error);

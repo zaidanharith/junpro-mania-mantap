@@ -69,6 +69,10 @@ namespace BOZea.Helpers
                 {
                     return CreateTemplate(typeof(CreateProductView), element);
                 }
+                else if (item is EditProductViewModel)
+                {
+                    return CreateTemplate(typeof(EditProductView), element);
+                }
 
                 // Payment ViewModels
                 else if (item is PaymentViewModel)
