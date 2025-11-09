@@ -43,7 +43,8 @@
                 </Grid.RowDefinitions>
 
                 <!-- Main Content -->
-                <StackPanel Grid.Row="0" Margin="80,60,80,60">
+                <StackPanel Grid.Row="0"
+                            Margin="80,60,80,60">
 
                     <!-- Back Button -->
                     <Button Command="{Binding NavigateHomeCommand}"
