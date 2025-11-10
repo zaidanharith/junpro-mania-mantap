@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using BOZea.ViewModels.Auth;
 
 namespace BOZea.Views.Auth
@@ -21,6 +22,74 @@ namespace BOZea.Views.Auth
             {
                 System.Console.WriteLine("[EditProfileView] View loaded");
             }
+        }
+
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                UpdateHintVisibility(passwordBox);
+            }
+        }
+
+        private void PasswordBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                // Always hide hint when focused
+                var hint = FindVisualChild<TextBlock>(passwordBox, "Hint");
+                if (hint != null)
+                {
+                    hint.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        private void PasswordBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is PasswordBox passwordBox)
+            {
+                UpdateHintVisibility(passwordBox);
+            }
+        }
+
+        private void UpdateHintVisibility(PasswordBox passwordBox)
+        {
+            // Find the Hint TextBlock in the PasswordBox template
+            var hint = FindVisualChild<TextBlock>(passwordBox, "Hint");
+            if (hint != null)
+            {
+                // Show hint only if password is empty AND not focused
+                if (string.IsNullOrEmpty(passwordBox.Password) && !passwordBox.IsFocused)
+                {
+                    hint.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    hint.Visibility = Visibility.Collapsed;
+                }
+            }
+        }
+
+        // Helper method to find child controls in visual tree
+        private T? FindVisualChild<T>(DependencyObject parent, string name = "") where T : DependencyObject
+        {
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+            {
+                var child = VisualTreeHelper.GetChild(parent, i);
+                
+                if (child is T typedChild && (string.IsNullOrEmpty(name) || (child as FrameworkElement)?.Name == name))
+                {
+                    return typedChild;
+                }
+                
+                var result = FindVisualChild<T>(child, name);
+                if (result != null)
+                {
+                    return result;
+                }
+            }
+            return null;
         }
 
         // Helper method to get password values

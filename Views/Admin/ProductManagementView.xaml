@@ -92,7 +92,12 @@
                                     Height="64"
                                     Background="#E8F4F8"
                                     CornerRadius="32"
-                                    VerticalAlignment="Center">
+                                    VerticalAlignment="Center"
+                                    Cursor="Hand">
+                                <Border.InputBindings>
+                                    <MouseBinding MouseAction="LeftClick"
+                                                  Command="{Binding OpenProfileCommand}"/>
+                                </Border.InputBindings>
                                 <Border.Clip>
                                     <EllipseGeometry Center="32,32"
                                                      RadiusX="32"

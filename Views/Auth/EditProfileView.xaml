@@ -120,7 +120,7 @@
                                        Foreground="#333"
                                        Margin="0,0,10,0"
                                        VerticalAlignment="Center"/>
-                            <TextBlock Text="Back to Profile"
+                            <TextBlock Text="{Binding BackButtonText}"
                                        FontSize="16"
                                        FontWeight="Medium"
                                        Foreground="#333"
@@ -197,12 +197,12 @@
                                                                 Value="Collapsed"/>
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding ProfileImage}"
-                                                                    Value="{x:Null}">
+                                                                         Value="{x:Null}">
                                                                 <Setter Property="Visibility"
                                                                         Value="Visible"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding ProfileImage}"
-                                                                    Value="">
+                                                                         Value="">
                                                                 <Setter Property="Visibility"
                                                                         Value="Visible"/>
                                                             </DataTrigger>
@@ -404,7 +404,10 @@
                                     <!-- ✅ USE CustomOutlinedPasswordBox -->
                                     <PasswordBox x:Name="CurrentPasswordBox"
                                                  Style="{StaticResource CustomOutlinedPasswordBox}"
-                                                 materialDesign:HintAssist.Hint="Enter current password"/>
+                                                 materialDesign:HintAssist.Hint="Enter current password"
+                                                 PasswordChanged="PasswordBox_PasswordChanged"
+                                                 GotFocus="PasswordBox_GotFocus"
+                                                 LostFocus="PasswordBox_LostFocus"/>
                                 </StackPanel>
 
                                 <!-- New Password -->
@@ -424,7 +427,10 @@
                                         <!-- ✅ USE CustomOutlinedPasswordBox -->
                                         <PasswordBox x:Name="NewPasswordBox"
                                                      Style="{StaticResource CustomOutlinedPasswordBox}"
-                                                     materialDesign:HintAssist.Hint="Enter new password"/>
+                                                     materialDesign:HintAssist.Hint="Enter new password"
+                                                     PasswordChanged="PasswordBox_PasswordChanged"
+                                                     GotFocus="PasswordBox_GotFocus"
+                                                     LostFocus="PasswordBox_LostFocus"/>
                                     </StackPanel>
 
                                     <StackPanel Grid.Column="2">
@@ -436,7 +442,10 @@
                                         <!-- ✅ USE CustomOutlinedPasswordBox -->
                                         <PasswordBox x:Name="ConfirmPasswordBox"
                                                      Style="{StaticResource CustomOutlinedPasswordBox}"
-                                                     materialDesign:HintAssist.Hint="Confirm new password"/>
+                                                     materialDesign:HintAssist.Hint="Confirm new password"
+                                                     PasswordChanged="PasswordBox_PasswordChanged"
+                                                     GotFocus="PasswordBox_GotFocus"
+                                                     LostFocus="PasswordBox_LostFocus"/>
                                     </StackPanel>
                                 </Grid>
 
@@ -469,29 +478,43 @@
                                             MinWidth="120">
                                         <Button.Template>
                                             <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
+                                                <Border x:Name="border"
+                                                        Background="{TemplateBinding Background}"
                                                         BorderBrush="{TemplateBinding BorderBrush}"
                                                         BorderThickness="{TemplateBinding BorderThickness}"
                                                         CornerRadius="25"
                                                         Padding="{TemplateBinding Padding}">
-                                                    <ContentPresenter HorizontalAlignment="Center"
-                                                                      VerticalAlignment="Center"/>
+                                                    <ContentPresenter x:Name="contentPresenter"
+                                                                      HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"
+                                                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
                                                 </Border>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                        <Button.Style>
-                                            <Style TargetType="Button">
-                                                <Style.Triggers>
+                                                <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver"
                                                              Value="True">
-                                                        <Setter Property="Background"
-                                                                Value="#E8E8E8"/>
-                                                        <Setter Property="BorderBrush"
-                                                                Value="{StaticResource PrimaryBlueBrush}"/>
+                                                        <Setter TargetName="border"
+                                                                Property="Background"
+                                                                Value="#DC3545"/>
+                                                        <Setter TargetName="border"
+                                                                Property="BorderBrush"
+                                                                Value="#DC3545"/>
+                                                        <Setter Property="Foreground"
+                                                                Value="White"/>
                                                     </Trigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
+                                                    <Trigger Property="IsPressed"
+                                                             Value="True">
+                                                        <Setter TargetName="border"
+                                                                Property="Background"
+                                                                Value="#BD2130"/>
+                                                        <Setter TargetName="border"
+                                                                Property="BorderBrush"
+                                                                Value="#BD2130"/>
+                                                        <Setter Property="Foreground"
+                                                                Value="White"/>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </Button.Template>
                                     </Button>
 
                                     <!-- ✅ USE PrimaryButton from MaterialOverrides -->

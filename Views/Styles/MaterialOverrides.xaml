@@ -169,7 +169,8 @@
                                                                            VerticalAlignment="Center"
                                                                            HorizontalAlignment="Left"
                                                                            IsHitTestVisible="False"
-                                                                           Opacity="0.6"/>
+                                                                           Opacity="0.6"
+                                                                           Visibility="Visible"/>
                                                                 <ScrollViewer x:Name="PART_ContentHost"
                                                                               Focusable="false"
                                                                               HorizontalScrollBarVisibility="Hidden"
@@ -193,10 +194,6 @@
                                                         <Setter TargetName="border"
                                                                 Property="BorderThickness"
                                                                 Value="2"/>
-                                                        <!-- Hide hint saat focus -->
-                                                        <Setter TargetName="Hint"
-                                                                Property="Visibility"
-                                                                Value="Collapsed"/>
                                                 </Trigger>
                                         </ControlTemplate.Triggers>
                                 </ControlTemplate>

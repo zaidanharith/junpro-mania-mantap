@@ -129,20 +129,19 @@ namespace BOZea.ViewModels.Admin
         {
             try
             {
-                Console.WriteLine($"[DashboardAdminVM] Opening settings for: {CurrentUser?.Name}");
+                Console.WriteLine($"[DashboardAdminVM] Opening edit profile for admin: {CurrentUser?.Name}");
 
                 var mainWindow = System.Windows.Application.Current.MainWindow;
                 if (mainWindow?.DataContext is MainViewModel mainViewModel)
                 {
-                    // TODO: Create SettingsViewModel
-                    System.Windows.MessageBox.Show("Settings - Coming Soon!");
-                    // mainViewModel.CurrentViewModel = new SettingsViewModel();
-                    Console.WriteLine("[DashboardAdminVM] Navigated to Settings (Coming Soon)");
+                    // Navigate to EditProfileView with flag indicating it's from admin dashboard
+                    mainViewModel.CurrentViewModel = new BOZea.ViewModels.Auth.EditProfileViewModel(isFromAdminDashboard: true);
+                    Console.WriteLine("[DashboardAdminVM] Navigated to Edit Profile");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[DashboardAdminVM] Error opening settings: {ex.Message}");
+                Console.WriteLine($"[DashboardAdminVM] Error opening edit profile: {ex.Message}");
             }
         }
 

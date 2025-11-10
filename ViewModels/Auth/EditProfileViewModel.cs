@@ -30,6 +30,7 @@ namespace BOZea.ViewModels.Auth
         private string? _imageFilePath;
         private bool _isLoading;
         private bool _isUploading;
+        private bool _isFromAdminDashboard; // Track if user came from admin dashboard
 
         private RelayCommand? _backCommand;
         private RelayCommand? _saveCommand;
@@ -80,6 +81,8 @@ namespace BOZea.ViewModels.Auth
             set { _isUploading = value; OnPropertyChanged(); }
         }
 
+        public string BackButtonText => _isFromAdminDashboard ? "Back to Dashboard" : "Back to Profile";
+
         // Commands
         public ICommand BackCommand => _backCommand ??= new RelayCommand(ExecuteBack);
         public ICommand SaveCommand => _saveCommand ??= new RelayCommand(ExecuteSave);
@@ -87,8 +90,11 @@ namespace BOZea.ViewModels.Auth
         public ICommand ChangePhotoCommand => _changePhotoCommand ??= new RelayCommand(ExecuteChangePhoto);
         public ICommand RemovePhotoCommand => _removePhotoCommand ??= new RelayCommand(ExecuteRemovePhoto);
 
-        public EditProfileViewModel()
+        // Constructor with optional parameter to track navigation source
+        public EditProfileViewModel(bool isFromAdminDashboard = false)
         {
+            _isFromAdminDashboard = isFromAdminDashboard;
+            
             var factory = new AppDbContextFactory();
             _dbContext = factory.CreateDbContext(new string[] { });
 
@@ -345,7 +351,14 @@ namespace BOZea.ViewModels.Auth
 
             if (result == MessageBoxResult.Yes)
             {
-                NavigateToProfile();
+                if (_isFromAdminDashboard)
+                {
+                    NavigateToDashboardAdmin();
+                }
+                else
+                {
+                    NavigateToProfile();
+                }
             }
         }
 
@@ -444,7 +457,14 @@ namespace BOZea.ViewModels.Auth
 
         private void ExecuteBack(object? parameter)
         {
-            NavigateToProfile();
+            if (_isFromAdminDashboard)
+            {
+                NavigateToDashboardAdmin();
+            }
+            else
+            {
+                NavigateToProfile();
+            }
         }
 
         private void NavigateToProfile()
@@ -463,6 +483,25 @@ namespace BOZea.ViewModels.Auth
             catch (Exception ex)
             {
                 Console.WriteLine($"[EditProfileVM] Error navigating to profile: {ex.Message}");
+            }
+        }
+
+        private void NavigateToDashboardAdmin()
+        {
+            try
+            {
+                Console.WriteLine("[EditProfileVM] Navigating back to Dashboard Admin...");
+
+                var mainWindow = Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    mainViewModel.CurrentViewModel = new BOZea.ViewModels.Admin.DashboardAdminViewModel();
+                    Console.WriteLine("[EditProfileVM] Successfully navigated to Dashboard Admin");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[EditProfileVM] Error navigating to dashboard admin: {ex.Message}");
             }
         }
 

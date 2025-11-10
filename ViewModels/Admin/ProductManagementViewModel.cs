@@ -35,6 +35,7 @@ namespace BOZea.ViewModels.Admin
         private RelayCommand? _deleteProductCommand;
         private RelayCommand? _backToDashboardCommand;
         private RelayCommand? _navigateOrderManagementCommand;
+        private RelayCommand? _openProfileCommand;
         private RelayCommand? _logoutCommand;
         private string _currentPage = "ProductManagement";
 
@@ -85,6 +86,9 @@ namespace BOZea.ViewModels.Admin
 
         public ICommand NavigateOrderManagementCommand => _navigateOrderManagementCommand ??=
             new RelayCommand(_ => NavigateToOrderManagement());
+
+        public ICommand OpenProfileCommand => _openProfileCommand ??=
+            new RelayCommand(_ => OpenProfile());
 
         public ICommand LogoutCommand => _logoutCommand ??=
             new RelayCommand(_ => ExecuteLogout());
@@ -399,6 +403,26 @@ namespace BOZea.ViewModels.Admin
             catch (Exception ex)
             {
                 Console.WriteLine($"[ProductManagementVM] Error: {ex.Message}");
+            }
+        }
+
+        private void OpenProfile()
+        {
+            try
+            {
+                Console.WriteLine($"[ProductManagementVM] Opening edit profile for admin: {CurrentUser?.Name}");
+
+                var mainWindow = System.Windows.Application.Current.MainWindow;
+                if (mainWindow?.DataContext is MainViewModel mainViewModel)
+                {
+                    // Navigate to EditProfileView with flag indicating it's from admin dashboard
+                    mainViewModel.CurrentViewModel = new BOZea.ViewModels.Auth.EditProfileViewModel(isFromAdminDashboard: true);
+                    Console.WriteLine("[ProductManagementVM] Navigated to Edit Profile");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ProductManagementVM] Error opening edit profile: {ex.Message}");
             }
         }
 
