@@ -153,9 +153,13 @@
                     </Grid.RowDefinitions>
 
                     <!-- Dashboard Cards -->
-                    <WrapPanel Grid.Row="0"
-                               HorizontalAlignment="Center"
-                               Margin="0,0,0,40">
+                    <Grid Grid.Row="0"
+                          Margin="0,0,0,40">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
                         <!-- Product Management Card -->
                         <Border Background="White"
@@ -163,8 +167,7 @@
                                 Padding="30"
                                 Cursor="Hand"
                                 Margin="10"
-                                MinWidth="320"
-                                MaxWidth="450">
+                                Grid.Column="0">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick"
                                               Command="{Binding NavigateProductManagementCommand}"/>
@@ -244,8 +247,7 @@
                                 Padding="30"
                                 Cursor="Hand"
                                 Margin="10"
-                                MinWidth="320"
-                                MaxWidth="450">
+                                Grid.Column="1">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick"
                                               Command="{Binding NavigateOrderManagementCommand}"/>
@@ -325,8 +327,7 @@
                                 Padding="30"
                                 Cursor="Hand"
                                 Margin="10"
-                                MinWidth="320"
-                                MaxWidth="450">
+                                Grid.Column="2">
                             <Border.InputBindings>
                                 <MouseBinding MouseAction="LeftClick"
                                               Command="{Binding LogoutCommand}"/>
@@ -400,7 +401,7 @@
                             </Grid>
                         </Border>
 
-                    </WrapPanel>
+                    </Grid>
                 </Grid>
             </ScrollViewer>
         </Grid>

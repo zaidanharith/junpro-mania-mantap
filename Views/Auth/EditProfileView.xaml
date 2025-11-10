@@ -179,16 +179,33 @@
                                         </Border.Clip>
                                         <Grid>
                                             <!-- Profile Image -->
-                                            <Image Source="{Binding ProfileImage}"
-                                                   Stretch="UniformToFill"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"/>
+                                            <Border Width="110"  Height="110" CornerRadius="55" HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center">
+                                                <Border.Background>
+                                                    <ImageBrush ImageSource="{Binding ProfileImage}"
+                                                                Stretch="UniformToFill" />
+                                                </Border.Background>
+                                                
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding ProfileImage}" Value="{x:Null}">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding ProfileImage}" Value="">
+                                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                            </Border>
 
                                             <!-- Fallback icon when no image -->
                                             <materialDesign:PackIcon Kind="AccountCircle"
                                                                      Foreground="#CCCCCC"
-                                                                     Width="120"
-                                                                     Height="120"
+                                                                     Width="110"
+                                                                     Height="110"
                                                                      HorizontalAlignment="Center"
                                                                      VerticalAlignment="Center">
                                                 <materialDesign:PackIcon.Style>
@@ -297,7 +314,48 @@
 
                                         <Button Content="Remove Photo"
                                                 Command="{Binding RemovePhotoCommand}"
-                                                Style="{StaticResource RemovePhotoButton}"/>
+                                                Background="#DC3545"
+                                                Foreground="White"
+                                                Height="40"
+                                                Padding="20,0"
+                                                FontSize="13"
+                                                FontWeight="SemiBold"
+                                                Cursor="Hand"
+                                                Margin="0,0,12,0">
+                                            <Button.ContentTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Style="{x:Null}"
+                                                               Text="{Binding}"
+                                                               Foreground="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                               FontWeight="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontWeight}"
+                                                               FontSize="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=FontSize}"/>
+                                                </DataTemplate>
+                                            </Button.ContentTemplate>
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="20"
+                                                            Padding="{TemplateBinding Padding}"
+                                                            TextElement.Foreground="{TemplateBinding Foreground}">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center"/>
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver"
+                                                                 Value="True">
+                                                            <Setter Property="Background"
+                                                                    Value="#BD2130"/>
+                                                            <Setter Property="Foreground"
+                                                                    Value="White"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
                                     </StackPanel>
                                 </StackPanel>
                             </Grid>
@@ -465,8 +523,7 @@
                                     <Button Grid.Column="0"
                                             Content="Cancel"
                                             Command="{Binding CancelCommand}"
-                                            Background="#F5F5F5"
-                                            Foreground="#666"
+                                            Background="#F5F5F5"                                            
                                             BorderThickness="1"
                                             BorderBrush="#E0E0E0"
                                             Height="50"
@@ -487,7 +544,7 @@
                                                     <ContentPresenter x:Name="contentPresenter"
                                                                       HorizontalAlignment="Center"
                                                                       VerticalAlignment="Center"
-                                                                      TextElement.Foreground="{TemplateBinding Foreground}"/>
+                                                                      TextElement.Foreground="white"/>
                                                 </Border>
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsMouseOver"

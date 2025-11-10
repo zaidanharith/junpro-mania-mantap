@@ -377,31 +377,48 @@
                                                  RadiusY="60"/>
                             </Border.Clip>
                             <Grid>
-                                <!-- Profile Image -->
-                                <Image Source="{Binding CurrentUser.Image}"
-                                       Stretch="UniformToFill"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"/>
+                            <!-- Profile Image -->
+                                <Border Width="110"  Height="110" CornerRadius="55" HorizontalAlignment="Center"
+                                        VerticalAlignment="Center">
+                                    <Border.Background>
+                                        <ImageBrush ImageSource="{Binding ProfileImage}"
+                                                    Stretch="UniformToFill" />
+                                    </Border.Background>
+                                    
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ProfileImage}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding ProfileImage}" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                </Border>
 
                                 <!-- Fallback icon when no image -->
                                 <materialDesign:PackIcon Kind="AccountCircle"
-                                                         Foreground="#CCCCCC"
-                                                         Width="120"
-                                                         Height="120"
-                                                         HorizontalAlignment="Center"
-                                                         VerticalAlignment="Center">
+                                                            Foreground="#CCCCCC"
+                                                            Width="110"
+                                                            Height="110"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center">
                                     <materialDesign:PackIcon.Style>
                                         <Style TargetType="materialDesign:PackIcon">
                                             <Setter Property="Visibility"
                                                     Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                        Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding ProfileImage}"
+                                                                Value="{x:Null}">
                                                     <Setter Property="Visibility"
                                                             Value="Visible"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                        Value="">
+                                                <DataTrigger Binding="{Binding ProfileImage}"
+                                                                Value="">
                                                     <Setter Property="Visibility"
                                                             Value="Visible"/>
                                                 </DataTrigger>
