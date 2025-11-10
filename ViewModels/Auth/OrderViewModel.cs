@@ -61,6 +61,13 @@ namespace BOZea.ViewModels.Auth
         public OrderItemViewModel(OrderItem orderItem)
         {
             _orderItem = orderItem;
+            
+            // Subscribe to OrderItem property changes to forward them
+            _orderItem.PropertyChanged += (s, e) =>
+            {
+                // Forward all property changes
+                OnPropertyChanged(e.PropertyName);
+            };
         }
 
         public int ID => _orderItem.ID;

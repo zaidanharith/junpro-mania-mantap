@@ -168,17 +168,7 @@ namespace BOZea.ViewModels.Auth
                     orders = new List<Models.Order>();
                 }
 
-                // Update on UI thread
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    UserTransactions.Clear();
-                    foreach (BOZea.Models.Order order in orders)
-                    {
-                        UserTransactions.Add(new OrderDisplayViewModel(order));
-                    }
-                });
-
-                // Load reviews for each order item
+                // Load reviews for each order item BEFORE creating ViewModels
                 var reviewRepo = new ReviewRepository(_dbContext);
                 foreach (var order in orders)
                 {
@@ -202,6 +192,16 @@ namespace BOZea.ViewModels.Auth
                         }
                     }
                 }
+
+                // Update on UI thread AFTER reviews are loaded
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UserTransactions.Clear();
+                    foreach (BOZea.Models.Order order in orders)
+                    {
+                        UserTransactions.Add(new OrderDisplayViewModel(order));
+                    }
+                });
 
                 IsLoading = false;
                 Console.WriteLine("[ProfileVM] LoadUserDataAsync completed");
