@@ -96,11 +96,23 @@ namespace BOZea.ViewModels.Category
             Products = new ObservableCollection<ProductItem>();
             LoadCategoryProducts(categoryName);
 
+            // Subscribe to currency changes
+            CurrencyManager.Instance.CurrencyChanged += OnCurrencyChanged;
+
             // Initialize commands
             ExecuteSearchCommand = new RelayCommand(_ => ExecuteSearch());
             NavigateHomeCommand = new RelayCommand(_ => NavigateHome());
             NavigateCategoryCommand = new RelayCommand(NavigateCategory);
             OpenProfileCommand = new RelayCommand(_ => OpenProfile());
+        }
+
+        private void OnCurrencyChanged(object? sender, EventArgs e)
+        {
+            // Refresh all product prices
+            foreach (var product in Products)
+            {
+                product.RefreshFormattedPrice();
+            }
         }
 
         private void LoadCategoryProducts(string categoryName)
@@ -136,7 +148,7 @@ namespace BOZea.ViewModels.Category
                             ProductId = product.ID,
                             ProductName = product.Name,
                             Category = category.Name,
-                            Price = product.Price.ToString("C"),
+                            RawPrice = product.Price, // Store raw price
                             ImageUrl = product.Image ?? "/Views/Assets/placeholder.png"
                         });
                     }

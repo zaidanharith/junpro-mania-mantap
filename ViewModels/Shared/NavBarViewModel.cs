@@ -9,6 +9,7 @@ using BOZea.Models;
 using BOZea.Helpers;
 using BOZea.Data;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace BOZea.ViewModels.Shared
 {
@@ -18,6 +19,7 @@ namespace BOZea.ViewModels.Shared
         private User? _currentUser;
         private string _searchQuery = "";
         private string _greetingText = "Selamat Datang!";
+        private string _selectedCurrency = "IDR";
 
         public User? CurrentUser
         {
@@ -50,6 +52,21 @@ namespace BOZea.ViewModels.Shared
             }
         }
 
+        public string SelectedCurrency
+        {
+            get => _selectedCurrency;
+            set
+            {
+                if (_selectedCurrency != value)
+                {
+                    _selectedCurrency = value;
+                    OnPropertyChanged();
+                    _ = ChangeCurrencyAsync(value);
+                }
+            }
+        }
+
+        public ObservableCollection<string> AvailableCurrencies { get; set; }
         public ObservableCollection<CategoryMenuItem> CategoryMenuItems { get; set; }
 
         public ICommand NavigateHomeCommand { get; }
@@ -62,6 +79,13 @@ namespace BOZea.ViewModels.Shared
             var factory = new AppDbContextFactory();
             _context = factory.CreateDbContext(new string[] { });
             CategoryMenuItems = new ObservableCollection<CategoryMenuItem>();
+            
+            // Initialize available currencies - Only IDR and USD
+            AvailableCurrencies = new ObservableCollection<string>
+            {
+                "IDR",
+                "USD"
+            };
 
             // Initialize commands
             NavigateHomeCommand = new RelayCommand(_ => NavigateHome());
@@ -72,6 +96,9 @@ namespace BOZea.ViewModels.Shared
             // Load data
             LoadCurrentUser();
             LoadCategories();
+            
+            // Set initial currency from CurrencyManager
+            _selectedCurrency = CurrencyManager.Instance.CurrentCurrency;
         }
 
         private void LoadCurrentUser()
@@ -190,6 +217,31 @@ namespace BOZea.ViewModels.Shared
             Console.WriteLine($"[NavBarVM] Searching for: {SearchQuery}");
             // TODO: Implement search functionality
             // Navigate to search results page or filter current view
+        }
+
+        private async Task ChangeCurrencyAsync(string currency)
+        {
+            try
+            {
+                Console.WriteLine($"[NavBarVM] Changing currency to: {currency}");
+                var success = await CurrencyManager.Instance.ChangeCurrencyAsync(currency);
+                
+                if (success)
+                {
+                    Console.WriteLine($"[NavBarVM] Currency changed successfully to {currency}");
+                }
+                else
+                {
+                    Console.WriteLine($"[NavBarVM] Failed to change currency to {currency}");
+                    // Revert selection if failed
+                    _selectedCurrency = CurrencyManager.Instance.CurrentCurrency;
+                    OnPropertyChanged(nameof(SelectedCurrency));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[NavBarVM] Error changing currency: {ex.Message}");
+            }
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

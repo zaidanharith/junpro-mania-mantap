@@ -22,7 +22,7 @@ namespace BOZea.ViewModels.Auth
         private readonly OrderRepository _orderRepository;
         private readonly AppDbContext _dbContext;
         private User? _currentUser;
-        private ObservableCollection<Models.Order> _userTransactions;
+        private ObservableCollection<OrderDisplayViewModel> _userTransactions;
         private bool _isLoading;
         private RelayCommand? _navigateHomeCommand;
         private RelayCommand? _logoutCommand;
@@ -36,15 +36,27 @@ namespace BOZea.ViewModels.Auth
             _dbContext = factory.CreateDbContext(Array.Empty<string>());
             _userRepository = new UserRepository(_dbContext);
             _orderRepository = new OrderRepository(_dbContext);
-            _userTransactions = new ObservableCollection<Models.Order>();
+            _userTransactions = new ObservableCollection<OrderDisplayViewModel>();
 
             EditProfileCommand = new RelayCommand(_ => EditProfile());
-            AddReviewCommand = new RelayCommand(param => AddReview(param as OrderItem));
+            AddReviewCommand = new RelayCommand(param => AddReview(param as OrderItemViewModel));
+
+            // Subscribe to currency changes
+            CurrencyManager.Instance.CurrencyChanged += OnCurrencyChanged;
 
             Console.WriteLine("[ProfileVM] Constructor completed, loading data...");
 
             // Load data asynchronously to avoid blocking UI
             Task.Run(async () => await LoadUserDataAsync());
+        }
+
+        private void OnCurrencyChanged(object? sender, EventArgs e)
+        {
+            // Refresh all order prices
+            foreach (var order in UserTransactions)
+            {
+                order.RefreshPrices();
+            }
         }
 
         public User? CurrentUser
@@ -58,7 +70,7 @@ namespace BOZea.ViewModels.Auth
             }
         }
 
-        public ObservableCollection<Models.Order> UserTransactions
+        public ObservableCollection<OrderDisplayViewModel> UserTransactions
         {
             get => _userTransactions;
             set
@@ -160,9 +172,9 @@ namespace BOZea.ViewModels.Auth
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     UserTransactions.Clear();
-                    foreach (var order in orders)
+                    foreach (BOZea.Models.Order order in orders)
                     {
-                        UserTransactions.Add(order);
+                        UserTransactions.Add(new OrderDisplayViewModel(order));
                     }
                 });
 
@@ -233,10 +245,10 @@ namespace BOZea.ViewModels.Auth
             }
         }
 
-        private void AddReview(OrderItem? orderItem)
+        private void AddReview(OrderItemViewModel? orderItemVM)
         {
-            if (orderItem == null) return;
-            Console.WriteLine($"[ProfileVM] Add review for product: {orderItem.Product?.Name}");
+            if (orderItemVM == null) return;
+            Console.WriteLine($"[ProfileVM] Add review for product: {orderItemVM.Product?.Name}");
             // TODO: Navigate to add review view
         }
 

@@ -93,7 +93,7 @@
                                    Margin="0,0,0,20"/>
 
                         <!-- Price -->
-                        <TextBlock Text="{Binding Product.Price}"
+                        <TextBlock Text="{Binding FormattedPrice}"
                                    FontSize="28"
                                    FontWeight="ExtraBold"
                                    Foreground="{StaticResource PrimaryBlueBrush}"
@@ -122,7 +122,8 @@
                                        FontWeight="SemiBold"
                                        Foreground="White"
                                        VerticalAlignment="Center"
-                                       HorizontalAlignment="Center" Margin="16,8,16,8"/>
+                                       HorizontalAlignment="Center"
+                                    Margin="16,8,16,8"/>
                         </Button>
                         <!-- Additional Info -->
                         <StackPanel Orientation="Horizontal"

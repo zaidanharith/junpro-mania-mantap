@@ -84,11 +84,7 @@ namespace BOZea.ViewModels.Payment
             }
         }
 
-        public string ProductPrice
-        {
-            get => _productPriceValue.ToString("C");
-            private set { }
-        }
+        public string ProductPrice => CurrencyManager.Instance.FormatPrice(_productPriceValue);
 
         public decimal ProductPriceValue
         {
@@ -114,7 +110,7 @@ namespace BOZea.ViewModels.Payment
             }
         }
 
-        public string TotalPrice => (_productPriceValue * Quantity).ToString("C");
+        public string TotalPrice => CurrencyManager.Instance.FormatPrice(_productPriceValue * Quantity);
 
         public string PayButtonText => $"Pay {TotalPrice}";
 
@@ -180,29 +176,17 @@ namespace BOZea.ViewModels.Payment
             ProductCategory = product.Category;
             ProductImage = product.ImageUrl;
 
-            var priceString = product.Price
-                .Replace("$", "")
-                .Replace(",", "")
-                .Replace("Rp", "")
-                .Trim();
-
-            Console.WriteLine($"[PaymentVM] Parsing price: '{product.Price}' -> '{priceString}'");
-
-            if (decimal.TryParse(priceString, out decimal price))
-            {
-                ProductPriceValue = price;
-                Console.WriteLine($"[PaymentVM] Parsed price: {price} -> {ProductPrice}");
-            }
-            else
-            {
-                ProductPriceValue = 0;
-                Console.WriteLine($"[PaymentVM] Failed to parse price: {priceString}");
-            }
+            // Use RawPrice directly (already in IDR)
+            ProductPriceValue = product.RawPrice;
+            Console.WriteLine($"[PaymentVM] Product price set to: {ProductPriceValue} IDR -> Display: {ProductPrice}");
         }
 
         public PaymentViewModel()
         {
             _navigationService = new NavigationService();
+
+            // Subscribe to currency changes
+            CurrencyManager.Instance.CurrencyChanged += OnCurrencyChanged;
 
             try
             {
@@ -219,6 +203,14 @@ namespace BOZea.ViewModels.Payment
             DecreaseQuantityCommand = new RelayCommand(_ => DecreaseQuantity());
             PayCommand = new RelayCommand(_ => ProcessPayment());
             BackCommand = new RelayCommand(_ => NavigateBack());
+        }
+
+        private void OnCurrencyChanged(object? sender, EventArgs e)
+        {
+            // Refresh all price-related properties
+            OnPropertyChanged(nameof(ProductPrice));
+            OnPropertyChanged(nameof(TotalPrice));
+            OnPropertyChanged(nameof(PayButtonText));
         }
 
         private void InitializeRepositories()

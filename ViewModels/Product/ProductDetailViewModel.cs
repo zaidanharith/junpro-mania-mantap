@@ -10,6 +10,7 @@ using BOZea.ViewModels.Payment;
 using BOZea.Models;
 using BOZea.Data;
 using BOZea.Services;
+using BOZea.Helpers;
 
 namespace BOZea.ViewModels.Product
 {
@@ -23,11 +24,17 @@ namespace BOZea.ViewModels.Product
         private RelayCommand? _buyNowCommand;
         private RelayCommand? _navigateHomeCommand;
         private User? _currentUser;
+        private decimal _rawPrice; // Store raw price for conversion
 
         public ProductModel Product
         {
             get => _product;
             set { _product = value; OnPropertyChanged(); }
+        }
+
+        public string FormattedPrice
+        {
+            get => CurrencyManager.Instance.FormatPrice(_rawPrice);
         }
 
         public ObservableCollection<ReviewModel> Reviews
@@ -52,6 +59,9 @@ namespace BOZea.ViewModels.Product
             _context = factory.CreateDbContext(new string[] { });
             _navigationService = new NavigationService();
 
+            // Subscribe to currency changes
+            CurrencyManager.Instance.CurrencyChanged += OnCurrencyChanged;
+
             LoadCurrentUser();
             InitializeData();
         }
@@ -63,9 +73,18 @@ namespace BOZea.ViewModels.Product
             _context = factory.CreateDbContext(new string[] { });
             _navigationService = new NavigationService();
 
+            // Subscribe to currency changes
+            CurrencyManager.Instance.CurrencyChanged += OnCurrencyChanged;
+
             _productItem = productItem;
             LoadCurrentUser();
             LoadProductFromDatabase(productItem.ProductId);
+        }
+
+        private void OnCurrencyChanged(object? sender, EventArgs e)
+        {
+            // Refresh formatted price when currency changes
+            OnPropertyChanged(nameof(FormattedPrice));
         }
 
         private void LoadCurrentUser()
@@ -106,6 +125,10 @@ namespace BOZea.ViewModels.Product
                         Price = product.Price.ToString("C")
                     };
 
+                    // Store raw price for currency conversion
+                    _rawPrice = product.Price;
+                    OnPropertyChanged(nameof(FormattedPrice));
+
                     // Update ProductItem if not set
                     if (_productItem == null)
                     {
@@ -114,7 +137,7 @@ namespace BOZea.ViewModels.Product
                             ProductId = product.ID,
                             ProductName = product.Name,
                             Category = categoryName,
-                            Price = product.Price.ToString("C"),
+                            RawPrice = product.Price, // Use RawPrice
                             ImageUrl = product.Image ?? "/Views/Assets/placeholder.png"
                         };
                     }
@@ -153,7 +176,7 @@ namespace BOZea.ViewModels.Product
                         Id = review.ID,
                         Username = user?.Name ?? "Anonymous",
                         Title = "Review",
-                        ReviewText = review.Comment,
+                        ReviewText = review.Comment ?? "",
                         AvatarUrl = "/Views/Assets/avatar-default.png",
                         Rating = review.Rating
                     });
@@ -184,12 +207,14 @@ namespace BOZea.ViewModels.Product
                 Price = "$0.00"
             };
 
+            _rawPrice = 0;
+
             _productItem = new ProductItem
             {
                 ProductId = 1,
                 ProductName = "Sample Product",
                 Category = "Category",
-                Price = "$0.00",
+                RawPrice = 0, // Use RawPrice
                 ImageUrl = "/Views/Assets/placeholder.png"
             };
 

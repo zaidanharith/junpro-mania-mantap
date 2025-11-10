@@ -73,12 +73,27 @@ namespace BOZea.ViewModels.Dashboard
             CategoriesWithProducts = new ObservableCollection<CategoryWithProducts>();
             LoadCategoriesWithProducts();
 
+            // Subscribe to currency changes
+            CurrencyManager.Instance.CurrencyChanged += OnCurrencyChanged;
+
             // Initialize commands
             SeeAllCommand = new RelayCommand(ExecuteSeeAll);
             ExecuteSearchCommand = new RelayCommand(_ => ExecuteSearch());
             NavigateHomeCommand = new RelayCommand(_ => NavigateHome());
             NavigateCategoryCommand = new RelayCommand(NavigateCategory);
             OpenProfileCommand = new RelayCommand(_ => OpenProfile());
+        }
+
+        private void OnCurrencyChanged(object? sender, EventArgs e)
+        {
+            // Refresh all product prices when currency changes
+            foreach (var categoryWithProducts in CategoriesWithProducts)
+            {
+                foreach (var product in categoryWithProducts.Products)
+                {
+                    product.RefreshFormattedPrice();
+                }
+            }
         }
 
         private void LoadCategoriesWithProducts()
@@ -112,7 +127,7 @@ namespace BOZea.ViewModels.Dashboard
                             ProductId = product.ID,
                             ProductName = product.Name,
                             Category = category.Name,
-                            Price = product.Price.ToString("C"),
+                            RawPrice = product.Price, // Store raw price
                             ImageUrl = product.Image ?? "/Views/Assets/placeholder.png"
                         });
                     }
@@ -272,12 +287,37 @@ namespace BOZea.ViewModels.Dashboard
         }
     }
 
-    public class ProductItem
+    public class ProductItem : INotifyPropertyChanged
     {
+        private decimal _rawPrice;
+
         public int ProductId { get; set; }
         public string ProductName { get; set; } = string.Empty;
         public string Category { get; set; } = string.Empty;
-        public string Price { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
+
+        public decimal RawPrice
+        {
+            get => _rawPrice;
+            set
+            {
+                _rawPrice = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Price));
+            }
+        }
+
+        public string Price => CurrencyManager.Instance.FormatPrice(_rawPrice);
+
+        public void RefreshFormattedPrice()
+        {
+            OnPropertyChanged(nameof(Price));
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

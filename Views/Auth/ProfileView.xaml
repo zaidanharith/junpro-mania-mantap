@@ -246,7 +246,8 @@
                             Foreground="White"
                             FontSize="13"
                             FontWeight="SemiBold"
-                            Cursor="Hand" Margin="0,25,0,0">
+                            Cursor="Hand"
+                            Margin="0,25,0,0">
                         <Button.Effect>
                             <DropShadowEffect BlurRadius="6"
                                               ShadowDepth="2"
@@ -381,23 +382,31 @@
                                                  RadiusY="60"/>
                             </Border.Clip>
                             <Grid>
-                            <!-- Profile Image -->
-                                <Border Width="110"  Height="110" CornerRadius="55" HorizontalAlignment="Center"
+                                <!-- Profile Image -->
+                                <Border Width="110"
+                                        Height="110"
+                                        CornerRadius="55"
+                                        HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                     <Border.Background>
                                         <ImageBrush ImageSource="{Binding CurrentUser.Image}"
-                                                    Stretch="UniformToFill" />
+                                                    Stretch="UniformToFill"/>
                                     </Border.Background>
-                                    
+
                                     <Border.Style>
                                         <Style TargetType="Border">
-                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Setter Property="Visibility"
+                                                    Value="Visible"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding CurrentUser.Image}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                        Value="{x:Null}">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding CurrentUser.Image}" Value="">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
+                                                        Value="">
+                                                    <Setter Property="Visibility"
+                                                            Value="Collapsed"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -406,23 +415,23 @@
 
                                 <!-- Fallback icon when no image -->
                                 <materialDesign:PackIcon Kind="AccountCircle"
-                                                            Foreground="#CCCCCC"
-                                                            Width="110"
-                                                            Height="110"
-                                                            HorizontalAlignment="Center"
-                                                            VerticalAlignment="Center">
+                                                         Foreground="#CCCCCC"
+                                                         Width="110"
+                                                         Height="110"
+                                                         HorizontalAlignment="Center"
+                                                         VerticalAlignment="Center">
                                     <materialDesign:PackIcon.Style>
                                         <Style TargetType="materialDesign:PackIcon">
                                             <Setter Property="Visibility"
                                                     Value="Collapsed"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                                Value="{x:Null}">
+                                                             Value="{x:Null}">
                                                     <Setter Property="Visibility"
                                                             Value="Visible"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                                Value="">
+                                                             Value="">
                                                     <Setter Property="Visibility"
                                                             Value="Visible"/>
                                                 </DataTrigger>
@@ -521,7 +530,7 @@
                                                                Foreground="#333"
                                                                Margin="0,1,0,0"/>
                                                     <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="{Binding TotalAmount, StringFormat='Rp {0:N0}'}"
+                                                        <TextBlock Text="{Binding FormattedTotalAmount}"
                                                                    FontSize="12"
                                                                    Foreground="#227DCD"
                                                                    FontWeight="Bold"
@@ -573,7 +582,7 @@
 
                                                                     <!-- Price -->
                                                                     <TextBlock Grid.Column="2"
-                                                                               Text="{Binding Price, StringFormat='Rp {0:N0}'}"
+                                                                               Text="{Binding FormattedPrice}"
                                                                                FontSize="12"
                                                                                FontWeight="Bold"
                                                                                Foreground="#227DCD"
