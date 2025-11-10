@@ -215,7 +215,8 @@
                                        FontSize="16"
                                        FontWeight="SemiBold"
                                        Foreground="White"
-                                       VerticalAlignment="Center"/>
+                                       VerticalAlignment="Center"
+                                       Margin="0"/>
                         </StackPanel>
                     </Button>
                 </Grid>
