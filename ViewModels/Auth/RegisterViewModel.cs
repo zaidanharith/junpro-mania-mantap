@@ -27,7 +27,7 @@ namespace BOZea.ViewModels.Auth
         private string _passwordConfirm = "";
         private string _address = "";
         private string? _imageFilePath;
-        private string _imageFileName = "Tidak ada file yang dipilih";
+        private string _imageFileName = "";
         private string _message = "";
         private bool _isUploading = false;
 

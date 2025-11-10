@@ -12,7 +12,7 @@
         
         <!-- Style dasar untuk border menu --><Style x:Key="SidebarMenuItemStyle" TargetType="Border">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Margin" Value="15,0,15,10"/>
             <Setter Property="Padding" Value="15,12"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -56,7 +56,7 @@
     </UserControl.Resources>
 
     <!-- Background utama sidebar (Biru Tua) --><Border Background="#0D5785"
-            CornerRadius="0,20,20,0">
+            CornerRadius="0,20,0,0">
         <Border.Effect>
             <DropShadowEffect BlurRadius="20"
                               ShadowDepth="0"
@@ -64,114 +64,145 @@
                               Color="#000000"/>
         </Border.Effect>
 
-        <StackPanel>
-            <!-- Logo Section --><Border Margin="30,30,30,0"
-                    HorizontalAlignment="Center"
-                    Height="64">
-                <Image Source="/Views/Assets/logo_white.png"
-                       Height="88"
-                       Stretch="Uniform"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       Width="148"/>
-            </Border>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <!-- Logo + Menu -->
+                <RowDefinition Height="*"/>
+                <!-- Spacer -->
+                <RowDefinition Height="Auto"/>
+                <!-- Logout Button -->
+            </Grid.RowDefinitions>
 
-            <!-- Admin Panel Label (Biru Muda) --><TextBlock Text="Admin Panel"
-                       FontSize="14"
-                       FontWeight="SemiBold"
-                       Foreground="#B0D4E8" 
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,20"/>
-
-            <!-- Menu Items --><StackPanel>
-                
-                <!-- Dashboard --><Border Tag="Dashboard">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource SidebarMenuItemStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentPage}" Value="Dashboard">
-                                    <!-- Background aktif kembali ke Putih --><Setter Property="Background" Value="#1E293B"/> 
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <Border.InputBindings>
-                        <MouseBinding MouseAction="LeftClick"
-                                      Command="{Binding BackToDashboardCommand}"/>
-                    </Border.InputBindings>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="ViewDashboard"
-                                                 Style="{StaticResource SidebarMenuIconStyle}"/>
-                        <TextBlock Text="Dashboard"
-                                   Style="{StaticResource SidebarMenuTextStyle}"/>
-                    </StackPanel>
+            <StackPanel Grid.Row="0">
+                <!-- Logo Section --><Border Margin="30,30,30,0"
+                        HorizontalAlignment="Center"
+                        Height="64">
+                    <Image Source="/Views/Assets/logo_white.png"
+                           Height="88"
+                           Stretch="Uniform"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           Width="148"/>
                 </Border>
 
-                <!-- Product Management --><Border Tag="ProductManagement">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource SidebarMenuItemStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentPage}" Value="ProductManagement">
-                                    <!-- Background aktif kembali ke Putih --><Setter Property="Background" Value="#1E293B"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <Border.InputBindings>
-                        <MouseBinding MouseAction="LeftClick"
-                                      Command="{Binding NavigateProductManagementCommand}"/>
-                    </Border.InputBindings>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Package"
-                                                 Style="{StaticResource SidebarMenuIconStyle}"/>
-                        <TextBlock Text="Product Management"
-                                   Style="{StaticResource SidebarMenuTextStyle}"/>
-                    </StackPanel>
-                </Border>
+                <!-- Admin Panel Label (Biru Muda) --><TextBlock Text="Admin Panel"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="#B0D4E8" 
+                           HorizontalAlignment="Center"
+                           Margin="0,0,0,20"/>
 
-                <!-- Order Management --><Border Tag="OrderManagement">
-                    <Border.Style>
-                        <Style TargetType="Border" BasedOn="{StaticResource SidebarMenuItemStyle}">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding CurrentPage}" Value="OrderManagement">
-                                    <!-- Background aktif kembali ke Putih --><Setter Property="Background" Value="#1E293B"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Border.Style>
-                    <Border.InputBindings>
-                        <MouseBinding MouseAction="LeftClick"
-                                      Command="{Binding NavigateOrderManagementCommand}"/>
-                    </Border.InputBindings>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="ShoppingOutline"
-                                                 Style="{StaticResource SidebarMenuIconStyle}"/>
-                        <TextBlock Text="Order Management"
-                                   Style="{StaticResource SidebarMenuTextStyle}"/>
-                    </StackPanel>
-                </Border>
+                <!-- Menu Items --><StackPanel>
+                    
+                    <!-- Dashboard --><Border Tag="Dashboard">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource SidebarMenuItemStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPage}" Value="Dashboard">
+                                        <!-- Background aktif kembali ke Putih --><Setter Property="Background" Value="#1E293B"/> 
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick"
+                                          Command="{Binding BackToDashboardCommand}"/>
+                        </Border.InputBindings>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ViewDashboard"
+                                                     Style="{StaticResource SidebarMenuIconStyle}"/>
+                            <TextBlock Text="Dashboard"
+                                       Style="{StaticResource SidebarMenuTextStyle}"/>
+                        </StackPanel>
+                    </Border>
 
-                <!-- Logout (Tidak perlu highlight, jadi pakai style dasar saja) --><Border Style="{StaticResource SidebarMenuItemStyle}"
-                        Tag="Logout">
+                    <!-- Product Management --><Border Tag="ProductManagement">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource SidebarMenuItemStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPage}" Value="ProductManagement">
+                                        <!-- Background aktif kembali ke Putih --><Setter Property="Background" Value="#1E293B"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick"
+                                          Command="{Binding NavigateProductManagementCommand}"/>
+                        </Border.InputBindings>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Package"
+                                                     Style="{StaticResource SidebarMenuIconStyle}"/>
+                            <TextBlock Text="Product Management"
+                                       Style="{StaticResource SidebarMenuTextStyle}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Order Management --><Border Tag="OrderManagement">
+                        <Border.Style>
+                            <Style TargetType="Border" BasedOn="{StaticResource SidebarMenuItemStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding CurrentPage}" Value="OrderManagement">
+                                        <!-- Background aktif kembali ke Putih --><Setter Property="Background" Value="#1E293B"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Border.InputBindings>
+                            <MouseBinding MouseAction="LeftClick"
+                                          Command="{Binding NavigateOrderManagementCommand}"/>
+                        </Border.InputBindings>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ShoppingOutline"
+                                                     Style="{StaticResource SidebarMenuIconStyle}"/>
+                            <TextBlock Text="Order Management"
+                                       Style="{StaticResource SidebarMenuTextStyle}"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Spacer -->
+            <Border Grid.Row="1"/>
+
+            <!-- Logout Button (Di Bawah) -->
+            <Border Grid.Row="2"
+                    Margin="15,10,15,15">
+                <Border Background="#DC3545"
+                        CornerRadius="10,10,10,10"
+                        Padding="12,4,12,4"
+                        Cursor="Hand">
                     <Border.InputBindings>
                         <MouseBinding MouseAction="LeftClick"
                                       Command="{Binding LogoutCommand}"/>
                     </Border.InputBindings>
-                    <StackPanel Orientation="Horizontal">
+                    <Border.Style>
+                        <Style TargetType="Border">
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#BD2130"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Border.Style>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center">
                         <materialDesign:PackIcon Kind="Logout"
-                                                 Width="20"
-                                                 Height="20"
+                                                 Width="18"
+                                                 Height="18"
                                                  Foreground="White"
                                                  VerticalAlignment="Center"
                                                  Margin="0,0,12,0"/>
                         <TextBlock Text="Logout"
-                                   FontSize="15"
+                                   FontSize="16"
+                                   FontWeight="SemiBold"
                                    Foreground="White"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   Margin="0,4,0,4"/>
                     </StackPanel>
                 </Border>
-                
-            </StackPanel>
-        </StackPanel>
+            </Border>
+        </Grid>
     </Border>
 </UserControl>

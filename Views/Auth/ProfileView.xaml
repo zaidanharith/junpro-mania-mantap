@@ -4,12 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             mc:Ignorable="d"
              FontFamily="Plus Jakarta Sans"
-             Background="#F5F5F5"
-             d:DesignWidth="1869.38"
-             d:DesignHeight="1168.84"
-             Width="1869.5">
+             Background="#F5F5F5">
 
     <UserControl.Resources>
         <DropShadowEffect x:Key="CardShadow"
@@ -209,13 +205,17 @@
                         </Button.Style>
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Top">
-                            <TextBlock Text="🚪"
-                                       FontSize="18"
-                                       Foreground="White"/>
+                            <materialDesign:PackIcon Kind="Logout"
+                                                     Width="18"
+                                                     Height="18"
+                                                     Foreground="White"
+                                                     Margin="0,0,8,0"
+                                                     VerticalAlignment="Center"/>
                             <TextBlock Text="Logout"
                                        FontSize="16"
                                        FontWeight="SemiBold"
-                                       Foreground="White"/>
+                                       Foreground="White"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -236,7 +236,7 @@
                         <TextBlock Text="Manage your account and transactions"
                                    FontSize="16"
                                    Foreground="#666"
-                                   Margin="0,5,0,0"/>
+                                   Margin="0,0,0,0"/>
                     </StackPanel>
 
                     <Button Grid.Column="1"
@@ -245,8 +245,7 @@
                             Foreground="White"
                             FontSize="13"
                             FontWeight="SemiBold"
-                            Cursor="Hand"
-                            Margin="0,25,0,0">
+                            Cursor="Hand" Margin="0,25,0,0">
                         <Button.Effect>
                             <DropShadowEffect BlurRadius="6"
                                               ShadowDepth="2"
@@ -333,15 +332,19 @@
                                 </Setter>
                             </Style>
                         </Button.Style>
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
                             <materialDesign:PackIcon Kind="Pencil"
-                                                     Width="24"
-                                                     Height="24"/>
+                                                     Width="18"
+                                                     Height="18"
+                                                     Foreground="White"
+                                                     Margin="0,0,8,0"
+                                                     VerticalAlignment="Stretch"/>
                             <TextBlock Text="Edit Profile"
-                                       Margin="5,0,0,0"
-                                       Foreground="White"
                                        FontSize="16"
-                                       VerticalAlignment="Center"/>
+                                       FontWeight="SemiBold"
+                                       Foreground="White"
+                                       Margin="0"/>
                         </StackPanel>
                     </Button>
                 </Grid>
@@ -381,7 +384,7 @@
                                 <Border Width="110"  Height="110" CornerRadius="55" HorizontalAlignment="Center"
                                         VerticalAlignment="Center">
                                     <Border.Background>
-                                        <ImageBrush ImageSource="{Binding ProfileImage}"
+                                        <ImageBrush ImageSource="{Binding CurrentUser.Image}"
                                                     Stretch="UniformToFill" />
                                     </Border.Background>
                                     
@@ -389,10 +392,10 @@
                                         <Style TargetType="Border">
                                             <Setter Property="Visibility" Value="Visible" />
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ProfileImage}" Value="{x:Null}">
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}" Value="{x:Null}">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding ProfileImage}" Value="">
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}" Value="">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -412,12 +415,12 @@
                                             <Setter Property="Visibility"
                                                     Value="Collapsed"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ProfileImage}"
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
                                                                 Value="{x:Null}">
                                                     <Setter Property="Visibility"
                                                             Value="Visible"/>
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding ProfileImage}"
+                                                <DataTrigger Binding="{Binding CurrentUser.Image}"
                                                                 Value="">
                                                     <Setter Property="Visibility"
                                                             Value="Visible"/>

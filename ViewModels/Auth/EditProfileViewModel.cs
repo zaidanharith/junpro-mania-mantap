@@ -306,8 +306,14 @@ namespace BOZea.ViewModels.Auth
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
-                // Navigate back to profile
-                NavigateToProfile();
+                if (_isFromAdminDashboard)
+                {
+                    NavigateToDashboardAdmin();
+                }
+                else
+                {
+                    NavigateToProfile();
+                }
             }
             catch (DbUpdateException dbEx)
             {
