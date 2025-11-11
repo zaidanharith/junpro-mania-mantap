@@ -97,7 +97,7 @@
                             <ComboBox.Resources>
                                 <Style TargetType="ComboBoxItem">
                                     <Setter Property="Foreground"
-                                            Value="#113F67"/>
+                                            Value="White"/>
                                     <Setter Property="FontWeight"
                                             Value="SemiBold"/>
                                     <Setter Property="Padding"

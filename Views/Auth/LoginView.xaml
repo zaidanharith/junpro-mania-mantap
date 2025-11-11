@@ -110,6 +110,7 @@
 
                                         <!-- Login Button -->
                                         <Button Content="Login"
+                                                FontSize="20"
                                                 Command="{Binding LoginCommand}"
                                                 Style="{StaticResource PrimaryButton}"
                                                 Margin="0,15,0,10"/>
@@ -119,13 +120,13 @@
                                                     HorizontalAlignment="Center"
                                                     Margin="0,15,0,0">
                                                 <TextBlock Text="Don't have an account? "
-                                                           FontSize="14"
+                                                           FontSize="16"
                                                            Foreground="#6B7280"/>
                                                 <TextBlock>
                                                         <Hyperlink Command="{Binding NavigateRegisterCommand}"
                                                                    Foreground="#005F92"
                                                                    FontWeight="Bold"
-                                                                   FontSize="14"
+                                                                   FontSize="16"
                                                                    TextDecorations="None">
                                                                 <Run Text="Register"/>
                                                         </Hyperlink>

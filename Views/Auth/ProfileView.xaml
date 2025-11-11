@@ -447,19 +447,19 @@
                                     Margin="30,0,0,0"
                                     VerticalAlignment="Center">
                             <TextBlock Text="{Binding CurrentUser.Name}"
-                                       FontSize="22"
+                                       FontSize="24"
                                        FontWeight="Bold"
                                        Foreground="#113F67"/>
                             <TextBlock Text="{Binding CurrentUser.Email}"
-                                       FontSize="13"
+                                       FontSize="16"
                                        Foreground="#666"
                                        Margin="0,8,0,0"/>
                             <TextBlock Text="{Binding CurrentUser.Phone}"
-                                       FontSize="13"
+                                       FontSize="16"
                                        Foreground="#666"
                                        Margin="0,4,0,0"/>
                             <TextBlock Text="{Binding CurrentUser.Address}"
-                                       FontSize="13"
+                                       FontSize="16"
                                        Foreground="#666"
                                        TextWrapping="Wrap"
                                        Margin="0,4,0,0"/>
@@ -479,7 +479,7 @@
                     </Border.Effect>
                     <StackPanel>
                         <TextBlock Text="Transaction History"
-                                   FontSize="18"
+                                   FontSize="20"
                                    FontWeight="Bold"
                                    Foreground="#113F67"
                                    Margin="0,0,0,15"/>
@@ -501,7 +501,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock Grid.Column="0"
                                                            Text="{Binding ID, StringFormat='Order #{0}'}"
-                                                           FontSize="14"
+                                                           FontSize="16"
                                                            FontWeight="Bold"
                                                            Foreground="#113F67"/>
                                                 <Border Grid.Column="1"
@@ -509,7 +509,7 @@
                                                         CornerRadius="4"
                                                         Padding="8,4">
                                                     <TextBlock Text="{Binding Payment.Status, FallbackValue='Success'}"
-                                                               FontSize="11"
+                                                               FontSize="12"
                                                                Foreground="#2E7D32"
                                                                FontWeight="SemiBold"/>
                                                 </Border>
@@ -523,7 +523,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <StackPanel Grid.Column="0">
                                                     <TextBlock Text="Date"
-                                                               FontSize="10"
+                                                               FontSize="12"
                                                                Foreground="#999"/>
                                                     <TextBlock Text="{Binding Date, StringFormat='{}{0:dd/MM/yyyy HH:mm}'}"
                                                                FontSize="12"
@@ -575,7 +575,7 @@
                                                                                    FontWeight="SemiBold"
                                                                                    Foreground="#333"/>
                                                                         <TextBlock Text="{Binding Quantity, StringFormat='Qty: {0}'}"
-                                                                                   FontSize="10"
+                                                                                   FontSize="12"
                                                                                    Foreground="#999"
                                                                                    Margin="0,2,0,0"/>
                                                                     </StackPanel>
@@ -614,7 +614,7 @@
                                                                             </StackPanel.Style>
 
                                                                             <TextBlock Text="Your Review"
-                                                                                       FontSize="11"
+                                                                                       FontSize="12"
                                                                                        FontWeight="SemiBold"
                                                                                        Foreground="#227DCD"
                                                                                        Margin="0,0,0,6"/>
@@ -629,7 +629,7 @@
                                                                                 <ItemsControl.ItemTemplate>
                                                                                     <DataTemplate>
                                                                                         <TextBlock Text="⭐"
-                                                                                                   FontSize="14"
+                                                                                                   FontSize="16"
                                                                                                    Foreground="Gold"
                                                                                                    Margin="0,0,2,0"/>
                                                                                     </DataTemplate>
@@ -637,7 +637,7 @@
                                                                             </ItemsControl>
 
                                                                             <TextBlock Text="{Binding ReviewComment}"
-                                                                                       FontSize="11"
+                                                                                       FontSize="12"
                                                                                        Foreground="#555"
                                                                                        TextWrapping="Wrap"
                                                                                        Margin="0,6,0,0"/>
@@ -660,7 +660,7 @@
                                                                             </StackPanel.Style>
 
                                                                             <TextBlock Text="Rate this product"
-                                                                                       FontSize="11"
+                                                                                       FontSize="12"
                                                                                        FontWeight="SemiBold"
                                                                                        Foreground="#333"
                                                                                        Margin="0,0,0,6"/>
@@ -709,7 +709,7 @@
                                                                                          TextWrapping="Wrap"
                                                                                          AcceptsReturn="True"
                                                                                          VerticalScrollBarVisibility="Auto"
-                                                                                         FontSize="11"
+                                                                                         FontSize="12"
                                                                                          Margin="0,0,0,8">
                                                                                     <TextBox.Style>
                                                                                         <Style TargetType="TextBox">
@@ -743,7 +743,7 @@
 
                                                                                 <!-- Placeholder Text -->
                                                                                 <TextBlock Text="Write your review here... (e.g., Great product! Highly recommended.)"
-                                                                                           FontSize="11"
+                                                                                           FontSize="12"
                                                                                            Foreground="#999"
                                                                                            Margin="9,8,8,8"
                                                                                            IsHitTestVisible="False"
@@ -789,7 +789,7 @@
                                                                                     Foreground="White"
                                                                                     BorderThickness="0"
                                                                                     Padding="12,6"
-                                                                                    FontSize="11"
+                                                                                    FontSize="12"
                                                                                     FontWeight="SemiBold"
                                                                                     Cursor="Hand"
                                                                                     HorizontalAlignment="Right">

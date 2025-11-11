@@ -178,11 +178,11 @@
                                FontWeight="Bold"
                                Margin="0,0,0,30"/>
 
-                    <!-- Reviews Grid (2 columns) -->
+                    <!-- Reviews Grid (4 columns) -->
                     <ItemsControl ItemsSource="{Binding Reviews}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Columns="2"
+                                <UniformGrid Columns="4"
                                              HorizontalAlignment="Left"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
@@ -203,10 +203,18 @@
                                             </Grid.ColumnDefinitions>
 
                                             <!-- Avatar Circle -->
-                                            <Ellipse Width="40"
-                                                     Height="40"
-                                                     Fill="#808080"
-                                                     Margin="0,0,12,0"/>
+                                            <Border Width="40"
+                                                    Height="40"
+                                                    CornerRadius="20"
+                                                    Background="#0D5785"
+                                                    Margin="0,0,12,0">
+                                                <TextBlock Text="{Binding UserNameInitial}"
+                                                           FontWeight="Bold"
+                                                           FontSize="16"
+                                                           Foreground="White"
+                                                           HorizontalAlignment="Center"
+                                                           VerticalAlignment="Center"/>
+                                            </Border>
 
                                             <!-- Username -->
                                             <TextBlock Grid.Column="1"

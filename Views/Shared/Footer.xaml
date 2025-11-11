@@ -6,11 +6,11 @@
              FontFamily="Plus Jakarta Sans"
              Height="Auto"
              MinHeight="160">
-    
+
     <UserControl.DataContext>
         <vm:FooterViewModel/>
     </UserControl.DataContext>
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,7 +19,13 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border Background="{StaticResource PrimaryBlueBrush}">
+    <Border>
+        <Border.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF227DCD"/>
+                <GradientStop Color="#FF113F67" Offset="0.8"/>
+            </LinearGradientBrush>
+        </Border.Background>
         <Grid Margin="60,30,60,30" VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -49,13 +55,13 @@
                            Foreground="White"
                            FontWeight="Bold"
                            Margin="0,0,0,12"
-                           FontSize="15"/>
+                           FontSize="20"/>
 
                 <!-- Dynamic Categories List -->
                 <ItemsControl ItemsSource="{Binding Categories}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Margin="0,0,0,8" FontSize="14">
+                            <TextBlock Margin="0,0,0,8" FontSize="16">
                                 <Hyperlink Command="{Binding NavigateCommand}"
                                            Foreground="White"
                                            TextDecorations="None"

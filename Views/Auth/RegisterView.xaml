@@ -294,6 +294,7 @@
                                                 Command="{Binding RegisterCommand}"
                                                 IsEnabled="{Binding IsNotUploading}"
                                                 Style="{StaticResource PrimaryButton}"
+                                                FontSize="20"
                                                 Foreground="White"
                                                 Margin="0,15,0,10"/>
 
