@@ -39,6 +39,7 @@
                            FontWeight="Bold"
                            Margin="0,0,0,12"/>
                 <TextBlock Text="Shop all maritime related to make your works easy."
+                           FontSize="16"
                            Foreground="White"/>
             </StackPanel>
 

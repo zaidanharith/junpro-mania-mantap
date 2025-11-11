@@ -90,7 +90,7 @@
                                                 Cursor="Hand"
                                                 Command="{Binding DataContext.SeeAllCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 CommandParameter="{Binding CategoryName}"
-                                                Padding="0"/>
+                                                Padding="0,0,2,0"/>
                                     </Grid>
 
                                     <!-- Products Horizontal List -->

@@ -18,7 +18,7 @@ namespace BOZea.ViewModels.Shared
         private readonly AppDbContext _context;
         private User? _currentUser;
         private string _searchQuery = "";
-        private string _greetingText = "Selamat Datang!";
+        private string _greetingText = "";
         private string _selectedCurrency = "IDR";
 
         public User? CurrentUser
@@ -141,13 +141,20 @@ namespace BOZea.ViewModels.Shared
 
         private void UpdateGreeting()
         {
-            if (CurrentUser != null)
+            var hour = DateTime.Now.Hour;
+            var firstName = CurrentUser?.Name?.Split(' ').FirstOrDefault() ?? "Guest";
+
+            if (hour < 12)
             {
-                GreetingText = $"Selamat Datang, {CurrentUser.Name}!";
+                GreetingText = $"Good Morning, {firstName}!";
+            }
+            else if (hour < 18)
+            {
+                GreetingText = $"Good Afternoon, {firstName}!";
             }
             else
             {
-                GreetingText = "Selamat Datang!";
+                GreetingText = $"Good Evening, {firstName}!";
             }
         }
 

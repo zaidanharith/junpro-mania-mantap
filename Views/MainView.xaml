@@ -3,8 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:helpers="clr-namespace:BOZea.Helpers"
         Title="BOZea - Maritime Marketplace"
-        Height="768"
-        Width="1024"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         Icon="/Views/Assets/logo.ico">
