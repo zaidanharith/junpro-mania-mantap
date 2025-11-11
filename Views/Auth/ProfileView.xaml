@@ -399,12 +399,12 @@
                                                     Value="Visible"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                        Value="{x:Null}">
+                                                             Value="{x:Null}">
                                                     <Setter Property="Visibility"
                                                             Value="Collapsed"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding CurrentUser.Image}"
-                                                        Value="">
+                                                             Value="">
                                                     <Setter Property="Visibility"
                                                             Value="Collapsed"/>
                                                 </DataTrigger>

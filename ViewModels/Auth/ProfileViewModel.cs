@@ -22,7 +22,7 @@ namespace BOZea.ViewModels.Auth
         private readonly OrderRepository _orderRepository;
         private readonly AppDbContext _dbContext;
         private User? _currentUser;
-        private ObservableCollection<OrderDisplayViewModel> _userTransactions;
+        private ObservableCollection<Models.Order> _userTransactions;
         private bool _isLoading;
         private RelayCommand? _navigateHomeCommand;
         private RelayCommand? _logoutCommand;
@@ -36,27 +36,15 @@ namespace BOZea.ViewModels.Auth
             _dbContext = factory.CreateDbContext(Array.Empty<string>());
             _userRepository = new UserRepository(_dbContext);
             _orderRepository = new OrderRepository(_dbContext);
-            _userTransactions = new ObservableCollection<OrderDisplayViewModel>();
+            _userTransactions = new ObservableCollection<Models.Order>();
 
             EditProfileCommand = new RelayCommand(_ => EditProfile());
-            AddReviewCommand = new RelayCommand(param => AddReview(param as OrderItemViewModel));
-
-            // Subscribe to currency changes
-            CurrencyManager.Instance.CurrencyChanged += OnCurrencyChanged;
+            AddReviewCommand = new RelayCommand(param => AddReview(param as OrderItem));
 
             Console.WriteLine("[ProfileVM] Constructor completed, loading data...");
 
             // Load data asynchronously to avoid blocking UI
             Task.Run(async () => await LoadUserDataAsync());
-        }
-
-        private void OnCurrencyChanged(object? sender, EventArgs e)
-        {
-            // Refresh all order prices
-            foreach (var order in UserTransactions)
-            {
-                order.RefreshPrices();
-            }
         }
 
         public User? CurrentUser
@@ -70,7 +58,7 @@ namespace BOZea.ViewModels.Auth
             }
         }
 
-        public ObservableCollection<OrderDisplayViewModel> UserTransactions
+        public ObservableCollection<Models.Order> UserTransactions
         {
             get => _userTransactions;
             set
@@ -161,20 +149,6 @@ namespace BOZea.ViewModels.Auth
                 {
                     orders = await ordersTask;
                     Console.WriteLine($"[ProfileVM] Loaded {orders.Count} transactions");
-                    
-                    // ✅ Convert UTC to Local Time
-                    foreach (var order in orders)
-                    {
-                        if (order.Date.Kind == DateTimeKind.Utc)
-                        {
-                            order.Date = TimeZoneInfo.ConvertTime(
-                                order.Date, 
-                                TimeZoneInfo.Utc, 
-                                TimeZoneInfo.Local
-                            );
-                            Console.WriteLine($"[ProfileVM] Converted order date: {order.Date}");
-                        }
-                    }
                 }
                 else
                 {
@@ -182,7 +156,17 @@ namespace BOZea.ViewModels.Auth
                     orders = new List<Models.Order>();
                 }
 
-                // Load reviews for each order item BEFORE creating ViewModels
+                // Update on UI thread
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    UserTransactions.Clear();
+                    foreach (var order in orders)
+                    {
+                        UserTransactions.Add(order);
+                    }
+                });
+
+                // Load reviews for each order item
                 var reviewRepo = new ReviewRepository(_dbContext);
                 foreach (var order in orders)
                 {
@@ -206,16 +190,6 @@ namespace BOZea.ViewModels.Auth
                         }
                     }
                 }
-
-                // Update on UI thread AFTER reviews are loaded
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    UserTransactions.Clear();
-                    foreach (BOZea.Models.Order order in orders)
-                    {
-                        UserTransactions.Add(new OrderDisplayViewModel(order));
-                    }
-                });
 
                 IsLoading = false;
                 Console.WriteLine("[ProfileVM] LoadUserDataAsync completed");
@@ -259,10 +233,10 @@ namespace BOZea.ViewModels.Auth
             }
         }
 
-        private void AddReview(OrderItemViewModel? orderItemVM)
+        private void AddReview(OrderItem? orderItem)
         {
-            if (orderItemVM == null) return;
-            Console.WriteLine($"[ProfileVM] Add review for product: {orderItemVM.Product?.Name}");
+            if (orderItem == null) return;
+            Console.WriteLine($"[ProfileVM] Add review for product: {orderItem.Product?.Name}");
             // TODO: Navigate to add review view
         }
 
@@ -386,6 +360,7 @@ namespace BOZea.ViewModels.Auth
 
                 Console.WriteLine($"[ProfileVM] Submitting review for product {orderItem.ProductID}");
 
+                // ✅ Load User dan Product dari database untuk satisfy required constraint
                 var user = await _dbContext.Users.FindAsync(CurrentUser!.ID);
                 var product = await _dbContext.Products.FindAsync(orderItem.ProductID);
 
@@ -397,25 +372,27 @@ namespace BOZea.ViewModels.Auth
                     return;
                 }
 
-                // ✅ Convert Local Time to UTC sebelum save
+                // ✅ Create new review with ALL required fields set
                 var review = new Review
                 {
-                    User = user,
+                    User = user,              // ✅ Set navigation property
                     UserID = user.ID,
-                    Product = product,
+                    Product = product,        // ✅ Set navigation property
                     ProductID = product.ID,
                     Rating = orderItem.TempRating,
                     Comment = orderItem.TempReviewComment,
-                    Date = DateTime.UtcNow  // ✅ Simpan dalam UTC
+                    Date = DateTime.UtcNow
                 };
 
-                Console.WriteLine($"[ProfileVM] Creating review: Date={review.Date} (UTC)");
+                Console.WriteLine($"[ProfileVM] Creating review: UserID={review.UserID}, ProductID={review.ProductID}, Rating={review.Rating}");
 
+                // Save to database
                 _dbContext.Reviews.Add(review);
                 await _dbContext.SaveChangesAsync();
 
                 Console.WriteLine($"[ProfileVM] Review saved successfully with ID: {review.ID}");
 
+                // Update UI on dispatcher thread
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     orderItem.ReviewID = review.ID;
@@ -424,6 +401,7 @@ namespace BOZea.ViewModels.Auth
                     orderItem.HasReview = true;
                     orderItem.ReviewStars = Enumerable.Range(1, review.Rating).ToList();
 
+                    // Clear temp data
                     orderItem.TempReviewComment = string.Empty;
                     orderItem.TempRating = 5;
 
@@ -433,9 +411,25 @@ namespace BOZea.ViewModels.Auth
 
                 Console.WriteLine("[ProfileVM] UI updated with review data");
             }
+            catch (DbUpdateException dbEx)
+            {
+                Console.WriteLine($"[ProfileVM] Database error: {dbEx.Message}");
+                Console.WriteLine($"[ProfileVM] Inner exception: {dbEx.InnerException?.Message}");
+                Console.WriteLine($"[ProfileVM] Stack trace: {dbEx.StackTrace}");
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    MessageBox.Show($"Database error: {dbEx.InnerException?.Message ?? dbEx.Message}",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                });
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"[ProfileVM] Error submitting review: {ex.Message}");
+                Console.WriteLine($"[ProfileVM] Stack trace: {ex.StackTrace}");
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     MessageBox.Show($"Error submitting review: {ex.Message}",

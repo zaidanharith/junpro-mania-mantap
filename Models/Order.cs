@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.CompilerServices;
+using BOZea.Helpers;
 
 namespace BOZea.Models
 {
-    public class Order
+    public class Order : INotifyPropertyChanged
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -35,6 +38,9 @@ namespace BOZea.Models
             }
         }
 
+        [NotMapped]
+        public string FormattedTotalAmount => CurrencyManager.Instance.FormatPrice(TotalPrice);
+
         public Order(int id, User user, Payment payment)
         {
             ID = id;
@@ -59,6 +65,28 @@ namespace BOZea.Models
         {
             Payment = payment;
             PaymentID = payment.ID;
+        }
+
+        public void RefreshPrices()
+        {
+            OnPropertyChanged(nameof(FormattedTotalAmount));
+            if (OrderItems != null)
+            {
+                foreach (var item in OrderItems)
+                {
+                    if (item is OrderItem orderItem)
+                    {
+                        orderItem.RefreshPrice();
+                    }
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

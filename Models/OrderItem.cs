@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.CompilerServices;
+using BOZea.Helpers;
 
 namespace BOZea.Models
 {
@@ -94,6 +95,9 @@ namespace BOZea.Models
             set { _reviewStars = value; OnPropertyChanged(); }
         }
 
+        [NotMapped]
+        public string FormattedPrice => CurrencyManager.Instance.FormatPrice(Price);
+
         public OrderItem() { }
 
         public OrderItem(Order order, Product product, int quantity)
@@ -122,6 +126,11 @@ namespace BOZea.Models
         public void UpdateStatus(OrderItemStatus newStatus)
         {
             Status = newStatus;
+        }
+
+        public void RefreshPrice()
+        {
+            OnPropertyChanged(nameof(FormattedPrice));
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
